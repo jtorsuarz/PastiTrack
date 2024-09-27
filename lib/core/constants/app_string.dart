@@ -1,0 +1,29 @@
+class AppString {
+  static const String appTitle = 'PastiTrack';
+  static const String signIn = 'Iniciar Sesión';
+  static const String welcomePastiTrack = 'Bienvenido a PastiTrack';
+  static const String email = 'Correo Electrónico';
+  static const String password = 'Contraseña';
+  static const String errorVerifyStatusAuth =
+      'Error al verificar el estado de autenticación';
+  static const String errorSignIn = 'Error al iniciar sesión';
+  static const String errorSignUp = 'Error al registrar';
+  static const String errorPasswordReset = 'Error al restablecer la contraseña';
+  static const String errorSignOut = 'Error al cerrar sesión';
+  static const String errorPasswordMismatch = 'Las contraseñas no coinciden';
+  static const String errorEmailMismatch =
+      'Los correos electrónicos no coinciden';
+  static const String errorEmailExists = 'El correo electrónico ya existe';
+  static const String errorInvalidEmail = 'Correo electrónico inválido';
+  static const String errorInvalidPassword = 'Contraseña inválida';
+  static const String errorNoInternet = 'No hay conexión a internet';
+  static const String errorNoData = 'No hay datos disponibles';
+  static const String unexpectedErrorOcurred = 'Ocurrió un error inesperado.';
+  static const String errorEmailPasswordCannotBeEmpty =
+      'El correo electrónico y la contraseña no pueden estar vacíos.';
+  static const String errorCommunicationServer =
+      'Error al comunicarse con el servidor.';
+  static const String errorUserNotFound = 'Usuario no encontrado.';
+  static const String errorAuthentication = 'Error de autenticación';
+  static String errorWithFormat(v) => 'Error :$v';
+}
