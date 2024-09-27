@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "649237139866",
+    "project_id": "pill-track-c9d0f",
+    "storage_bucket": "pill-track-c9d0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649237139866:android:68e030dcc7e70cc74a2a23",
+        "android_client_info": {
+          "package_name": "com.torsuarz.pasti_track"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoUXfnrGMf1aeWMVQB4nsqQEjie-G6Cww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

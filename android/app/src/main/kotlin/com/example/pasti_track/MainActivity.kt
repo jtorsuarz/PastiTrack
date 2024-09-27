@@ -1,4 +1,4 @@
-package com.example.pasti_track
+package com.torsuarz.pasti_track
 
 import io.flutter.embedding.android.FlutterActivity
 
