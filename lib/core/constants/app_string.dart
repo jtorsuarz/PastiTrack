@@ -4,6 +4,17 @@ class AppString {
   static const String welcomePastiTrack = 'Bienvenido a PastiTrack';
   static const String email = 'Correo Electrónico';
   static const String password = 'Contraseña';
+  static const String forgotPassword = '¿Olvidaste tu contraseña?';
+  static const String signUp = 'Registrarse';
+  static const String signUpSuccess = 'Registro Exitoso';
+  static const String signInCompleteSuccess =
+      '¡Registro completado exitosamente!';
+  static const String goToSignIn = 'Ir a Iniciar Sesión';
+  static const String resetPassword = 'Restablecer Contraseña';
+  static String redirectAutomaticSeconds(s) =>
+      'Serás redirigido automáticamente en $s segundos.';
+
+  // ! Error Messages
   static const String errorVerifyStatusAuth =
       'Error al verificar el estado de autenticación';
   static const String errorSignIn = 'Error al iniciar sesión';

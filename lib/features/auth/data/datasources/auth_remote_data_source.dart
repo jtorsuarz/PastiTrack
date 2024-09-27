@@ -16,7 +16,7 @@ class AuthRemoteDataSource {
     return _firebaseAuth.currentUser;
   }
 
-  Future<void> register(String email, String password) async {
+  Future<void> signUpUser(String email, String password) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
   }

@@ -53,6 +53,12 @@ class SignInScreen extends StatelessWidget {
                 },
                 child: const Text(AppString.signIn),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  context.go(AppUrls.signUpPath);
+                },
+                child: const Text(AppString.signUp),
+              ),
             ],
           ),
         ),

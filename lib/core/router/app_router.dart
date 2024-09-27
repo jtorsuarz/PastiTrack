@@ -6,6 +6,8 @@ import 'package:pasti_track/core/constants/app_urls.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/auth/presentation/auth_wrapper/auth_wrapper.dart';
 import 'package:pasti_track/features/auth/presentation/sign_in/sign_in_screen.dart';
+import 'package:pasti_track/features/auth/presentation/sign_up/sign_up_screen.dart';
+import 'package:pasti_track/features/auth/presentation/sign_up/sign_up_success_screen.dart';
 import 'package:pasti_track/features/home/presentation/home_screen.dart';
 import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
 
@@ -20,15 +22,27 @@ class AppRouter {
         },
       ),
       GoRoute(
+        path: AppUrls.homePath,
+        builder: (BuildContext context, GoRouterState state) {
+          return const HomeScreen();
+        },
+      ),
+      GoRoute(
         path: AppUrls.signInPath,
         builder: (BuildContext context, GoRouterState state) {
           return SignInScreen();
         },
       ),
       GoRoute(
-        path: AppUrls.homePath,
+        path: AppUrls.signUpPath,
         builder: (BuildContext context, GoRouterState state) {
-          return const HomeScreen();
+          return SignUpScreen();
+        },
+      ),
+      GoRoute(
+        path: AppUrls.signUpSuccessPath,
+        builder: (BuildContext context, GoRouterState state) {
+          return const SignUpSuccessScreen();
         },
       ),
     ],

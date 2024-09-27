@@ -7,8 +7,10 @@ import 'package:pasti_track/features/auth/data/datasources/auth_remote_data_sour
 import 'package:pasti_track/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:pasti_track/features/auth/domain/usecases/sign_in_usecase.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pasti_track/features/auth/domain/usecases/signup_user_usecase.dart';
 import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
 import 'package:pasti_track/features/auth/presentation/sign_in/bloc/sign_in_bloc.dart';
+import 'package:pasti_track/features/auth/presentation/sign_up/bloc/sign_up_bloc.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -25,15 +27,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final firebase = FirebaseAuth.instance;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              AuthBloc(FirebaseAuth.instance)..add(AuthCheckRequested()),
+          create: (context) => AuthBloc(firebase)..add(AuthCheckRequested()),
         ),
         BlocProvider(
           create: (context) => SignInBloc(
             SignInUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
+          ),
+        ),
+        BlocProvider<SignUpBloc>(
+          create: (context) => SignUpBloc(
+            SignUpUserUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
           ),
         ),
       ],
