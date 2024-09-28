@@ -59,6 +59,12 @@ class SignInScreen extends StatelessWidget {
                 },
                 child: const Text(AppString.signUp),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  context.go(AppUrls.forgotPasswordPath);
+                },
+                child: const Text(AppString.forgotPassword),
+              ),
             ],
           ),
         ),

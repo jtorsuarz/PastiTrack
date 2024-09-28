@@ -10,9 +10,9 @@ class AppString {
   static const String signInCompleteSuccess =
       '¡Registro completado exitosamente!';
   static const String goToSignIn = 'Ir a Iniciar Sesión';
-  static const String resetPassword = 'Restablecer Contraseña';
-  static String redirectAutomaticSeconds(s) =>
-      'Serás redirigido automáticamente en $s segundos.';
+  static const String recoveryPassword = 'Recuperar Contraseña';
+  static const String recoveryPasswordEmailSend =
+      'Correo de recuperación enviado';
 
   // ! Error Messages
   static const String errorVerifyStatusAuth =
@@ -36,5 +36,9 @@ class AppString {
       'Error al comunicarse con el servidor.';
   static const String errorUserNotFound = 'Usuario no encontrado.';
   static const String errorAuthentication = 'Error de autenticación';
+
+  // ? Functions return a string
+  static String redirectAutomaticSeconds(s) =>
+      'Serás redirigido automáticamente en $s segundos.';
   static String errorWithFormat(v) => 'Error :$v';
 }

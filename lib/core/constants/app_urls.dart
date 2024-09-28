@@ -4,4 +4,5 @@ class AppUrls {
   static const String signInPath = '/sign-in';
   static const String signUpPath = '/sign-up';
   static const String signUpSuccessPath = '/sign-up-success';
+  static const String forgotPasswordPath = '/forgot-password';
 }

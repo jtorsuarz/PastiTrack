@@ -5,6 +5,7 @@ import 'package:pasti_track/core/constants/app_string.dart';
 import 'package:pasti_track/core/constants/app_urls.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/auth/presentation/auth_wrapper/auth_wrapper.dart';
+import 'package:pasti_track/features/auth/presentation/password_recovery/password_recovery_screen.dart';
 import 'package:pasti_track/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:pasti_track/features/auth/presentation/sign_up/sign_up_screen.dart';
 import 'package:pasti_track/features/auth/presentation/sign_up/sign_up_success_screen.dart';
@@ -43,6 +44,12 @@ class AppRouter {
         path: AppUrls.signUpSuccessPath,
         builder: (BuildContext context, GoRouterState state) {
           return const SignUpSuccessScreen();
+        },
+      ),
+      GoRoute(
+        path: AppUrls.forgotPasswordPath,
+        builder: (BuildContext context, GoRouterState state) {
+          return const PasswordRecoveryScreen();
         },
       ),
     ],
