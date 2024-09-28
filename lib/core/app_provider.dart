@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:provider/single_child_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/features/auth/data/datasources/auth_remote_data_source.dart';
