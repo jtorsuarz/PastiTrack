@@ -55,9 +55,9 @@ class AppRouter {
       if (isLoading) return null;
 
       final isLoggedIn = authState is AuthAuthenticated;
-      final isLoggingIn = state.matchedLocation == AppUrls.signInPath;
-
       if (!isLoggedIn) return AppUrls.signInPath;
+
+      final isLoggingIn = state.matchedLocation == AppUrls.signInPath;
       if (isLoggedIn && isLoggingIn) return AppUrls.homePath;
       return null;
     },
