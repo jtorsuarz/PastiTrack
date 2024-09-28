@@ -13,8 +13,10 @@ class AppString {
   static const String recoveryPassword = 'Recuperar Contraseña';
   static const String recoveryPasswordEmailSend =
       'Correo de recuperación enviado';
+  static const String tryAgain = 'Reintentar';
 
   // ! Error Messages
+  static const String error = 'Error';
   static const String errorVerifyStatusAuth =
       'Error al verificar el estado de autenticación';
   static const String errorSignIn = 'Error al iniciar sesión';
@@ -41,4 +43,5 @@ class AppString {
   static String redirectAutomaticSeconds(s) =>
       'Serás redirigido automáticamente en $s segundos.';
   static String errorWithFormat(v) => 'Error :$v';
+  static String errorOcurred(v) => "Ocurrió un error: $error";
 }

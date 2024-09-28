@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pasti_track/core/constants/app_string.dart';
-import 'package:pasti_track/core/helper/app_logger.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -17,7 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         final user = _firebaseAuth.currentUser;
-        AppLogger.p("AuthBloc GORouter", user);
+
         if (user != null) {
           emit(AuthAuthenticated(user));
         } else {

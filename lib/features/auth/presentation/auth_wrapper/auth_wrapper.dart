@@ -13,7 +13,6 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        AppLogger.p("AuthWrapper", state);
         if (state is AuthError) {
           return ErrorScreen(error: state.message);
         }

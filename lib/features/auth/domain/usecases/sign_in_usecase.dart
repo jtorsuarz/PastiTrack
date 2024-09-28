@@ -9,7 +9,6 @@ class SignInUseCase {
   SignInUseCase(this.repository);
 
   Future<void> call(String email, String password) async {
-    // Verificar que los parámetros no estén vacíos
     if (email.isEmpty || password.isEmpty) {
       throw Failure(AppString.errorEmailPasswordCannotBeEmpty);
     }
@@ -19,7 +18,7 @@ class SignInUseCase {
     } on ServerException {
       throw Failure(AppString.errorCommunicationServer);
     } catch (e) {
-      throw Failure(e.toString()); // Captura cualquier otra excepción
+      throw Failure(e.toString());
     }
   }
 }
