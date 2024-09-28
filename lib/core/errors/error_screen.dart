@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pasti_track/core/constants/app_string.dart';
 
 class ErrorScreen extends StatelessWidget {
   final String error;
@@ -8,17 +9,17 @@ class ErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Error")),
+      appBar: AppBar(title: const Text(AppString.error)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Ocurrió un error: $error"),
+            Text(AppString.errorOcurred(error)),
             ElevatedButton(
               onPressed: () {
                 // Opcional: Volver a intentar la autenticación
               },
-              child: const Text("Reintentar"),
+              child: const Text(AppString.tryAgain),
             ),
           ],
         ),
