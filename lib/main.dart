@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/constants/app_string.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pasti_track/core/theme/bloc/theme_bloc.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -24,12 +25,17 @@ class MyApp extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: AppBlocProviders.get(firebase),
-      child: MaterialApp.router(
-        title: AppString.appTitle,
-        theme: AppTheme(selectedColor: 2).theme(isDarkMode: false),
-        darkTheme: AppTheme(selectedColor: 2).theme(isDarkMode: true),
-        themeMode: ThemeMode.system,
-        routerConfig: AppRouter.router,
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            title: AppString.appTitle,
+            theme: state.themeData,
+            darkTheme: AppTheme(selectedColor: state.selectedColor)
+                .theme(isDarkMode: true),
+            themeMode: state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            routerConfig: AppRouter.router,
+          );
+        },
       ),
     );
   }

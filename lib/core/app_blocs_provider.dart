@@ -1,3 +1,4 @@
+import 'package:pasti_track/core/theme/bloc/theme_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/single_child_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,25 +14,22 @@ import 'package:pasti_track/features/auth/presentation/sign_up/bloc/sign_up_bloc
 
 class AppBlocProviders {
   static List<SingleChildWidget> get(firebase) => [
+        BlocProvider(create: (context) => ThemeBloc()),
         BlocProvider(
           create: (context) => AuthBloc(firebase)..add(AuthCheckRequested()),
         ),
         BlocProvider(
-          create: (context) => SignInBloc(
-            SignInUseCase(
-              AuthRepositoryImpl(AuthRemoteDataSource()),
-            ),
-          ),
+          create: (context) => SignInBloc(SignInUseCase(
+            AuthRepositoryImpl(AuthRemoteDataSource()),
+          )),
         ),
         BlocProvider<SignUpBloc>(
           create: (context) => SignUpBloc(
-            SignUpUserUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
-          ),
+              SignUpUserUseCase(AuthRepositoryImpl(AuthRemoteDataSource()))),
         ),
         BlocProvider<PasswordRecoveryBloc>(
-          create: (context) => PasswordRecoveryBloc(
-            PasswordRecoveryUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
-          ),
+          create: (context) => PasswordRecoveryBloc(PasswordRecoveryUseCase(
+              AuthRepositoryImpl(AuthRemoteDataSource()))),
         ),
       ];
 }
