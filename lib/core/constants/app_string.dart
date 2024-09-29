@@ -6,9 +6,6 @@ class AppString {
   static const String password = 'Contraseña';
   static const String forgotPassword = '¿Olvidaste tu contraseña?';
   static const String signUp = 'Registrarse';
-  static const String signUpSuccess = 'Registro Exitoso';
-  static const String signInCompleteSuccess =
-      '¡Registro completado exitosamente!';
   static const String goToSignIn = 'Ir a Iniciar Sesión';
   static const String enjoyTheApp = 'Disfrutar de la app';
   static const String recoveryPassword = 'Recuperar Contraseña';
@@ -20,6 +17,7 @@ class AppString {
   static const String routines = 'Rutinas';
   static const String history = 'Historial';
   static const String settings = 'Ajustes';
+  static const String profile = 'Perfil';
   static const String editProfile = 'Editar Perfil';
   static const String changeTheme = 'Cambiar Tema';
   static const String darkMode = 'Modo oscuro';
@@ -28,9 +26,26 @@ class AppString {
   static const String areYouSureWantToLogOut =
       '¿Estás seguro de que quieres cerrar sesión?';
   static const String appVersion = 'Versión de la App';
+  static const String name = 'Name';
+  static const String updateProfile = 'Actualizar Perfil';
+  static const String changePassword = 'Cambiar contraseña';
+  static const String newPassword = 'Nueva Contraseña';
+  static const String confirmPassword = 'Repita la contraseña';
+  static const String change = 'Cambiar';
+
+  // * Success messages
+  static const String success = 'Éxito';
+  static const String successPasswordChanged =
+      'Contraseña cambiada exitosamente.';
+  static const String signUpSuccess = 'Registro Exitoso';
+  static const String signInCompleteSuccess =
+      '¡Registro completado exitosamente!';
+  static const String successProfileUpdated =
+      'Perfil actualizado exitosamente.';
 
   // ! Error Messages
   static const String error = 'Error';
+  static const String errorUnknown = 'Error desconocido';
   static const String errorVerifyStatusAuth =
       'Error al verificar el estado de autenticación';
   static const String errorSignIn = 'Error al iniciar sesión';

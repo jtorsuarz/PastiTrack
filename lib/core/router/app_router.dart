@@ -52,7 +52,7 @@ class AppRouter {
       ),
       GoRoute(
         path: AppUrls.editProfilePath,
-        builder: (BuildContext context, GoRouterState state) => ProfileScreen(),
+        builder: (BuildContext context, GoRouterState state) => const ProfileScreen(),
       ),
       GoRoute(
         path: AppUrls.homePath,
