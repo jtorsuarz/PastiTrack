@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pasti_track/core/config.dart';
-import 'package:pasti_track/core/theme/bloc/theme_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
+import 'package:pasti_track/features/settings/presentation/widgets/dark_mode_switch_widget.dart';
+import 'package:pasti_track/features/settings/presentation/widgets/settings_tile_widget.dart';
+import 'package:pasti_track/features/settings/presentation/widgets/theme_dropdown_widget.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -45,78 +47,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
         body: ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
-            ///  button for navigation Edit Profile Screen
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text(AppString.editProfile),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                context.push(AppUrls.editProfilePath);
-              },
+            SettingsTileWidget(
+              icon: Icons.person,
+              title: AppString.editProfile,
+              onTap: () => context.push(AppUrls.editProfilePath),
             ),
-            const Divider(),
 
-            /// Option to change the theme of the app
-            BlocBuilder<ThemeBloc, ThemeState>(
-              builder: (context, state) {
-                return ListTile(
-                  leading: const Icon(Icons.palette),
-                  title: const Text(AppString.changeTheme),
-                  trailing: DropdownButton<int>(
-                    value: state.selectedColor,
-                    onChanged: (int? newValue) {
-                      if (newValue != null) {
-                        // Cambiar el tema enviando el evento al BLoC
-                        context
-                            .read<ThemeBloc>()
-                            .add(ChangeThemeColor(newValue));
-                      }
-                    },
-                    items: List.generate(
-                      AppTheme.lengthColorList(),
-                      (index) => DropdownMenuItem(
-                        value: index,
-                        child: Text('Tema ${index + 1}'),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
             const Divider(),
-
-            // Option to activate/deactivate the dark mode
-            BlocBuilder<ThemeBloc, ThemeState>(
-              builder: (context, state) {
-                return SwitchListTile(
-                  title: const Text(AppString.darkMode),
-                  value: state.isDarkMode,
-                  onChanged: (bool value) {
-                    // Change dark/light mode
-                    context.read<ThemeBloc>().add(ToggleDarkMode(value));
-                  },
-                );
-              },
-            ),
+            // Widget para cambiar el tema
+            const ThemeDropdownWidget(),
             const Divider(),
-
+            // Switch para cambiar el tema
+            const DarkModeSwitchWidget(),
+            const Divider(),
             // Show application version
-            ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: const Text(AppString.appVersion),
-              subtitle: Text(_appVersion),
+            SettingsTileWidget(
+              icon: Icons.info_outline,
+              title: AppString.appVersion,
+              subtitle: _appVersion,
             ),
             const Divider(),
-
             // Option to log out
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text(AppString.logout),
+            SettingsTileWidget(
+              icon: Icons.logout,
+              title: AppString.logout,
               onTap: () async {
                 bool confirm = await _showSignOutConfirmation();
-
                 if (!mounted) return;
-
                 if (confirm) {
                   _logout();
                 }
@@ -128,7 +85,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  _logout() {
+  void _logout() {
     context.read<AuthBloc>().add(AuthLoggedOut());
     context.go(AppUrls.signInPath);
   }
