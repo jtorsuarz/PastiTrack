@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
+import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:pasti_track/features/settings/presentation/widgets/dark_mode_switch_widget.dart';
 import 'package:pasti_track/features/settings/presentation/widgets/settings_tile_widget.dart';
 import 'package:pasti_track/features/settings/presentation/widgets/theme_dropdown_widget.dart';

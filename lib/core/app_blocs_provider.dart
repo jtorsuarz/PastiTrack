@@ -7,7 +7,7 @@ import 'package:pasti_track/features/auth/data/repositories/auth_repository_impl
 import 'package:pasti_track/features/auth/domain/usecases/password_recovery.dart';
 import 'package:pasti_track/features/auth/domain/usecases/sign_in_usecase.dart';
 import 'package:pasti_track/features/auth/domain/usecases/signup_user_usecase.dart';
-import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
+import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
 
 class AppBlocProviders {
   static List<SingleChildWidget> get(firebase) => [
