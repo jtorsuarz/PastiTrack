@@ -7,6 +7,7 @@ import 'package:pasti_track/features/profile/data/models/user_model.dart';
 import 'package:pasti_track/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pasti_track/features/profile/presentation/bloc/profile_event.dart';
 import 'package:pasti_track/features/profile/presentation/bloc/profile_state.dart';
+import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -69,20 +70,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         children: [
           _buildProfileImage(profile),
-          const SizedBox(height: 16),
+          CustomSizedBoxes.get15(),
           Text(profile.name, style: const TextStyle(fontSize: 24)),
-          const SizedBox(height: 8),
+          CustomSizedBoxes.get10(),
           Text(profile.email, style: const TextStyle(fontSize: 16)),
-          const SizedBox(height: 8),
+          CustomSizedBoxes.get10(),
           Text('Usuario desde ${profile.createdAt}'),
-          const SizedBox(height: 16),
+          CustomSizedBoxes.get15(),
           _buildTextField(nameController, 'Nombre'),
-          const SizedBox(height: 16),
+          CustomSizedBoxes.get15(),
           ElevatedButton(
             onPressed: () => _updateProfile(context),
             child: const Text('Actualizar Perfil'),
           ),
-          const SizedBox(height: 16),
+          CustomSizedBoxes.get15(),
           TextButton(
             onPressed: () => _showChangePasswordDialog(context),
             child: const Text('Cambiar Contraseña'),
