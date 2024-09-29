@@ -37,9 +37,9 @@ class SignUpSuccessScreen extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  context.go(AppUrls.signInPath);
+                  context.go(AppUrls.homePath);
                 },
-                child: const Text(AppString.goToSignIn),
+                child: const Text(AppString.enjoyTheApp),
               ),
               const SizedBox(height: 20),
               Text(

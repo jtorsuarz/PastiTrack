@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
-import 'bloc/sign_in_bloc.dart';
+import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
 
 class SignInScreen extends StatelessWidget {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController =
+      TextEditingController(text: 'j.torsuarz@gmail.com');
+  final TextEditingController passwordController =
+      TextEditingController(text: 'Test123');
 
   SignInScreen({super.key});
 
@@ -16,13 +18,18 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(AppString.signIn)),
-      body: BlocListener<SignInBloc, SignInState>(
+      body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is SignInLoading) {
+          print("Hello SigINScrresult" + state.toString());
+          if (state is AuthLoading || state is AuthInitial) {
             const Center(child: CircularProgressIndicator());
-          } else if (state is SignInSuccess) {
+          } else if (state is AuthAuthenticated) {
             context.go(AppUrls.homePath);
-          } else if (state is SignInFailure) {
+          } else if (state is AuthUnauthenticated) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("unauthenticated")),
+            );
+          } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
@@ -47,8 +54,8 @@ class SignInScreen extends StatelessWidget {
                 onPressed: () {
                   final email = emailController.text;
                   final password = passwordController.text;
-                  BlocProvider.of<SignInBloc>(context)
-                      .add(SignInButtonPressed(email, password));
+                  BlocProvider.of<AuthBloc>(context)
+                      .add(AuthLoggedIn(email: email, password: password));
                 },
                 child: const Text(AppString.signIn),
               ),

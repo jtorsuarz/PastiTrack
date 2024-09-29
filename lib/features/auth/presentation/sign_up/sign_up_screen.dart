@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
-import 'package:pasti_track/features/auth/presentation/sign_up/bloc/sign_up_bloc.dart';
+import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
 
 class SignUpScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -16,17 +16,17 @@ class SignUpScreen extends StatelessWidget {
       appBar: AppBar(title: const Text(AppString.signUp)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: BlocConsumer<SignUpBloc, SignUpState>(
+        child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
-            if (state is SignUpSuccess) {
+            if (state is AuthSignUpSuccess) {
               context.go(AppUrls.signUpSuccessPath);
-            } else if (state is SignUpFailure) {
+            } else if (state is AuthError) {
               ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.error)));
+                  .showSnackBar(SnackBar(content: Text(state.message)));
             }
           },
           builder: (context, state) {
-            if (state is SignUpLoading) {
+            if (state is AuthLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -47,8 +47,8 @@ class SignUpScreen extends StatelessWidget {
                   onPressed: () {
                     final email = emailController.text;
                     final password = passwordController.text;
-                    BlocProvider.of<SignUpBloc>(context).add(
-                      SignUpSubmitted(email, password),
+                    BlocProvider.of<AuthBloc>(context).add(
+                      AuthSignUpRequested(email: email, password: password),
                     );
                   },
                   child: const Text(AppString.signUp),

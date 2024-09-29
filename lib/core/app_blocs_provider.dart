@@ -8,16 +8,19 @@ import 'package:pasti_track/features/auth/domain/usecases/password_recovery.dart
 import 'package:pasti_track/features/auth/domain/usecases/sign_in_usecase.dart';
 import 'package:pasti_track/features/auth/domain/usecases/signup_user_usecase.dart';
 import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
-import 'package:pasti_track/features/auth/presentation/password_recovery/bloc/password_recovery_bloc.dart';
-import 'package:pasti_track/features/auth/presentation/sign_in/bloc/sign_in_bloc.dart';
-import 'package:pasti_track/features/auth/presentation/sign_up/bloc/sign_up_bloc.dart';
 
 class AppBlocProviders {
   static List<SingleChildWidget> get(firebase) => [
         BlocProvider(create: (context) => ThemeBloc()),
         BlocProvider(
-          create: (context) => AuthBloc(firebase)..add(AuthCheckRequested()),
+          create: (context) => AuthBloc(
+            firebase,
+            SignInUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
+            SignUpUserUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
+            PasswordRecoveryUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
+          )..add(AuthCheckRequested()),
         ),
+        /*
         BlocProvider(
           create: (context) => SignInBloc(SignInUseCase(
             AuthRepositoryImpl(AuthRemoteDataSource()),
@@ -31,5 +34,6 @@ class AppBlocProviders {
           create: (context) => PasswordRecoveryBloc(PasswordRecoveryUseCase(
               AuthRepositoryImpl(AuthRemoteDataSource()))),
         ),
+        */
       ];
 }

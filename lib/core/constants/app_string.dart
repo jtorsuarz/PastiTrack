@@ -14,13 +14,16 @@ class AppString {
   static const String recoveryPasswordEmailSend =
       'Correo de recuperación enviado';
   static const String tryAgain = 'Reintentar';
-
-  // ! Navigation Drawer Menu Items
   static const String home = 'Inicio';
   static const String medicines = 'Medicinas';
   static const String routines = 'Rutinas';
   static const String history = 'Historial';
   static const String settings = 'Ajustes';
+  static const String editProfile = 'Editar Perfil';
+  static const String changeTheme = 'Cambiar Tema';
+  static const String darkMode = 'Modo oscuro';
+  static const String logout = 'Cerrar Sesión';
+  static const String appVersion = 'Versión de la App';
 
   // ! Error Messages
   static const String error = 'Error';

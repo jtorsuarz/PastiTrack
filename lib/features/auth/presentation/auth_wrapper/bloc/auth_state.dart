@@ -14,6 +14,10 @@ class AuthAuthenticated extends AuthState {
 
 class AuthUnauthenticated extends AuthState {}
 
+class AuthSignUpSuccess extends AuthState {}
+
+class AuthPasswordRecoverySuccess extends AuthState {}
+
 class AuthError extends AuthState {
   final String message;
 
