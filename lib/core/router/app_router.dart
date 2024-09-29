@@ -52,6 +52,66 @@ class AppRouter {
           return const PasswordRecoveryScreen();
         },
       ),
+      GoRoute(
+        path: AppUrls.settingsPath,
+        builder: (BuildContext context, GoRouterState state) {
+          return const Center(
+              child: Text(
+            AppUrls.settingsPath,
+            style: TextStyle(color: Colors.amber),
+          ));
+        },
+      ),
+      GoRoute(
+        path: AppUrls.editProfilePath,
+        builder: (BuildContext context, GoRouterState state) {
+          return const Center(
+              child: Text(
+            AppUrls.editProfilePath,
+            style: TextStyle(color: Colors.amber),
+          ));
+        },
+      ),
+      GoRoute(
+        path: AppUrls.homePath,
+        builder: (BuildContext context, GoRouterState state) {
+          return const Center(
+              child: Text(
+            AppUrls.homePath,
+            style: TextStyle(color: Colors.amber),
+          ));
+        },
+      ),
+      GoRoute(
+        path: AppUrls.medicinesPath,
+        builder: (BuildContext context, GoRouterState state) {
+          return const Center(
+              child: Text(
+            AppUrls.medicinesPath,
+            style: TextStyle(color: Colors.amber),
+          ));
+        },
+      ),
+      GoRoute(
+        path: AppUrls.routinesPath,
+        builder: (BuildContext context, GoRouterState state) {
+          return const Center(
+              child: Text(
+            AppUrls.routinesPath,
+            style: TextStyle(color: Colors.amber),
+          ));
+        },
+      ),
+      GoRoute(
+        path: AppUrls.historyPath,
+        builder: (BuildContext context, GoRouterState state) {
+          return const Center(
+              child: Text(
+            AppUrls.historyPath,
+            style: TextStyle(color: Colors.amber),
+          ));
+        },
+      ),
     ],
     redirect: (context, state) {
       final authState = context.read<AuthBloc>().state;

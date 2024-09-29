@@ -1,31 +1,62 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pasti_track/core/constants/app_string.dart';
-import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pasti_track/core/constants/app_urls.dart';
+import 'package:pasti_track/features/home/presentation/home_content.dart';
+import 'package:pasti_track/widgets/custom_appbar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    const HomeContent(),
+    const Center(
+      child: Text(
+        AppUrls.medicinesPath,
+        style: TextStyle(color: Colors.amber),
+      ),
+    ),
+    const Center(
+      child: Text(
+        AppUrls.routinesPath,
+        style: TextStyle(color: Colors.amber),
+      ),
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pantalla de Inicio"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              context.read<AuthBloc>().add(AuthLoggedOut());
-            },
-          ),
-        ],
+      appBar: const CustomAppBar(),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
       ),
-      body: const Center(
-        child: Column(
-          children: [
-            Text(AppString.welcomePastiTrack),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.home), label: AppString.home),
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.bandage_fill),
+              label: AppString.medicines),
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.alarm), label: AppString.routines),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
