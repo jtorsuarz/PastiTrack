@@ -15,6 +15,13 @@ class AppString {
       'Correo de recuperación enviado';
   static const String tryAgain = 'Reintentar';
 
+  // ! Navigation Drawer Menu Items
+  static const String home = 'Inicio';
+  static const String medicines = 'Medicinas';
+  static const String routines = 'Rutinas';
+  static const String history = 'Historial';
+  static const String settings = 'Ajustes';
+
   // ! Error Messages
   static const String error = 'Error';
   static const String errorVerifyStatusAuth =

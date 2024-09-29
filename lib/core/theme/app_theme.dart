@@ -1,18 +1,113 @@
 import 'package:flutter/material.dart';
 
-const seedColor = Color.fromARGB(255, 7, 80, 59);
+const Color _customColor = Color(0xFF49149F);
+
+const List<Color> _colorThemes = [
+  _customColor,
+  Colors.blue,
+  Colors.teal,
+  Colors.green,
+  Colors.yellow,
+  Colors.orange,
+  Colors.pink,
+];
 
 class AppTheme {
-  final bool isDarkmode;
+  final int selectedColor;
 
-  AppTheme({required this.isDarkmode});
+  AppTheme({this.selectedColor = 0})
+      : assert(selectedColor >= 0 && selectedColor <= _colorThemes.length - 1,
+            'Colors must be between 0 and ${_colorThemes.length}');
 
-  ThemeData getTheme() => ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: seedColor,
-        brightness: isDarkmode ? Brightness.dark : Brightness.light,
-        listTileTheme: const ListTileThemeData(
-          iconColor: seedColor,
+  // Definimos los temas claro y oscuro
+  ThemeData theme({bool isDarkMode = false}) {
+    return ThemeData(
+      useMaterial3: true,
+      colorSchemeSeed: _colorThemes[selectedColor],
+      brightness: isDarkMode
+          ? Brightness.dark
+          : Brightness.light, // Soporte para dark mode
+
+      // Configuración específica para modo claro
+      appBarTheme: AppBarTheme(
+        backgroundColor: isDarkMode
+            ? Colors.grey[900]
+            : _colorThemes[selectedColor], // Color oscuro para dark mode
+        titleTextStyle: TextStyle(
+          color: isDarkMode ? Colors.white : Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
         ),
-      );
+        iconTheme:
+            IconThemeData(color: isDarkMode ? Colors.white : Colors.white),
+        elevation: 0, // Sin sombra para un look más limpio
+      ),
+
+      // Configuración para BottomNavigationBar
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        selectedItemColor: _colorThemes[selectedColor],
+        unselectedItemColor: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+        backgroundColor: isDarkMode ? Colors.grey[850] : Colors.white,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+      ),
+
+      // Estilo para FloatingActionButton
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: _colorThemes[selectedColor],
+        foregroundColor: Colors.white,
+      ),
+
+      // Estilo para ElevatedButton
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: _colorThemes[selectedColor],
+          foregroundColor: Colors.white,
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+
+      // Configuración para campos de texto en InputDecoration
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: isDarkMode
+            ? Colors.grey[800]
+            : Colors.grey[200], // Ajuste de fondo para dark mode
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: _colorThemes[selectedColor]),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: _colorThemes[selectedColor]),
+        ),
+        labelStyle: TextStyle(color: _colorThemes[selectedColor]),
+      ),
+
+      // Textos
+      textTheme: TextTheme(
+        headlineLarge: TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          color: _colorThemes[selectedColor],
+        ),
+        headlineSmall: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: isDarkMode ? Colors.white : _colorThemes[selectedColor],
+        ),
+        bodyLarge: TextStyle(
+          fontSize: 16,
+          color: isDarkMode ? Colors.white70 : Colors.black87,
+        ),
+        bodyMedium: TextStyle(
+          fontSize: 14,
+          color: isDarkMode ? Colors.white60 : Colors.black54,
+        ),
+      ),
+    );
+  }
 }

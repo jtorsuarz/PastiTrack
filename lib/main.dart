@@ -26,10 +26,9 @@ class MyApp extends StatelessWidget {
       providers: AppProviders.get(firebase),
       child: MaterialApp.router(
         title: AppString.appTitle,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        theme: AppTheme(selectedColor: 2).theme(isDarkMode: false),
+        darkTheme: AppTheme(selectedColor: 2).theme(isDarkMode: true),
+        themeMode: ThemeMode.system,
         routerConfig: AppRouter.router,
       ),
     );
