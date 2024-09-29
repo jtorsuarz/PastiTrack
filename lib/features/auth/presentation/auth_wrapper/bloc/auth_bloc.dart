@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pasti_track/core/constants/app_string.dart';
+import 'package:pasti_track/core/config.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

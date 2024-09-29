@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pasti_track/core/constants/app_string.dart';
-import 'package:pasti_track/core/constants/app_urls.dart';
+import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/auth/presentation/sign_up/bloc/sign_up_bloc.dart';
 
 class SignUpScreen extends StatelessWidget {

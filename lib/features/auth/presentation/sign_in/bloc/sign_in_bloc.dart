@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:pasti_track/core/constants/app_string.dart';
+import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/errors/failures.dart';
 import 'package:pasti_track/features/auth/domain/usecases/sign_in_usecase.dart';
 

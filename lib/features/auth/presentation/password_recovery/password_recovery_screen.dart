@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pasti_track/core/constants/app_string.dart';
-import 'package:pasti_track/core/constants/app_urls.dart';
+import 'package:pasti_track/core/config.dart';
 import 'bloc/password_recovery_bloc.dart';
 
 class PasswordRecoveryScreen extends StatelessWidget {

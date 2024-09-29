@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pasti_track/core/constants/app_string.dart';
+import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/errors/failures.dart';
 import 'package:pasti_track/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:pasti_track/features/auth/domain/repositories/auth_repository.dart';

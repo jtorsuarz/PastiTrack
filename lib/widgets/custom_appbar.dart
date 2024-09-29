@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
-import 'package:pasti_track/core/constants/app_string.dart';
+import 'package:pasti_track/core/config.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -28,10 +29,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         */
         IconButton(
           icon: const Icon(
-            CupertinoIcons.person_solid,
+            CupertinoIcons.settings,
             applyTextScaling: true,
           ),
-          onPressed: () {},
+          onPressed: () => context.push(AppUrls.settingsPath),
         ),
       ],
     );
