@@ -3,14 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
-import 'package:pasti_track/features/auth/presentation/auth_wrapper/auth_wrapper.dart';
-import 'package:pasti_track/features/auth/presentation/password_recovery/password_recovery_screen.dart';
-import 'package:pasti_track/features/auth/presentation/sign_in/sign_in_screen.dart';
-import 'package:pasti_track/features/auth/presentation/sign_up/sign_up_screen.dart';
-import 'package:pasti_track/features/auth/presentation/sign_up/sign_up_success_screen.dart';
+import 'package:pasti_track/features/auth/presentation/pages/auth_wrapper.dart';
+import 'package:pasti_track/features/auth/presentation/pages/password_recovery_screen.dart';
+import 'package:pasti_track/features/auth/presentation/pages/sign_in_screen.dart';
+import 'package:pasti_track/features/auth/presentation/pages/sign_up_screen.dart';
+import 'package:pasti_track/features/auth/presentation/pages/sign_up_success_screen.dart';
 import 'package:pasti_track/features/home/presentation/home_screen.dart';
-import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
-import 'package:pasti_track/features/settings/presentation/settings_screen.dart';
+import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:pasti_track/features/profile/presentation/pages/profile_screen.dart';
+import 'package:pasti_track/features/settings/presentation/pages/settings_screen.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -51,13 +52,7 @@ class AppRouter {
       ),
       GoRoute(
         path: AppUrls.editProfilePath,
-        builder: (BuildContext context, GoRouterState state) {
-          return const Center(
-              child: Text(
-            AppUrls.editProfilePath,
-            style: TextStyle(color: Colors.amber),
-          ));
-        },
+        builder: (BuildContext context, GoRouterState state) => ProfileScreen(),
       ),
       GoRoute(
         path: AppUrls.homePath,
