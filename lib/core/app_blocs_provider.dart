@@ -11,7 +11,7 @@ import 'package:pasti_track/features/auth/presentation/password_recovery/bloc/pa
 import 'package:pasti_track/features/auth/presentation/sign_in/bloc/sign_in_bloc.dart';
 import 'package:pasti_track/features/auth/presentation/sign_up/bloc/sign_up_bloc.dart';
 
-class AppProviders {
+class AppBlocProviders {
   static List<SingleChildWidget> get(firebase) => [
         BlocProvider(
           create: (context) => AuthBloc(firebase)..add(AuthCheckRequested()),

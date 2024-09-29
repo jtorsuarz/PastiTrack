@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     final firebase = FirebaseAuth.instance;
 
     return MultiBlocProvider(
-      providers: AppProviders.get(firebase),
+      providers: AppBlocProviders.get(firebase),
       child: MaterialApp.router(
         title: AppString.appTitle,
         theme: AppTheme(selectedColor: 2).theme(isDarkMode: false),
