@@ -10,4 +10,7 @@ class AppUrls {
   static const String settingsPath = '/settings';
   static const String editProfilePath = '/edit-profile';
   static const String historyPath = '/history';
+
+  ///  fn remove first '/' from the path
+  static String removeSlash(String path) => path.replaceFirst('/', '');
 }

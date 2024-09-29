@@ -10,6 +10,7 @@ class AppString {
   static const String signInCompleteSuccess =
       '¡Registro completado exitosamente!';
   static const String goToSignIn = 'Ir a Iniciar Sesión';
+  static const String enjoyTheApp = 'Disfrutar de la app';
   static const String recoveryPassword = 'Recuperar Contraseña';
   static const String recoveryPasswordEmailSend =
       'Correo de recuperación enviado';
@@ -23,6 +24,9 @@ class AppString {
   static const String changeTheme = 'Cambiar Tema';
   static const String darkMode = 'Modo oscuro';
   static const String logout = 'Cerrar Sesión';
+  static const String cancel = 'Cancelar';
+  static const String areYouSureWantToLogOut =
+      '¿Estás seguro de que quieres cerrar sesión?';
   static const String appVersion = 'Versión de la App';
 
   // ! Error Messages
@@ -32,6 +36,7 @@ class AppString {
   static const String errorSignIn = 'Error al iniciar sesión';
   static const String errorSignUp = 'Error al registrar';
   static const String errorPasswordReset = 'Error al restablecer la contraseña';
+  static const String errorChangePassword = 'Error al cambiar la contraseña';
   static const String errorSignOut = 'Error al cerrar sesión';
   static const String errorPasswordMismatch = 'Las contraseñas no coinciden';
   static const String errorEmailMismatch =

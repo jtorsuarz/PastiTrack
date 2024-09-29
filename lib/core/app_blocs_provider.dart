@@ -20,20 +20,5 @@ class AppBlocProviders {
             PasswordRecoveryUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
           )..add(AuthCheckRequested()),
         ),
-        /*
-        BlocProvider(
-          create: (context) => SignInBloc(SignInUseCase(
-            AuthRepositoryImpl(AuthRemoteDataSource()),
-          )),
-        ),
-        BlocProvider<SignUpBloc>(
-          create: (context) => SignUpBloc(
-              SignUpUserUseCase(AuthRepositoryImpl(AuthRemoteDataSource()))),
-        ),
-        BlocProvider<PasswordRecoveryBloc>(
-          create: (context) => PasswordRecoveryBloc(PasswordRecoveryUseCase(
-              AuthRepositoryImpl(AuthRemoteDataSource()))),
-        ),
-        */
       ];
 }

@@ -12,7 +12,6 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        print("Hello AuthWrapper" + state.toString());
         if (state is AuthError) {
           return ErrorScreen(error: state.message);
         }
