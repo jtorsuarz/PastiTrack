@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
 class SignUpScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -42,7 +43,7 @@ class SignUpScreen extends StatelessWidget {
                       const InputDecoration(labelText: AppString.password),
                   obscureText: true,
                 ),
-                const SizedBox(height: 20),
+                CustomSizedBoxes.get20(),
                 ElevatedButton(
                   onPressed: () {
                     final email = emailController.text;

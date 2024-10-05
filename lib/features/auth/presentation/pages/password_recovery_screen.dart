@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
 class PasswordRecoveryScreen extends StatelessWidget {
   const PasswordRecoveryScreen({super.key});
@@ -40,7 +41,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                 controller: emailController,
                 decoration: const InputDecoration(labelText: AppString.email),
               ),
-              const SizedBox(height: 20),
+              CustomSizedBoxes.get20(),
               ElevatedButton(
                 onPressed: () {
                   final email = emailController.text.trim();
