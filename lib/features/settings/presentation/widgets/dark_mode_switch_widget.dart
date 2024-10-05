@@ -4,7 +4,7 @@ import 'package:pasti_track/core/theme/bloc/theme_bloc.dart';
 import 'package:pasti_track/core/config.dart';
 
 class DarkModeSwitchWidget extends StatelessWidget {
-  /// Option to activate/deactivate the dark mode
+  /// Switch to change dark mode
   const DarkModeSwitchWidget({super.key});
 
   @override

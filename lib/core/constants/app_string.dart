@@ -32,6 +32,7 @@ class AppString {
   static const String newPassword = 'Nueva Contraseña';
   static const String confirmPassword = 'Repita la contraseña';
   static const String change = 'Cambiar';
+  static const String unauthenticated = 'No autenticado';
 
   // * Success messages
   static const String success = 'Éxito';
@@ -70,8 +71,16 @@ class AppString {
   static const String errorAuthentication = 'Error de autenticación';
 
   // ? Functions return a string
+  static String userFromTime(v) => 'Usuario desde: $v';
   static String redirectAutomaticSeconds(s) =>
       'Serás redirigido automáticamente en $s segundos.';
   static String errorWithFormat(v) => 'Error :$v';
-  static String errorOcurred(v) => "Ocurrió un error: $error";
+  static String errorOcurred(v) => 'Ocurrió un error: $error';
+  static String errorWhenLoadingProfile(v) => 'Error al cargar el perfil: $v';
+  static String errorWhenUpdateProfile(v) =>
+      'Error al actualizar el perfil: $v';
+  static String errorWhenChangePassword(v) =>
+      'Error al cambiar la contraseña: $v';
+  static String errorWhenChangePhotoProfile(v) =>
+      'Error al actualizar la imagen: $v';
 }

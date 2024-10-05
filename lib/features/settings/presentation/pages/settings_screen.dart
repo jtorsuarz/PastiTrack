@@ -24,7 +24,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _loadAppVersion();
   }
 
-  // Método para cargar la versión de la aplicación
   Future<void> _loadAppVersion() async {
     final packageInfo = await PackageInfo.fromPlatform();
     setState(() {
@@ -37,7 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUnauthenticated) {
-          context.go(AppUrls.signInPath); // Redirigir al login
+          context.go(AppUrls.signInPath);
         }
       },
       child: Scaffold(
@@ -47,27 +46,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
         body: ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
+            /// Show account information
             SettingsTileWidget(
               icon: Icons.person,
               title: AppString.editProfile,
               onTap: () => context.push(AppUrls.editProfilePath),
             ),
-
             const Divider(),
-            // Widget para cambiar el tema
+
             const ThemeDropdownWidget(),
             const Divider(),
-            // Switch para cambiar el tema
+
             const DarkModeSwitchWidget(),
             const Divider(),
-            // Show application version
+
+            /// Show application version
             SettingsTileWidget(
               icon: Icons.info_outline,
               title: AppString.appVersion,
               subtitle: _appVersion,
             ),
             const Divider(),
-            // Option to log out
+
+            /// Option to log out
             SettingsTileWidget(
               icon: Icons.logout,
               title: AppString.logout,
@@ -90,7 +91,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     context.go(AppUrls.signInPath);
   }
 
-  // Logout confirmation dialog
   Future<bool> _showSignOutConfirmation() async =>
       await showDialog<bool>(
         context: context,

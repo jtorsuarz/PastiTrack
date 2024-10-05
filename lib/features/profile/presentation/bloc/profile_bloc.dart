@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/profile/domain/usecases/change_password_use_case.dart';
 import 'package:pasti_track/features/profile/domain/usecases/load_profile_use_case.dart';
 import 'package:pasti_track/features/profile/domain/usecases/update_profile_image_use_case.dart';
@@ -28,7 +29,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final profile = await loadProfile();
       emit(ProfileLoaded(profile: profile!));
     } catch (e) {
-      emit(ProfileError(message: 'Error al cargar el perfil: ${e.toString()}'));
+      emit(
+        ProfileError(message: AppString.errorWhenLoadingProfile(e.toString())),
+      );
     }
   }
 
@@ -40,8 +43,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileUpdated());
       add(LoadProfileEvent());
     } catch (e) {
-      emit(ProfileError(
-          message: 'Error al actualizar el perfil: ${e.toString()}'));
+      emit(
+        ProfileError(message: AppString.errorWhenUpdateProfile(e.toString())),
+      );
     }
   }
 
@@ -54,8 +58,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfilePasswordChanged(profile: profile!));
       add(LoadProfileEvent());
     } catch (e) {
-      emit(ProfileError(
-          message: 'Error al cambiar la contraseña: ${e.toString()}'));
+      emit(
+        ProfileError(message: AppString.errorWhenChangePassword(e.toString())),
+      );
     }
   }
 
@@ -67,8 +72,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileUpdated());
       add(LoadProfileEvent());
     } catch (e) {
-      emit(ProfileError(
-          message: 'Error al actualizar la imagen: ${e.toString()}'));
+      emit(
+        ProfileError(
+            message: AppString.errorWhenChangePhotoProfile(e.toString())),
+      );
     }
   }
 }

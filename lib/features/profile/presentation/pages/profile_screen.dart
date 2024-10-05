@@ -35,17 +35,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Perfil')),
+      appBar: AppBar(title: const Text(AppString.profile)),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is ProfileError) {
             _showSnackBar(state.message);
           }
           if (state is ProfilePasswordChanged) {
-            _showSnackBar('Contraseña modificada correctamente.');
+            _showSnackBar(AppString.successPasswordChanged);
           }
           if (state is ProfileUpdated) {
-            _showSnackBar('Perfil actualizado correctamente.');
+            _showSnackBar(AppString.successProfileUpdated);
           }
         },
         builder: (context, state) {
@@ -58,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           } else if (state is ProfileError) {
             return Center(child: Text(state.message));
           }
-          return const Center(child: Text('Error desconocido.'));
+          return const Center(child: Text(AppString.errorUnknown));
         },
       ),
     );
@@ -75,18 +75,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           CustomSizedBoxes.get10(),
           Text(profile.email, style: const TextStyle(fontSize: 16)),
           CustomSizedBoxes.get10(),
-          Text('Usuario desde ${profile.createdAt}'),
+          Text(AppString.userFromTime(profile.createdAt)),
           CustomSizedBoxes.get15(),
-          _buildTextField(nameController, 'Nombre'),
+          _buildTextField(nameController, AppString.name),
           CustomSizedBoxes.get15(),
           ElevatedButton(
             onPressed: () => _updateProfile(context),
-            child: const Text('Actualizar Perfil'),
+            child: const Text(AppString.updateProfile),
           ),
           CustomSizedBoxes.get15(),
           TextButton(
             onPressed: () => _showChangePasswordDialog(context),
-            child: const Text('Cambiar Contraseña'),
+            child: const Text(AppString.changePassword),
           ),
         ],
       ),
@@ -134,12 +134,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Cambiar Contraseña'),
-          content: _buildTextField(newPasswordController, 'Nueva Contraseña'),
+          title: const Text(AppString.changePassword),
+          content:
+              _buildTextField(newPasswordController, AppString.newPassword),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar'),
+              child: const Text(AppString.cancel),
             ),
             TextButton(
               onPressed: () {
@@ -148,7 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ));
                 Navigator.of(context).pop();
               },
-              child: const Text('Cambiar'),
+              child: const Text(AppString.change),
             ),
           ],
         );

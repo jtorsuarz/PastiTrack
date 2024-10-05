@@ -18,14 +18,13 @@ class SignInScreen extends StatelessWidget {
       appBar: AppBar(title: const Text(AppString.signIn)),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          print("Hello SigINScrresult" + state.toString());
           if (state is AuthLoading || state is AuthInitial) {
             const Center(child: CircularProgressIndicator());
           } else if (state is AuthAuthenticated) {
             context.go(AppUrls.homePath);
           } else if (state is AuthUnauthenticated) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("unauthenticated")),
+              const SnackBar(content: Text(AppString.unauthenticated)),
             );
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
