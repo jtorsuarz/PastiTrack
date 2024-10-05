@@ -34,7 +34,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             context.go(AppUrls.historyPath);
             break;
           case 2:
-            context.go(AppUrls.settingsPath);
+            context.go(AppUrls.routinesPath);
             break;
         }
       },

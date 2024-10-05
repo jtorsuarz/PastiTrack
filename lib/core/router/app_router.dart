@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pasti_track/core/constants/app_string.dart';
-import 'package:pasti_track/core/constants/app_urls.dart';
+import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
-import 'package:pasti_track/features/auth/presentation/auth_wrapper/auth_wrapper.dart';
-import 'package:pasti_track/features/auth/presentation/password_recovery/password_recovery_screen.dart';
-import 'package:pasti_track/features/auth/presentation/sign_in/sign_in_screen.dart';
-import 'package:pasti_track/features/auth/presentation/sign_up/sign_up_screen.dart';
-import 'package:pasti_track/features/auth/presentation/sign_up/sign_up_success_screen.dart';
+import 'package:pasti_track/features/auth/presentation/pages/auth_wrapper.dart';
+import 'package:pasti_track/features/auth/presentation/pages/password_recovery_screen.dart';
+import 'package:pasti_track/features/auth/presentation/pages/sign_in_screen.dart';
+import 'package:pasti_track/features/auth/presentation/pages/sign_up_screen.dart';
+import 'package:pasti_track/features/auth/presentation/pages/sign_up_success_screen.dart';
 import 'package:pasti_track/features/home/presentation/home_screen.dart';
-import 'package:pasti_track/features/auth/presentation/auth_wrapper/bloc/auth_bloc.dart';
+import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:pasti_track/features/profile/presentation/pages/profile_screen.dart';
+import 'package:pasti_track/features/settings/presentation/pages/settings_screen.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -18,59 +19,40 @@ class AppRouter {
     routes: <RouteBase>[
       GoRoute(
         path: AppUrls.initial,
-        builder: (BuildContext context, GoRouterState state) {
-          return const AuthWrapper();
-        },
+        builder: (BuildContext context, GoRouterState state) =>
+            const AuthWrapper(),
       ),
       GoRoute(
         path: AppUrls.homePath,
-        builder: (BuildContext context, GoRouterState state) {
-          return const HomeScreen();
-        },
+        builder: (BuildContext context, GoRouterState state) =>
+            const HomeScreen(),
       ),
       GoRoute(
         path: AppUrls.signInPath,
-        builder: (BuildContext context, GoRouterState state) {
-          return SignInScreen();
-        },
+        builder: (BuildContext context, GoRouterState state) => SignInScreen(),
       ),
       GoRoute(
         path: AppUrls.signUpPath,
-        builder: (BuildContext context, GoRouterState state) {
-          return SignUpScreen();
-        },
+        builder: (BuildContext context, GoRouterState state) => SignUpScreen(),
       ),
       GoRoute(
         path: AppUrls.signUpSuccessPath,
-        builder: (BuildContext context, GoRouterState state) {
-          return const SignUpSuccessScreen();
-        },
+        builder: (BuildContext context, GoRouterState state) =>
+            const SignUpSuccessScreen(),
       ),
       GoRoute(
         path: AppUrls.forgotPasswordPath,
-        builder: (BuildContext context, GoRouterState state) {
-          return const PasswordRecoveryScreen();
-        },
+        builder: (BuildContext context, GoRouterState state) =>
+            const PasswordRecoveryScreen(),
       ),
       GoRoute(
         path: AppUrls.settingsPath,
-        builder: (BuildContext context, GoRouterState state) {
-          return const Center(
-              child: Text(
-            AppUrls.settingsPath,
-            style: TextStyle(color: Colors.amber),
-          ));
-        },
+        builder: (BuildContext context, GoRouterState state) =>
+            const SettingsScreen(),
       ),
       GoRoute(
         path: AppUrls.editProfilePath,
-        builder: (BuildContext context, GoRouterState state) {
-          return const Center(
-              child: Text(
-            AppUrls.editProfilePath,
-            style: TextStyle(color: Colors.amber),
-          ));
-        },
+        builder: (BuildContext context, GoRouterState state) => const ProfileScreen(),
       ),
       GoRoute(
         path: AppUrls.homePath,
@@ -114,18 +96,37 @@ class AppRouter {
       ),
     ],
     redirect: (context, state) {
+      // Obtiene el estado del AuthBloc
       final authState = context.read<AuthBloc>().state;
+      AppLogger.p("GoRouter", authState.toString());
+      AppLogger.p("GoRouter", state.matchedLocation);
+
+      // Estados en los que está cargando o sin autenticar (incluyendo inicio)
       final isLoading = authState is AuthLoading ||
           authState is AuthInitial ||
           authState is AuthUnauthenticated;
-      AppLogger.p("GoRouter", authState.toString());
-      if (isLoading) return null;
 
+      // Verifica si está cargando, inicializando o no autenticado
+      if (isLoading) {
+        // Si el estado está cargando o no autenticado, evita redirecciones
+        return null;
+      }
+
+      // Verifica si el usuario está autenticado
       final isLoggedIn = authState is AuthAuthenticated;
-      if (!isLoggedIn) return AppUrls.signInPath;
 
+      // Si no está autenticado, lo redirige al login
+      if (!isLoggedIn) {
+        return AppUrls.signInPath;
+      }
+
+      // Si está autenticado pero está en la pantalla de inicio de sesión, lo redirige al home
       final isLoggingIn = state.matchedLocation == AppUrls.signInPath;
-      if (isLoggedIn && isLoggingIn) return AppUrls.homePath;
+      if (isLoggedIn && isLoggingIn) {
+        return AppUrls.homePath;
+      }
+
+      // Mantiene la navegación normal si todo está bien
       return null;
     },
     errorBuilder: (context, state) {

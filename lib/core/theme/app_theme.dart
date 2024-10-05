@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const Color _customColor = Color(0xFF49149F);
 
-const List<Color> _colorThemes = [
+const List<Color> colorThemes = [
   _customColor,
   Colors.blue,
   Colors.teal,
@@ -16,14 +16,14 @@ class AppTheme {
   final int selectedColor;
 
   AppTheme({this.selectedColor = 0})
-      : assert(selectedColor >= 0 && selectedColor <= _colorThemes.length - 1,
-            'Colors must be between 0 and ${_colorThemes.length}');
+      : assert(selectedColor >= 0 && selectedColor <= colorThemes.length - 1,
+            'Colors must be between 0 and ${colorThemes.length}');
 
   // Definimos los temas claro y oscuro
   ThemeData theme({bool isDarkMode = false}) {
     return ThemeData(
       useMaterial3: true,
-      colorSchemeSeed: _colorThemes[selectedColor],
+      colorSchemeSeed: colorThemes[selectedColor],
       brightness: isDarkMode
           ? Brightness.dark
           : Brightness.light, // Soporte para dark mode
@@ -32,7 +32,7 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         backgroundColor: isDarkMode
             ? Colors.grey[900]
-            : _colorThemes[selectedColor], // Color oscuro para dark mode
+            : colorThemes[selectedColor], // Color oscuro para dark mode
         titleTextStyle: TextStyle(
           color: isDarkMode ? Colors.white : Colors.white,
           fontSize: 20,
@@ -45,7 +45,7 @@ class AppTheme {
 
       // Configuración para BottomNavigationBar
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        selectedItemColor: _colorThemes[selectedColor],
+        selectedItemColor: colorThemes[selectedColor],
         unselectedItemColor: isDarkMode ? Colors.grey[400] : Colors.grey[600],
         backgroundColor: isDarkMode ? Colors.grey[850] : Colors.white,
         showUnselectedLabels: true,
@@ -54,14 +54,14 @@ class AppTheme {
 
       // Estilo para FloatingActionButton
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: _colorThemes[selectedColor],
+        backgroundColor: colorThemes[selectedColor],
         foregroundColor: Colors.white,
       ),
 
       // Estilo para ElevatedButton
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: _colorThemes[selectedColor],
+          backgroundColor: colorThemes[selectedColor],
           foregroundColor: Colors.white,
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           shape: RoundedRectangleBorder(
@@ -78,13 +78,13 @@ class AppTheme {
             : Colors.grey[200], // Ajuste de fondo para dark mode
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: _colorThemes[selectedColor]),
+          borderSide: BorderSide(color: colorThemes[selectedColor]),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: _colorThemes[selectedColor]),
+          borderSide: BorderSide(color: colorThemes[selectedColor]),
         ),
-        labelStyle: TextStyle(color: _colorThemes[selectedColor]),
+        labelStyle: TextStyle(color: colorThemes[selectedColor]),
       ),
 
       // Textos
@@ -92,12 +92,12 @@ class AppTheme {
         headlineLarge: TextStyle(
           fontSize: 32,
           fontWeight: FontWeight.bold,
-          color: _colorThemes[selectedColor],
+          color: colorThemes[selectedColor],
         ),
         headlineSmall: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: isDarkMode ? Colors.white : _colorThemes[selectedColor],
+          color: isDarkMode ? Colors.white : colorThemes[selectedColor],
         ),
         bodyLarge: TextStyle(
           fontSize: 16,
@@ -110,4 +110,6 @@ class AppTheme {
       ),
     );
   }
+
+  static int lengthColorList() => colorThemes.length;
 }

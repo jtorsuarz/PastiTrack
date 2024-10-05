@@ -1,4 +1,4 @@
-import 'package:pasti_track/core/constants/app_string.dart';
+import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/errors/exceptions.dart';
 import 'package:pasti_track/core/errors/failures.dart';
 import 'package:pasti_track/features/auth/domain/repositories/auth_repository.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pasti_track/core/constants/app_string.dart';
+import 'package:pasti_track/core/config.dart';
 
 class ErrorScreen extends StatelessWidget {
   final String error;

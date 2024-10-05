@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pasti_track/core/constants/app_string.dart';
-import 'package:pasti_track/core/constants/app_urls.dart';
+import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/home/presentation/home_content.dart';
 import 'package:pasti_track/widgets/custom_appbar.dart';
 
