@@ -83,4 +83,5 @@ class AppString {
       'Error al cambiar la contraseña: $v';
   static String errorWhenChangePhotoProfile(v) =>
       'Error al actualizar la imagen: $v';
+  static String optionTheme(v) => 'Tema ${v}';
 }

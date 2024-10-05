@@ -25,7 +25,7 @@ class ThemeDropdownWidget extends StatelessWidget {
               AppTheme.lengthColorList(),
               (index) => DropdownMenuItem(
                 value: index,
-                child: Text('Tema ${index + 1}'),
+                child: Text(AppString.optionTheme(index + 1)),
               ),
             ),
           ),
