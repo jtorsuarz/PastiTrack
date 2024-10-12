@@ -33,6 +33,16 @@ class AppString {
   static const String confirmPassword = 'Repita la contraseña';
   static const String change = 'Cambiar';
   static const String unauthenticated = 'No autenticado';
+  static const String addMedication = 'Añadir medicación';
+  static const String nameMedication = 'Nombre del medicamento';
+  static const String dosage = 'Dosis';
+  static const String description = 'Descripción';
+  static const String descriptionOptional = 'Descripción (Opcional)';
+  static const String save = 'Guardar';
+  static const String medicationManagement = 'Gestión de Medicamentos';
+  static const String medicaments = 'Medicamentos';
+  static const String medicament = 'Medicamento';
+  static const String noMedicines = 'No hay medicamentos registrados';
 
   // * Success messages
   static const String success = 'Éxito';
@@ -43,6 +53,8 @@ class AppString {
       '¡Registro completado exitosamente!';
   static const String successProfileUpdated =
       'Perfil actualizado exitosamente.';
+  static const String entryName = 'Ingrese el nombre';
+  static const String entryDosage = 'Ingrese la dosis';
 
   // ! Error Messages
   static const String error = 'Error';
@@ -83,5 +95,13 @@ class AppString {
       'Error al cambiar la contraseña: $v';
   static String errorWhenChangePhotoProfile(v) =>
       'Error al actualizar la imagen: $v';
-  static String optionTheme(v) => 'Tema ${v}';
+  static String optionTheme(v) => 'Tema $v';
+  static String dosageWithQuantityAndUnitMesuared(v) =>
+      'Dosis: $v${_unitMesuareByCountry()}';
+  static String _unitMesuareByCountry() => 'LOCALE' == "ES" ? 'mg' : 'mg';
+  static String medicationOrder(v) => 'Medicamento $v';
+  static String errorWhenCreate(v) => 'Error al crear: $v';
+  static String errorWhenDelete(v) => 'Error al eliminar: $v';
+  static String errorWhenUpdate(v) => 'Error al actualizar: $v';
+  static String errorWhenLoad(v) => 'Error al cargar: $v';
 }

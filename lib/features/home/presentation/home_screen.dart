@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/home/presentation/home_content.dart';
+import 'package:pasti_track/features/medicines/presentation/pages/medication_screen.dart';
 import 'package:pasti_track/widgets/custom_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,12 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _pages = [
     const HomeContent(),
-    const Center(
-      child: Text(
-        AppUrls.medicinesPath,
-        style: TextStyle(color: Colors.amber),
-      ),
-    ),
+    const MedicationScreen(),
     const Center(
       child: Text(
         AppUrls.routinesPath,

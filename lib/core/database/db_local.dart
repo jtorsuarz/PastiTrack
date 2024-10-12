@@ -46,7 +46,7 @@ class DBLocal {
       CREATE TABLE medicines (
         medicine_id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
-        dosage TEXT NOT NULL,
+        dose TEXT NOT NULL,
         description TEXT,
         user_id TEXT,
         FOREIGN KEY (user_id) REFERENCES Users(user_id)
@@ -103,9 +103,9 @@ class DBLocal {
     return null;
   }
 
-  Future<int> insertMedicamento(Map<String, dynamic> medicamento) async {
+  Future<int> insertMedicament(Map<String, dynamic> medicament) async {
     Database db = await database;
-    return await db.insert('medicines', medicamento);
+    return await db.insert('medicines', medicament);
   }
 
   Future<List<Map<String, dynamic>>> getmedicines() async {
@@ -113,12 +113,12 @@ class DBLocal {
     return await db.query('medicines');
   }
 
-  Future<Map<String, dynamic>?> getMedicamentoById(String medicamentoId) async {
+  Future<Map<String, dynamic>?> getMedicamentById(String medicamentId) async {
     Database db = await database;
     List<Map<String, dynamic>> result = await db.query(
       'medicines',
       where: 'medicine_id = ?',
-      whereArgs: [medicamentoId],
+      whereArgs: [medicamentId],
     );
     if (result.isNotEmpty) {
       return result.first;
@@ -126,22 +126,23 @@ class DBLocal {
     return null;
   }
 
-  Future<int> updateMedicamento(Map<String, dynamic> medicamento) async {
+  Future<int> updateMedicament(
+      Map<String, dynamic> medicament, String id) async {
     Database db = await database;
     return await db.update(
       'medicines',
-      medicamento,
+      medicament,
       where: 'medicine_id = ?',
-      whereArgs: [medicamento['medicine_id']],
+      whereArgs: [id],
     );
   }
 
-  Future<int> deleteMedicamento(String medicamentoId) async {
+  Future<int> deleteMedicament(String medicamentId) async {
     Database db = await database;
     return await db.delete(
       'medicines',
       where: 'medicine_id = ?',
-      whereArgs: [medicamentoId],
+      whereArgs: [medicamentId],
     );
   }
 
