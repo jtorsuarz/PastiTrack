@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
 import 'package:pasti_track/features/medicines/presentation/bloc/medicament_bloc.dart';
+import 'package:pasti_track/widgets/custom_paddings.dart';
 import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
 class AddEditMedicamentScreen extends StatefulWidget {
-  const AddEditMedicamentScreen({super.key});
+  final Medicament? medicament;
+  const AddEditMedicamentScreen({super.key, this.medicament});
 
   @override
   State<AddEditMedicamentScreen> createState() =>
@@ -19,6 +22,7 @@ class _AddEditMedicamentScreenState extends State<AddEditMedicamentScreen> {
   final nameController = TextEditingController();
   final dosageController = TextEditingController();
   final descriptionController = TextEditingController();
+  late Medicament? _medicament;
 
   @override
   void dispose() {
@@ -29,16 +33,33 @@ class _AddEditMedicamentScreenState extends State<AddEditMedicamentScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _medicament = widget.medicament;
+
+    AppLogger.p("AddEditMedication", "medicament: ${_medicament?.name}");
+    nameController.text = _medicament?.name ?? '';
+    dosageController.text = _medicament?.dose ?? '';
+    descriptionController.text = _medicament?.description ?? '';
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final titleScreen = (_medicament == null)
+        ? AppString.addMedication
+        : AppString.editMedication;
+    final buttonText =
+        (_medicament == null) ? AppString.save : AppString.update;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.addMedication),
+        title: Text(titleScreen),
         centerTitle: true,
       ),
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: CustomPaddings.getAll15(),
           child: Column(
             children: [
               TextFormField(
@@ -59,7 +80,8 @@ class _AddEditMedicamentScreenState extends State<AddEditMedicamentScreen> {
               TextFormField(
                 controller: descriptionController,
                 decoration: const InputDecoration(
-                    labelText: AppString.descriptionOptional),
+                  labelText: AppString.descriptionOptional,
+                ),
               ),
               CustomSizedBoxes.get15(),
               ElevatedButton(
@@ -67,19 +89,50 @@ class _AddEditMedicamentScreenState extends State<AddEditMedicamentScreen> {
                   if (_formKey.currentState != null &&
                       _formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    final medicamento = Medicament(
-                      medicineId: DateTime.now().toString(),
-                      name: nameController.text,
-                      dose: dosageController.text,
-                      description: descriptionController.text,
-                    );
-                    context
-                        .read<MedicamentBloc>()
-                        .add(CreateMedicamentEvent(medicamento));
-                    Navigator.pop(context);
+
+                    try {
+                      String message = '';
+                      if (_medicament != null) {
+                        final medicamentoActualizado = _medicament!.copyWith(
+                          medicineId: _medicament!.medicineId,
+                          name: nameController.text,
+                          dose: dosageController.text,
+                          dateUpdated: DateTime.now().toString(),
+                          description: descriptionController.text,
+                        );
+                        context
+                            .read<MedicamentBloc>()
+                            .add(UpdateMedicament(medicamentoActualizado));
+
+                        message = AppString.successUpdated;
+                      } else {
+                        final medicamento = Medicament(
+                          medicineId: DateTime.now().toString(),
+                          name: nameController.text,
+                          dose: dosageController.text,
+                          dateUpdated: DateTime.now().toString(),
+                          description: descriptionController.text,
+                        );
+                        context
+                            .read<MedicamentBloc>()
+                            .add(CreateMedicamentEvent(medicamento));
+                        message = AppString.successAdded;
+                      }
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(message)));
+                      Navigator.pop(context);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            AppString.errorWhenUpdate(AppString.medicament),
+                          ),
+                        ),
+                      );
+                    }
                   }
                 },
-                child: const Text(AppString.save),
+                child: Text(buttonText),
               ),
             ],
           ),

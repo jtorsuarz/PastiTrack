@@ -43,6 +43,15 @@ class AppString {
   static const String medicaments = 'Medicamentos';
   static const String medicament = 'Medicamento';
   static const String noMedicines = 'No hay medicamentos registrados';
+  static const String deleteMedication = 'Borrar medicamento';
+  static const String confirmElimination = 'Confirmar Eliminación';
+  static const String editMedication = 'Editar Medicamento';
+  static const String deleteConfirmation =
+      '¿Estás seguro de que quieres borrar este medicamento?';
+  static const String delete = 'Eliminar';
+  static const String update = 'Actualizar';
+  static const String successUpdated = 'Actualizado correctamente.';
+  static const String successAdded = 'Añadido correctamente.';
 
   // * Success messages
   static const String success = 'Éxito';
@@ -81,6 +90,8 @@ class AppString {
       'Error al comunicarse con el servidor.';
   static const String errorUserNotFound = 'Usuario no encontrado.';
   static const String errorAuthentication = 'Error de autenticación';
+  static const String canNotBeActionCheckYourConnectivityTryAgain =
+      'No se puede realizar esta acción, compruebe su conectividad e inténtelo de nuevo.';
 
   // ? Functions return a string
   static String userFromTime(v) => 'Usuario desde: $v';
@@ -98,7 +109,7 @@ class AppString {
   static String optionTheme(v) => 'Tema $v';
   static String dosageWithQuantityAndUnitMesuared(v) =>
       'Dosis: $v${_unitMesuareByCountry()}';
-  static String _unitMesuareByCountry() => 'LOCALE' == "ES" ? 'mg' : 'mg';
+  static String _unitMesuareByCountry() => 'LOCALE' == 'ES' ? 'mg' : 'mg';
   static String medicationOrder(v) => 'Medicamento $v';
   static String errorWhenCreate(v) => 'Error al crear: $v';
   static String errorWhenDelete(v) => 'Error al eliminar: $v';

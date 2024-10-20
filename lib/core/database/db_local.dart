@@ -48,6 +48,7 @@ class DBLocal {
         name TEXT NOT NULL,
         dose TEXT NOT NULL,
         description TEXT,
+        date_updated TEXT,
         user_id TEXT,
         FOREIGN KEY (user_id) REFERENCES Users(user_id)
       )
@@ -127,7 +128,7 @@ class DBLocal {
   }
 
   Future<int> updateMedicament(
-      Map<String, dynamic> medicament, String id) async {
+      String id, Map<String, dynamic> medicament) async {
     Database db = await database;
     return await db.update(
       'medicines',

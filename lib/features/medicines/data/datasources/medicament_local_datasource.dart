@@ -8,23 +8,13 @@ class MedicamentLocalDataSource {
 
   Future<List<Medicament>> getMedications() async {
     final result = await database.getmedicines();
-    return result
-        .map((json) => Medicament(
-              medicineId: json['medicine_id'] as String,
-              name: json['name'] as String,
-              dose: json['dose'] as String,
-              description: json['description'] as String,
-            ))
-        .toList();
+    return result.map((json) {
+      return Medicament.fromJson(json);
+    }).toList();
   }
 
   Future<int> addMedicament(Medicament medicament) async {
-    return await database.insertMedicament({
-      'medicine_id': medicament.medicineId,
-      'name': medicament.name,
-      'dose': medicament.dose,
-      'description': medicament.description,
-    });
+    return await database.insertMedicament(medicament.toJson());
   }
 
   Future<int> deleteMedicament(String id) async {
@@ -32,10 +22,7 @@ class MedicamentLocalDataSource {
   }
 
   Future<int> updateMedicament(Medicament medicament) async {
-    return await database.updateMedicament({
-      'name': medicament.name,
-      'dose': medicament.dose,
-      'description': medicament.description,
-    }, medicament.medicineId);
+    return await database.updateMedicament(
+        medicament.medicineId, medicament.toJsonWithoutId());
   }
 }

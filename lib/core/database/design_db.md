@@ -11,7 +11,7 @@ Users (Colección)
     │       ├── name: String
     │       ├── dosage: String
     │       ├── description: String
-    │       └── date_created: Timestamp
+    │       └── date_updated: Timestamp
     │
     ├── Routines (Subcolección)
     │   └── {routine_id} (Documento)

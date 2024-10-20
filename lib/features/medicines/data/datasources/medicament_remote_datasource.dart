@@ -6,12 +6,18 @@ class MedicamentRemoteDataSource {
 
   MedicamentRemoteDataSource();
 
+  Future<List<Medicament>> getMedications() async {
+    final querySnapshot = await dbremote.getmedicines();
+    return querySnapshot.docs.map((doc) {
+      var m = doc.data() as Map<String, dynamic>;
+      m['medicine_id'] = doc.id;
+      return Medicament.fromJson(m);
+    }).toList();
+  }
+
   Future<void> addMedicament(Medicament medicament) async {
-    await dbremote.addMedicament(medicament.medicineId, {
-      'name': medicament.name,
-      'dose': medicament.dose,
-      'description': medicament.description,
-    });
+    await dbremote.addMedicament(
+        medicament.medicineId, medicament.toJsonWithoutId());
   }
 
   Future<void> deleteMedicament(String id) async {
@@ -19,10 +25,7 @@ class MedicamentRemoteDataSource {
   }
 
   Future<void> updateMedicament(Medicament medicament) async {
-    await dbremote.updateMedicament(medicament.medicineId, {
-      'name': medicament.name,
-      'dose': medicament.dose,
-      'description': medicament.description,
-    });
+    await dbremote.updateMedicament(
+        medicament.medicineId, medicament.toJsonWithoutId());
   }
 }
