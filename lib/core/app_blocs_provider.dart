@@ -1,4 +1,9 @@
 import 'package:pasti_track/core/theme/bloc/theme_bloc.dart';
+import 'package:pasti_track/features/medicines/data/datasources/medicament_local_datasource.dart';
+import 'package:pasti_track/features/medicines/data/datasources/medicament_remote_datasource.dart';
+import 'package:pasti_track/features/medicines/data/repositories/medicament_repository_impl.dart';
+import 'package:pasti_track/features/medicines/presentation/bloc/medicament_bloc.dart';
+
 import 'package:pasti_track/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:pasti_track/features/profile/domain/usecases/change_password_use_case.dart';
 import 'package:pasti_track/features/profile/domain/usecases/load_profile_use_case.dart';
@@ -28,19 +33,28 @@ class AppBlocProviders {
           )..add(AuthCheckRequested()),
         ),
         BlocProvider(
-            create: (context) => ProfileBloc(
-                  LoadProfileUseCase(
-                    ProfileRepositoryImpl(),
-                  ),
-                  UpdateProfileUseCase(
-                    ProfileRepositoryImpl(),
-                  ),
-                  ChangePasswordUseCase(
-                    ProfileRepositoryImpl(),
-                  ),
-                  UpdateProfileImageUseCase(
-                    ProfileRepositoryImpl(),
-                  ),
-                )..add(LoadProfileEvent())),
+          create: (context) => ProfileBloc(
+            LoadProfileUseCase(
+              ProfileRepositoryImpl(),
+            ),
+            UpdateProfileUseCase(
+              ProfileRepositoryImpl(),
+            ),
+            ChangePasswordUseCase(
+              ProfileRepositoryImpl(),
+            ),
+            UpdateProfileImageUseCase(
+              ProfileRepositoryImpl(),
+            ),
+          )..add(LoadProfileEvent()),
+        ),
+        BlocProvider(
+          create: (ctx) => MedicamentBloc(
+            MedicamentRepositoryImpl(
+              MedicamentLocalDataSource(),
+              MedicamentRemoteDataSource(),
+            ),
+          )..add(LoadMedicationsEvent()),
+        )
       ];
 }

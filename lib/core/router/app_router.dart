@@ -10,6 +10,9 @@ import 'package:pasti_track/features/auth/presentation/pages/sign_up_screen.dart
 import 'package:pasti_track/features/auth/presentation/pages/sign_up_success_screen.dart';
 import 'package:pasti_track/features/home/presentation/home_screen.dart';
 import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
+import 'package:pasti_track/features/medicines/presentation/pages/add_medication_screen.dart';
+import 'package:pasti_track/features/medicines/presentation/pages/medication_screen.dart';
 import 'package:pasti_track/features/profile/presentation/pages/profile_screen.dart';
 import 'package:pasti_track/features/settings/presentation/pages/settings_screen.dart';
 
@@ -52,28 +55,25 @@ class AppRouter {
       ),
       GoRoute(
         path: AppUrls.editProfilePath,
-        builder: (BuildContext context, GoRouterState state) => const ProfileScreen(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const ProfileScreen(),
       ),
       GoRoute(
         path: AppUrls.homePath,
-        builder: (BuildContext context, GoRouterState state) {
-          return const Center(
-              child: Text(
-            AppUrls.homePath,
-            style: TextStyle(color: Colors.amber),
-          ));
-        },
+        builder: (BuildContext context, GoRouterState state) =>
+            const HomeScreen(),
       ),
       GoRoute(
         path: AppUrls.medicinesPath,
-        builder: (BuildContext context, GoRouterState state) {
-          return const Center(
-              child: Text(
-            AppUrls.medicinesPath,
-            style: TextStyle(color: Colors.amber),
-          ));
-        },
+        builder: (BuildContext context, GoRouterState state) =>
+            const MedicationScreen(),
       ),
+      GoRoute(
+          path: AppUrls.addEditMedicinesPath,
+          builder: (BuildContext context, GoRouterState state) {
+            final medicament = state.extra as Medicament?;
+            return AddEditMedicamentScreen(medicament: medicament);
+          }),
       GoRoute(
         path: AppUrls.routinesPath,
         builder: (BuildContext context, GoRouterState state) {

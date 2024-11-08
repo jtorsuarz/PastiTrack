@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DBRemote {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String userId;
-
-  DBRemote({required this.userId});
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 
   // Get user reference
   DocumentReference get _userRef => _firestore.collection('Users').doc(userId);
@@ -15,29 +14,26 @@ class DBRemote {
   }
 
   // CRUD Operations for Medications
-  Future<void> addMedicamento(
-      String medicamentoId, Map<String, dynamic> medicamento) async {
-    await _userRef.collection('Medicines').doc(medicamentoId).set(medicamento);
-  }
-
-  Future<void> updateMedicamento(
-      String medicamentoId, Map<String, dynamic> medicamento) async {
-    await _userRef
-        .collection('Medicines')
-        .doc(medicamentoId)
-        .update(medicamento);
-  }
-
-  Future<void> deleteMedicamento(String medicamentoId) async {
-    await _userRef.collection('Medicines').doc(medicamentoId).delete();
-  }
-
-  Future<DocumentSnapshot> getMedicamentoById(String medicamentoId) async {
-    return await _userRef.collection('Medicines').doc(medicamentoId).get();
-  }
-
   Future<QuerySnapshot> getmedicines() async {
     return await _userRef.collection('Medicines').get();
+  }
+
+  Future<void> addMedicament(
+      String medicamentId, Map<String, dynamic> medicament) async {
+    await _userRef.collection('Medicines').doc(medicamentId).set(medicament);
+  }
+
+  Future<void> updateMedicament(
+      String medicamentId, Map<String, dynamic> medicament) async {
+    await _userRef.collection('Medicines').doc(medicamentId).update(medicament);
+  }
+
+  Future<void> deleteMedicament(String medicamentId) async {
+    await _userRef.collection('Medicines').doc(medicamentId).delete();
+  }
+
+  Future<DocumentSnapshot> getMedicamentById(String medicamentId) async {
+    return await _userRef.collection('Medicines').doc(medicamentId).get();
   }
 
   // CRUD Operations for Routines
