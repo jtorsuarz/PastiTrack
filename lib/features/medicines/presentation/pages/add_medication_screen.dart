@@ -93,7 +93,7 @@ class _AddEditMedicamentScreenState extends State<AddEditMedicamentScreen> {
                     try {
                       String message = '';
                       if (_medicament != null) {
-                        final medicamentoActualizado = _medicament!.copyWith(
+                        final medicamentUpdated = _medicament!.copyWith(
                           medicineId: _medicament!.medicineId,
                           name: nameController.text,
                           dose: dosageController.text,
@@ -102,7 +102,7 @@ class _AddEditMedicamentScreenState extends State<AddEditMedicamentScreen> {
                         );
                         context
                             .read<MedicamentBloc>()
-                            .add(UpdateMedicament(medicamentoActualizado));
+                            .add(UpdateMedicament(medicamentUpdated));
 
                         message = AppString.successUpdated;
                       } else {
