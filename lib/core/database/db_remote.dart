@@ -37,20 +37,20 @@ class DBRemote {
   }
 
   // CRUD Operations for Routines
-  Future<void> addRutina(String rutinaId, Map<String, dynamic> rutina) async {
+  Future<void> addRoutine(String rutinaId, Map<String, dynamic> rutina) async {
     await _userRef.collection('Routines').doc(rutinaId).set(rutina);
   }
 
-  Future<void> updateRutina(
+  Future<void> updateRoutine(
       String rutinaId, Map<String, dynamic> rutina) async {
     await _userRef.collection('Routines').doc(rutinaId).update(rutina);
   }
 
-  Future<void> deleteRutina(String rutinaId) async {
+  Future<void> deleteRoutine(String rutinaId) async {
     await _userRef.collection('Routines').doc(rutinaId).delete();
   }
 
-  Future<QuerySnapshot> getRutinas() async {
+  Future<QuerySnapshot> getRoutines() async {
     return await _userRef.collection('Routines').get();
   }
 

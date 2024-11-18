@@ -51,7 +51,7 @@ class AppRouter {
       GoRoute(
         path: AppUrls.settingsPath,
         builder: (BuildContext context, GoRouterState state) =>
-            const SettingsScreen(),
+            SettingsScreen(),
       ),
       GoRoute(
         path: AppUrls.editProfilePath,
@@ -66,7 +66,7 @@ class AppRouter {
       GoRoute(
         path: AppUrls.medicinesPath,
         builder: (BuildContext context, GoRouterState state) =>
-            const MedicationScreen(),
+            MedicationScreen(),
       ),
       GoRoute(
           path: AppUrls.addEditMedicinesPath,

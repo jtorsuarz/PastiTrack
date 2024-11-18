@@ -61,6 +61,8 @@ class DBLocal {
         frequency TEXT NOT NULL,
         dosage_time TEXT NOT NULL,
         user_id TEXT,
+        description TEXT,
+        date_updated TEXT,
         FOREIGN KEY (medicine_id) REFERENCES medicines(medicine_id),
         FOREIGN KEY (user_id) REFERENCES Users(user_id)
       )
@@ -147,12 +149,12 @@ class DBLocal {
     );
   }
 
-  Future<int> insertRutina(Map<String, dynamic> rutina) async {
+  Future<int> insertRoutine(Map<String, dynamic> rutina) async {
     Database db = await database;
     return await db.insert('routines', rutina);
   }
 
-  Future<List<Map<String, dynamic>>> getRutinas() async {
+  Future<List<Map<String, dynamic>>> getRoutines() async {
     Database db = await database;
     return await db.query('routines');
   }
@@ -170,17 +172,17 @@ class DBLocal {
     return null;
   }
 
-  Future<int> updateRutina(Map<String, dynamic> rutina) async {
+  Future<int> updateRoutine(String id, Map<String, dynamic> rutina) async {
     Database db = await database;
     return await db.update(
       'routines',
       rutina,
       where: 'routine_id = ?',
-      whereArgs: [rutina['routine_id']],
+      whereArgs: [id],
     );
   }
 
-  Future<int> deleteRutina(String rutinaId) async {
+  Future<int> deleteRoutine(String rutinaId) async {
     Database db = await database;
     return await db.delete(
       'routines',

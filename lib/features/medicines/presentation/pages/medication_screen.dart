@@ -6,15 +6,18 @@ import 'package:go_router/go_router.dart';
 import 'package:pasti_track/features/medicines/presentation/widget/medication_card_widget.dart';
 
 class MedicationScreen extends StatelessWidget {
-  const MedicationScreen({super.key});
+  bool showAppBar;
+  MedicationScreen({super.key, this.showAppBar = true});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppString.medicationManagement),
-        centerTitle: true,
-      ),
+      appBar: showAppBar
+          ? AppBar(
+              title: const Text(AppString.medicationManagement),
+              centerTitle: true,
+            )
+          : null,
       body: BlocListener<MedicamentBloc, MedicamentState>(
         listener: (context, state) {
           if (state is MedicamentErrorState) {
