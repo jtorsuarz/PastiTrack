@@ -51,6 +51,7 @@ class MedicationScreen extends StatelessWidget {
         onPressed: () {
           context.push(AppUrls.addEditMedicinesPath);
         },
+        heroTag: AppString.addMedication,
         child: const Icon(Icons.add),
       ),
     );
