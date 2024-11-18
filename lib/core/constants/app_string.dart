@@ -52,6 +52,7 @@ class AppString {
   static const String update = 'Actualizar';
   static const String successUpdated = 'Actualizado correctamente.';
   static const String successAdded = 'Añadido correctamente.';
+  static const String addRoutine = "Agregar Rutina";
 
   // * Success messages
   static const String success = 'Éxito';

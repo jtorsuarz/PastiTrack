@@ -14,6 +14,8 @@ import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
 import 'package:pasti_track/features/medicines/presentation/pages/add_medication_screen.dart';
 import 'package:pasti_track/features/medicines/presentation/pages/medication_screen.dart';
 import 'package:pasti_track/features/profile/presentation/pages/profile_screen.dart';
+import 'package:pasti_track/features/routines/domain/entities/routine.dart';
+import 'package:pasti_track/features/routines/presentation/pages/create_routine_screen.dart';
 import 'package:pasti_track/features/settings/presentation/pages/settings_screen.dart';
 
 class AppRouter {
@@ -84,6 +86,12 @@ class AppRouter {
           ));
         },
       ),
+      GoRoute(
+          path: AppUrls.addEditRoutinesPath,
+          builder: (BuildContext context, GoRouterState state) {
+            final routine = state.extra as Routine?;
+            return AddEditRoutineScreen(routine: routine);
+          }),
       GoRoute(
         path: AppUrls.historyPath,
         builder: (BuildContext context, GoRouterState state) {

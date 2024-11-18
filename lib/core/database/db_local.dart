@@ -56,16 +56,19 @@ class DBLocal {
 
     await db.execute('''
       CREATE TABLE routines (
-        routine_id TEXT PRIMARY KEY,
-        medicine_id TEXT,
-        frequency TEXT NOT NULL,
-        dosage_time TEXT NOT NULL,
-        user_id TEXT,
-        description TEXT,
-        date_updated TEXT,
-        FOREIGN KEY (medicine_id) REFERENCES medicines(medicine_id),
-        FOREIGN KEY (user_id) REFERENCES Users(user_id)
-      )
+          routine_id TEXT PRIMARY KEY,
+          medicine_id TEXT,
+          frequency TEXT NOT NULL, -- Diaria, Semanal, Personalizada
+          dosage_time TEXT NOT NULL, -- Hora en formato HH:mm
+          custom_times TEXT, -- JSON o CSV para horarios por día personalizado
+          day_of_week TEXT, 
+          custom_days TEXT,
+          user_id TEXT,
+          description TEXT,
+          date_updated TEXT,
+          FOREIGN KEY (medicine_id) REFERENCES medicines(medicine_id),
+          FOREIGN KEY (user_id) REFERENCES Users(user_id)
+      );
     ''');
 
     await db.execute('''

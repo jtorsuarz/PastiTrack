@@ -7,8 +7,8 @@ class AppUrls {
   static const String forgotPasswordPath = '/forgot-password';
   static const String medicinesPath = '/medication';
   static const String addEditMedicinesPath = '/medication/add';
-  static const String medicineDetailsPath = '/medication/:id';
   static const String routinesPath = '/ routines';
+  static const String addEditRoutinesPath = '/routine/add';
   static const String settingsPath = '/settings';
   static const String editProfilePath = '/edit-profile';
   static const String historyPath = '/history';
