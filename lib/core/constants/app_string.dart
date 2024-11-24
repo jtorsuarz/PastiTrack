@@ -52,7 +52,36 @@ class AppString {
   static const String update = 'Actualizar';
   static const String successUpdated = 'Actualizado correctamente.';
   static const String successAdded = 'Añadido correctamente.';
-  static const String addRoutine = "Agregar Rutina";
+  static const String addRoutine = 'Agregar Rutina';
+  static const String createRoutine = 'Crear Rutina';
+  static const String selectDays = 'Seleccionar dias';
+  static const String selectDayIndividual = 'Seleccionar Día Individual';
+  static const String selectRangeDate = 'Seleccionar Rango de Fechas';
+  static const String daysSelected = 'Días Seleccionados:';
+  static const String noSelectDays = 'No se han seleccionado días.';
+  static const String routineName = 'Nombre de la Rutina';
+  static const String selectMedicament = 'Seleccione un medicamento';
+  static const String frecuency = 'Frecuencia';
+  static const String selectFrequency = 'Seleccione una frecuencia';
+  static const String selectHour = 'Seleccionar Hora';
+  static const String routineSaved = 'Rutina guardada';
+  static const String selectHourGeneral = 'Seleccionar Hora General';
+  static const String useHourGeneral = 'Usar Hora General';
+  static const String customized = 'Personalizada';
+  static const String selectDayofWeek = 'Seleccione un día de la semana';
+  static const String dayOfWeek = 'Día de la Semana';
+  static const String weekly = 'Semanal';
+  static const String daily = 'Diaria';
+  static const String monday = 'lunes';
+  static const String tuesday = 'martes';
+  static const String wednesday = 'miércoles';
+  static const String thursday = 'jueves';
+  static const String friday = 'viernes';
+  static const String saturday = 'sábado';
+  static const String sunday = 'domingo';
+  //static const String
+  //static const String
+  //static const String
 
   // * Success messages
   static const String success = 'Éxito';
@@ -116,4 +145,8 @@ class AppString {
   static String errorWhenDelete(v) => 'Error al eliminar: $v';
   static String errorWhenUpdate(v) => 'Error al actualizar: $v';
   static String errorWhenLoad(v) => 'Error al cargar: $v';
+  static String hourSelectedWithFormat(v) => 'Hora: $v';
+  static String dateSelectedWithFormat(v, times) =>
+      '${v.day}/${v.month}/${v.year}: ${times ?? 'No Seleccionada'}';
+  static String errorInvalidFrecuency(v) => 'Frecuencia no válida: $v';
 }
