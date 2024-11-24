@@ -66,6 +66,10 @@ class AppBlocProviders {
               RoutineLocalDataSource(),
               RoutineRemoteDataSource(),
             ),
+            MedicamentRepositoryImpl(
+              MedicamentLocalDataSource(),
+              MedicamentRemoteDataSource(),
+            ),
           )..add(LoadRoutinesEvent()),
         )
       ];

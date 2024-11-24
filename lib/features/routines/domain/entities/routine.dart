@@ -1,11 +1,15 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+
 class Routine {
   final String routineId;
   final String medicineId;
   final String frequency;
   final String dosageTime;
   final String? dayOfWeek;
-  final List<String>? customDays;
-  final Map<String, String>? customTimes;
+  final List<String?>? customDays;
+  final Map<String?, String?>? customTimes;
   final String? userId;
   final String dateUpdated;
   final String? description;
@@ -57,9 +61,7 @@ class Routine {
       'dosage_time': dosageTime,
       'day_of_week': dayOfWeek,
       'custom_days': customDays?.join(','),
-      'custom_times': customTimes?.entries
-          .map((entry) => '"${entry.key}":"${entry.value}"')
-          .join(','),
+      'custom_times': customTimes != null ? jsonEncode(customTimes) : null,
       'user_id': userId,
       'date_updated': dateUpdated,
       'description': description ?? '',
@@ -73,9 +75,7 @@ class Routine {
       'dosage_time': dosageTime,
       'day_of_week': dayOfWeek,
       'custom_days': customDays?.join(','),
-      'custom_times': customTimes?.entries
-          .map((entry) => '"${entry.key}":"${entry.value}"')
-          .join(','),
+      'custom_times': customTimes != null ? jsonEncode(customTimes) : null,
       'user_id': userId,
       'date_updated': dateUpdated,
       'description': description ?? '',
@@ -89,11 +89,12 @@ class Routine {
       frequency: map['frequency'],
       dosageTime: map['dosage_time'],
       dayOfWeek: map['day_of_week'],
-      customDays: map['custom_days'] != null
-          ? (map['custom_days'] as String).split(',')
+      customDays: map['custom_days'] != ""
+          ? (map['custom_days'] as String).split(',').map((e) => e).toList()
           : null,
-      customTimes: map['custom_times'] != null
-          ? Map<String, String>.from(map['custom_times'])
+      customTimes: map['custom_times'] != ""
+          ? Map<String?, String?>.from(
+              jsonDecode(map['custom_times'] as String))
           : null,
       userId: map['user_id'],
       description: map['description'] ?? '',

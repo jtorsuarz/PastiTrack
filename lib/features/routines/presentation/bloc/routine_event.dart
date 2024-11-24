@@ -4,9 +4,12 @@ abstract class RoutineEvent {}
 
 class LoadRoutinesEvent extends RoutineEvent {}
 
+class LoadRoutinesMedicamentsEvent extends RoutineEvent {}
+
 class AddRoutineEvent extends RoutineEvent {
   final Routine routine;
-  AddRoutineEvent(this.routine);
+  final bool isGeneralTime;
+  AddRoutineEvent(this.routine, this.isGeneralTime);
 }
 
 class UpdateRoutineEvent extends RoutineEvent {

@@ -16,9 +16,9 @@ class RoutineCard extends StatelessWidget {
       child: ListTile(
         title: Text(routine.routineId),
         subtitle: Text(
-            'Frecuencia: ${routine.frequency} - Hora: '), //${routine.time.format(context)}
+            'Frecuencia: ${routine.frequency} - Hora: ${routine.dosageTime}'), //
         trailing: IconButton(
-          icon: Icon(Icons.delete),
+          icon: const Icon(Icons.delete),
           onPressed: () {
             // Confirmar la eliminación de la rutina
             showDialog(

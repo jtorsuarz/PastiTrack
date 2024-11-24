@@ -14,7 +14,7 @@ class Routines extends StatelessWidget {
     return Scaffold(
       appBar: showAppBar
           ? AppBar(
-              title: const Text('Listado de Rutinas'),
+              title: const Text(AppString.listRoutines),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.add),
@@ -31,7 +31,7 @@ class Routines extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is RoutineLoadedState) {
             if (state.routines.isEmpty) {
-              return Center(child: Text('No hay rutinas creadas.'));
+              return const Center(child: Text(AppString.noRoutines));
             }
             return ListView.builder(
               itemCount: state.routines.length,
@@ -41,8 +41,7 @@ class Routines extends StatelessWidget {
               },
             );
           } else if (state is RoutineErrorState) {
-            return Center(
-                child: Text('Error al cargar las rutinas: ${state.error}'));
+            return Center(child: Text(AppString.errorWhenLoad(state.error)));
           } else {
             return Center(child: Text('Estado desconocido.'));
           }

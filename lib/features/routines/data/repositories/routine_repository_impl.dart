@@ -25,9 +25,9 @@ class RoutineRepositoryImpl implements RoutineRepository {
   @override
   Future<List<Routine>> getRoutines() async {
     try {
-      final localMedications = await localDB.getRoutines();
-      AppLogger.p("Routine getRoutines", localMedications);
-      return localMedications;
+      final localRoutines = await localDB.getRoutines();
+      AppLogger.p("Routine getRoutines", localRoutines);
+      return localRoutines;
     } catch (e) {
       AppLogger.p("Catch Routine", "getRoutines ${e.toString()}");
       throw Failure(AppString.errorWhenLoad(AppString.routines));

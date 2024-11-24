@@ -43,6 +43,7 @@ class AppString {
   static const String medicaments = 'Medicamentos';
   static const String medicament = 'Medicamento';
   static const String noMedicines = 'No hay medicamentos registrados';
+  static const String loadMedicines = 'Cargando medicamentos...';
   static const String deleteMedication = 'Borrar medicamento';
   static const String confirmElimination = 'Confirmar Eliminación';
   static const String editMedication = 'Editar Medicamento';
@@ -79,9 +80,15 @@ class AppString {
   static const String friday = 'viernes';
   static const String saturday = 'sábado';
   static const String sunday = 'domingo';
-  //static const String
-  //static const String
-  //static const String
+  static const String mustProvideLeastOnScheduleRoutine =
+      'Debe proporcionar al menos un horario para la rutina.';
+  static const String youMustProvideRangeOfDaysRoutine =
+      'Debe indicar un intervalo de días para la rutina.';
+  static const String noRoutines = 'No hay rutinas creadas.';
+  static const String listRoutines = 'Listado de Rutinas';
+  static const String routineSuccessfullyAdded = 'Rutina agregada con éxito';
+static const String routineSuccessfullyUpdated = 'Rutina actualizada con éxito';
+static const String routineSuccessfullyRemoved = 'Rutina eliminada con éxito';
 
   // * Success messages
   static const String success = 'Éxito';
@@ -149,4 +156,5 @@ class AppString {
   static String dateSelectedWithFormat(v, times) =>
       '${v.day}/${v.month}/${v.year}: ${times ?? 'No Seleccionada'}';
   static String errorInvalidFrecuency(v) => 'Frecuencia no válida: $v';
+  static String errorActionRequired(v) => 'Error acción requerida: $v';
 }
