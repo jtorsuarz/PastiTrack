@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
+import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine_frequency.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
@@ -31,19 +32,34 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
   bool _useGeneralTime = true;
   late Routine? _routine;
 
+  @override
+  void initState() {
+    _routine = widget.routine;
+    AppLogger.p("AddEditMedication", "routine: ${_routine?.routineId}");
+    super.initState();
+    if (_routine != null) {
+      setState(() {
+        selectedMedication = _routine?.medicineId;
+        _selectedFrequency = _routine?.frequency;
+        _generalTime = _routine?.getTimeOfDay;
+        selectedDayOfWeek = _routine?.dayOfWeek;
+        _customDays = _routine?.getCustomDays ?? [];
+        _customTimes = _routine?.getCustomTimes ?? {};
+
+        if (_customTimes.isNotEmpty) {
+          _useGeneralTime = false;
+        }
+      });
+    }
+    context.read<RoutineBloc>().add(LoadRoutinesMedicamentsEvent());
+  }
+
   void _resetState() {
     _generalTime = null;
     selectedDayOfWeek = null;
     _customDays.clear();
     _customTimes.clear();
     _useGeneralTime = true;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _routine = widget.routine;
-    context.read<RoutineBloc>().add(LoadRoutinesMedicamentsEvent());
   }
 
   Future<void> _selectDays() async {
@@ -72,7 +88,18 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.createRoutine),
+        title: Text(
+            _routine == null ? AppString.routineCreate : AppString.rutineEdit),
+        leading: IconButton(
+          onPressed: () {},
+          icon: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              context.read<RoutineBloc>().add(LoadRoutinesEvent());
+              context.pop();
+            },
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -82,7 +109,7 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text(state.error)));
             }
-            if (state is RoutineAddEditSuccessState) {
+            if (state is RoutineSuccessAlertState) {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text(state.message)));
               context.read<RoutineBloc>().add(LoadRoutinesEvent());
@@ -134,7 +161,7 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                         onPressed: () async {
                           final pickedTime = await showTimePicker(
                             context: context,
-                            initialTime: TimeOfDay.now(),
+                            initialTime: _generalTime ?? TimeOfDay.now(),
                           );
                           if (pickedTime != null) {
                             setState(() {
@@ -148,11 +175,14 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
 
                     // Lógica para Semanal
                     if (_selectedFrequency == AppString.weekly) ...[
-                      buildDayOfWeekDropdown(onChanged: (value) {
-                        setState(() {
-                          selectedDayOfWeek = value;
-                        });
-                      }),
+                      buildDayOfWeekDropdown(
+                        selectedDayOfWeek: selectedDayOfWeek,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedDayOfWeek = value;
+                          });
+                        },
+                      ),
                       CustomSizedBoxes.get15(),
                       buildElevatedButtonSelectHour(
                         context: context,
@@ -160,7 +190,7 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                         onPressed: () async {
                           final pickedTime = await showTimePicker(
                             context: context,
-                            initialTime: TimeOfDay.now(),
+                            initialTime: _generalTime ?? TimeOfDay.now(),
                           );
                           if (pickedTime != null) {
                             setState(() {
@@ -199,7 +229,7 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                           onPressed: () async {
                             final pickedTime = await showTimePicker(
                               context: context,
-                              initialTime: TimeOfDay.now(),
+                              initialTime: _generalTime ?? TimeOfDay.now(),
                             );
                             if (pickedTime != null) {
                               setState(() {
@@ -237,7 +267,6 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
 
                             if (_routine != null) {
                               final routine = _routine!.copyWith(
-                                routineId: DateTime.now().toString(),
                                 medicineId: selectedMedication!,
                                 frequency: _selectedFrequency!,
                                 dosageTime: generalTime,
@@ -260,7 +289,7 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                                 customTimes: customTimes,
                                 dateUpdated: DateTime.now().toString(),
                               );
-
+                              AppLogger.p("module", DateTime.now().toString());
                               context.read<RoutineBloc>().add(
                                   AddRoutineEvent(routine, _useGeneralTime));
                             }
@@ -278,7 +307,8 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
               );
             } else {
               return const Center(
-                child: Text(AppString.loadMedicines),
+                //child:Text(AppString.loadMedicines)
+                child: CircularProgressIndicator(),
               );
             }
           },

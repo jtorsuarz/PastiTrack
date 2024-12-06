@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:pasti_track/core/config.dart';
 
 class Routine {
   final String routineId;
@@ -89,10 +90,10 @@ class Routine {
       frequency: map['frequency'],
       dosageTime: map['dosage_time'],
       dayOfWeek: map['day_of_week'],
-      customDays: map['custom_days'] != ""
+      customDays: map['custom_days'] != "" && map['custom_days'] != null
           ? (map['custom_days'] as String).split(',').map((e) => e).toList()
           : null,
-      customTimes: map['custom_times'] != ""
+      customTimes: map['custom_times'] != "" && map['custom_times'] != null
           ? Map<String?, String?>.from(
               jsonDecode(map['custom_times'] as String))
           : null,
@@ -100,5 +101,50 @@ class Routine {
       description: map['description'] ?? '',
       dateUpdated: map['date_updated'] as String,
     );
+  }
+
+  TimeOfDay? get getTimeOfDay {
+    if (dayOfWeek == null && customTimes == null) {
+      return null;
+    }
+    final timeParts =
+        dosageTime.split(":").map((part) => int.parse(part)).toList();
+    return TimeOfDay(hour: timeParts[0], minute: timeParts[1]);
+  }
+
+  List<DateTime> get getCustomDays {
+    if (customDays == null) {
+      return [];
+    }
+    return customDays!
+        .where(
+            (item) => item != null && item.isNotEmpty) // Filtrar nulos y vacíos
+        .map((e) => DateTime.parse(e!)) // Convertir cada String a DateTime
+        .toList();
+  }
+
+  Map<DateTime, TimeOfDay> get getCustomTimes {
+    if (customTimes == null) {
+      return {};
+    }
+
+    return customTimes!.map((key, value) {
+      final DateTime? dateTime = DateTime.tryParse(key!);
+      if (dateTime == null) {
+        throw FormatException(AppString.invalidKeyDataTime(key));
+      }
+
+      final timeParts = value!.split(':');
+      if (timeParts.length != 2) {
+        throw FormatException(AppString.invalidKeyDataTime(key));
+      }
+      final hour = int.tryParse(timeParts[0]);
+      final minute = int.tryParse(timeParts[1]);
+      if (hour == null || minute == null) {
+        throw FormatException(AppString.invalidKeyDataTime(key));
+      }
+
+      return MapEntry(dateTime, TimeOfDay(hour: hour, minute: minute));
+    });
   }
 }

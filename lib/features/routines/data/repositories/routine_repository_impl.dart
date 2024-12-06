@@ -6,6 +6,7 @@ import 'package:pasti_track/features/routines/data/datasources/routine_local_dat
 import 'package:pasti_track/features/routines/data/datasources/routine_remote_datasource.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine.dart';
 import 'package:pasti_track/features/routines/domain/repositories/routine_repository.dart';
+import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
 
 class RoutineRepositoryImpl implements RoutineRepository {
   final RoutineLocalDataSource localDB;
@@ -63,18 +64,19 @@ class RoutineRepositoryImpl implements RoutineRepository {
   @override
   Future<int> deleteRoutine(String id) async {
     try {
-      if (await isConnected()) {
-        final result = await localDB.deleteRoutine(id);
-        await remoteDB.deleteRoutine(id);
-        AppLogger.p("Routine", "deleteRoutine $result");
-        return result;
-      } else {
-        throw Failure(AppString.errorWhenDelete(
-            AppString.canNotBeActionCheckYourConnectivityTryAgain));
+      var response = await isConnected();
+      if (response == false) {
+        throw Exception();
       }
-    } on Failure catch (e) {
-      AppLogger.p("Catch Routine Failure", "deleteRoutine ${e.message}");
-      throw Failure(e.message);
+    } catch (e) {
+      throw RoutineErrorAlertState(AppString.errorWhenDelete(
+          AppString.canNotBeActionCheckYourConnectivityTryAgain));
+    }
+    try {
+      final result = await localDB.deleteRoutine(id);
+      await remoteDB.deleteRoutine(id);
+      AppLogger.p("Routine", "deleteRoutine $result");
+      return result;
     } catch (e) {
       AppLogger.p("Catch Routine", "deleteRoutine ${e.toString()}");
       throw Failure(AppString.errorWhenDelete(AppString.routines));
@@ -102,14 +104,14 @@ class RoutineRepositoryImpl implements RoutineRepository {
           } else if (remoteDate.isAfter(localDate)) {
             await localDB.updateRoutine(remoteRout);
           }
-          remoteRouMap.remove(localRout.medicineId);
+          remoteRouMap.remove(localRout.routineId);
         } else {
           await remoteDB.addRoutine(localRout);
         }
       }
 
-      for (var med in remoteRouMap.values) {
-        await localDB.addRoutine(med);
+      for (var rout in remoteRouMap.values) {
+        await localDB.addRoutine(rout);
       }
     }
   }

@@ -53,12 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.home), label: AppString.home),
+              icon: Icon(CupertinoIcons.alarm), label: AppString.routines),
           BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.bandage_fill),
               label: AppString.medicines),
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.alarm), label: AppString.routines),
+              icon: Icon(CupertinoIcons.settings), label: AppString.settings),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

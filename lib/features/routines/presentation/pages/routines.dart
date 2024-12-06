@@ -5,6 +5,7 @@ import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
 import 'package:pasti_track/features/routines/presentation/widget/routine_card.dart';
 
+// ignore: must_be_immutable
 class Routines extends StatelessWidget {
   bool showAppBar;
   Routines({super.key, this.showAppBar = true});
@@ -14,7 +15,7 @@ class Routines extends StatelessWidget {
     return Scaffold(
       appBar: showAppBar
           ? AppBar(
-              title: const Text(AppString.listRoutines),
+              title: const Text(AppString.routinesList),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.add),
@@ -25,13 +26,25 @@ class Routines extends StatelessWidget {
               ],
             )
           : null,
-      body: BlocBuilder<RoutineBloc, RoutineState>(
+      body: BlocConsumer<RoutineBloc, RoutineState>(
+        listener: (context, state) {
+          if (state is RoutineErrorAlertState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error)),
+            );
+          }
+          if (state is RoutineSuccessAlertState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
+        },
         builder: (context, state) {
           if (state is RoutineLoadingState) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is RoutineLoadedState) {
             if (state.routines.isEmpty) {
-              return const Center(child: Text(AppString.noRoutines));
+              return const Center(child: Text(AppString.routinesEmpty));
             }
             return ListView.builder(
               itemCount: state.routines.length,
@@ -41,9 +54,9 @@ class Routines extends StatelessWidget {
               },
             );
           } else if (state is RoutineErrorState) {
-            return Center(child: Text(AppString.errorWhenLoad(state.error)));
+            return Center(child: Text(state.error));
           } else {
-            return Center(child: Text('Estado desconocido.'));
+            return const Center(child: Text(AppString.errorUnknown));
           }
         },
       ),
@@ -51,7 +64,7 @@ class Routines extends StatelessWidget {
         onPressed: () {
           context.push(AppUrls.addEditRoutinesPath);
         },
-        heroTag: AppString.addRoutine,
+        heroTag: AppString.routineAdd,
         child: const Icon(Icons.add),
       ),
     );

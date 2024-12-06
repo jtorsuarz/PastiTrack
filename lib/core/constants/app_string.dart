@@ -53,8 +53,9 @@ class AppString {
   static const String update = 'Actualizar';
   static const String successUpdated = 'Actualizado correctamente.';
   static const String successAdded = 'Añadido correctamente.';
-  static const String addRoutine = 'Agregar Rutina';
-  static const String createRoutine = 'Crear Rutina';
+  static const String routineAdd = 'Agregar Rutina';
+  static const String routineCreate = 'Crear Rutina';
+  static const String rutineEdit = 'Editar Rutina';
   static const String selectDays = 'Seleccionar dias';
   static const String selectDayIndividual = 'Seleccionar Día Individual';
   static const String selectRangeDate = 'Seleccionar Rango de Fechas';
@@ -80,15 +81,19 @@ class AppString {
   static const String friday = 'viernes';
   static const String saturday = 'sábado';
   static const String sunday = 'domingo';
-  static const String mustProvideLeastOnScheduleRoutine =
+  static const String routineMustProvideLeastOnSchedule =
       'Debe proporcionar al menos un horario para la rutina.';
-  static const String youMustProvideRangeOfDaysRoutine =
+  static const String routineYouMustProvideRangeOfDays =
       'Debe indicar un intervalo de días para la rutina.';
-  static const String noRoutines = 'No hay rutinas creadas.';
-  static const String listRoutines = 'Listado de Rutinas';
+  static const String routinesEmpty = 'No hay rutinas creadas.';
+  static const String routinesList = 'Listado de Rutinas';
   static const String routineSuccessfullyAdded = 'Rutina agregada con éxito';
-static const String routineSuccessfullyUpdated = 'Rutina actualizada con éxito';
-static const String routineSuccessfullyRemoved = 'Rutina eliminada con éxito';
+  static const String routineSuccessfullyUpdated =
+      'Rutina actualizada con éxito';
+  static const String routineSuccessfullyRemoved = 'Rutina eliminada con éxito';
+  static const String routineDeleted = 'Eliminar Rutina';
+  static const String routineDeleteConfirmation =
+      '¿Está seguro de que desea eliminar esta rutina?';
 
   // * Success messages
   static const String success = 'Éxito';
@@ -129,6 +134,10 @@ static const String routineSuccessfullyRemoved = 'Rutina eliminada con éxito';
   static const String errorAuthentication = 'Error de autenticación';
   static const String canNotBeActionCheckYourConnectivityTryAgain =
       'No se puede realizar esta acción, compruebe su conectividad e inténtelo de nuevo.';
+  static String eitherDayOfWeekMustBeProvided =
+      'Se debe proporcionar dayOfWeek';
+  static String eitherCustomTimesMustBeProvided =
+      'Se debe proporcionar customDays o customTimes';
 
   // ? Functions return a string
   static String userFromTime(v) => 'Usuario desde: $v';
@@ -157,4 +166,7 @@ static const String routineSuccessfullyRemoved = 'Rutina eliminada con éxito';
       '${v.day}/${v.month}/${v.year}: ${times ?? 'No Seleccionada'}';
   static String errorInvalidFrecuency(v) => 'Frecuencia no válida: $v';
   static String errorActionRequired(v) => 'Error acción requerida: $v';
+  static String frecuencyAndHourFormat(f, h) => 'Frecuencia: $f - Hora: $h';
+  static String invalidKeyDataTime(v) => 'Clave inválida para DateTime: $v';
+  static String invalidFormatHour(v) => 'Formato de hora inválido: $v';
 }

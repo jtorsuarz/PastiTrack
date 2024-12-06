@@ -3,7 +3,6 @@ import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine_days.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine_frequency.dart';
-import 'package:pasti_track/features/routines/presentation/widget/select_days_bottom_sheet_widget.dart';
 
 /// Dropdown para seleccionar medicamentos
 Widget buildMedicationDropdown({
@@ -12,11 +11,11 @@ Widget buildMedicationDropdown({
   required String? selectedMedication,
   required Function(String?) onChanged,
 }) {
-  String textHint = medications.length > 0
+  String textHint = medications.isNotEmpty
       ? AppString.selectMedicament
       : AppString.noMedicines;
-
   return DropdownButtonFormField<String>(
+    value: selectedMedication,
     decoration: const InputDecoration(labelText: AppString.medicament),
     disabledHint: Text(textHint),
     items: medications
@@ -36,6 +35,7 @@ Widget buildFrecuencyDropdown({
   required Function(String?) onChanged,
 }) {
   return DropdownButtonFormField<String>(
+    value: selectedFrequency,
     decoration: const InputDecoration(labelText: AppString.frecuency),
     items: frecuencies
         .map((freq) => DropdownMenuItem(
@@ -62,7 +62,6 @@ Widget buildElevatedButtonSelectHour({
               generalTime.format(context),
             ),
     ),
-    
   );
 }
 
@@ -84,9 +83,11 @@ Widget buildElevatedButtonSelectHourGeneral({
 }
 
 Widget buildDayOfWeekDropdown({
+  required String? selectedDayOfWeek,
   required Function(String?)? onChanged,
 }) {
   return DropdownButtonFormField<String>(
+    value: selectedDayOfWeek,
     decoration: const InputDecoration(labelText: AppString.dayOfWeek),
     items: RoutineDays.allValues
         .map(

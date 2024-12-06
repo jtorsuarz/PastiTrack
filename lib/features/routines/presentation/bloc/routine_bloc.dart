@@ -23,13 +23,35 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
     on<DeleteRoutineEvent>(_onDeleteRoutine);
   }
 
+  void _onLoadRoutinesEvent(
+      LoadRoutinesEvent event, Emitter<RoutineState> emit) async {
+    emit(RoutineLoadingState());
+    try {
+      await repository.syncData();
+      final routines = await repository.getRoutines();
+      emit(RoutineLoadedState(routines: routines));
+    } on Failure catch (e) {
+      emit(RoutineErrorState(e.message));
+    }
+  }
+
+  void _onLoadRoutinesMedicamentsEvent(
+      LoadRoutinesMedicamentsEvent event, Emitter<RoutineState> emit) async {
+    try {
+      await repository.syncData();
+      final medicaments = await repositoryMedicaments.getMedications();
+      emit(RoutineMedicamentsLoadedState(medicines: medicaments));
+    } on Failure catch (e) {
+      emit(RoutineErrorState(e.message));
+    }
+  }
+
   void _onAddRoutine(AddRoutineEvent event, Emitter<RoutineState> emit) async {
     try {
-      // Validar los datos antes de agregar la rutina
       if (event.routine.frequency == RoutineFrequency.custom.description) {
         if (event.routine.customDays!.isEmpty) {
           emit(
-            RoutineErrorAlertState(AppString.youMustProvideRangeOfDaysRoutine),
+            RoutineErrorAlertState(AppString.routineYouMustProvideRangeOfDays),
           );
           final medicaments = await repositoryMedicaments.getMedications();
           emit(RoutineMedicamentsLoadedState(medicines: medicaments));
@@ -39,7 +61,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           if (event.routine.dosageTime.isEmpty) {
             emit(
               RoutineErrorAlertState(
-                  AppString.mustProvideLeastOnScheduleRoutine),
+                  AppString.routineMustProvideLeastOnSchedule),
             );
             final medicaments = await repositoryMedicaments.getMedications();
             emit(RoutineMedicamentsLoadedState(medicines: medicaments));
@@ -49,7 +71,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           if (event.routine.customTimes!.isEmpty) {
             emit(
               RoutineErrorAlertState(
-                  AppString.mustProvideLeastOnScheduleRoutine),
+                  AppString.routineMustProvideLeastOnSchedule),
             );
             final medicaments = await repositoryMedicaments.getMedications();
             emit(RoutineMedicamentsLoadedState(medicines: medicaments));
@@ -59,7 +81,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
       } else {
         if (event.routine.dosageTime.isEmpty) {
           emit(
-            RoutineErrorAlertState(AppString.mustProvideLeastOnScheduleRoutine),
+            RoutineErrorAlertState(AppString.routineMustProvideLeastOnSchedule),
           );
           final medicaments = await repositoryMedicaments.getMedications();
           emit(RoutineMedicamentsLoadedState(medicines: medicaments));
@@ -79,12 +101,11 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
       UpdateRoutineEvent event, Emitter<RoutineState> emit) async {
     emit(RoutineLoadingState());
     try {
-      // Aquí se actualizarían los datos en la base de datos (SQLite/Firestore)
-      // Por ejemplo: await repository.updateRoutine(event.routine);
-
-      emit(RoutineAddEditErrorState(AppString.routineSuccessfullyUpdated));
+      await repository.updateRoutine(event.routine);
+      emit(RoutineSuccessAlertState(AppString.routineSuccessfullyUpdated));
+      add(LoadRoutinesEvent());
     } on Failure catch (e) {
-      emit(RoutineErrorState(AppString.errorWhenUpdate(e.message)));
+      emit(RoutineErrorState(e.message));
     }
   }
 
@@ -92,33 +113,14 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
       DeleteRoutineEvent event, Emitter<RoutineState> emit) async {
     emit(RoutineLoadingState());
     try {
-      // Aquí se eliminarían los datos en la base de datos (SQLite/Firestore)
-      // Por ejemplo: await repository.deleteRoutine(event.routineId);
-
-      emit(RoutineSuccessState(AppString.routineSuccessfullyRemoved));
+      await repository.deleteRoutine(event.id);
+      add(LoadRoutinesEvent());
+      emit(RoutineSuccessAlertState(AppString.routineSuccessfullyRemoved));
+    } on RoutineErrorAlertState catch (e) {
+      emit(RoutineErrorAlertState(e.error));
+      add(LoadRoutinesEvent());
     } on Failure catch (e) {
-      emit(RoutineErrorState(AppString.errorWhenDelete(e.message)));
-    }
-  }
-
-  void _onLoadRoutinesEvent(
-      LoadRoutinesEvent event, Emitter<RoutineState> emit) async {
-    emit(RoutineLoadingState());
-    try {
-      final routines = await repository.getRoutines();
-      emit(RoutineLoadedState(routines: routines));
-    } on Failure catch (e) {
-      emit(RoutineErrorState(AppString.errorWhenLoad(e.message)));
-    }
-  }
-
-  void _onLoadRoutinesMedicamentsEvent(
-      LoadRoutinesMedicamentsEvent event, Emitter<RoutineState> emit) async {
-    try {
-      final medicaments = await repositoryMedicaments.getMedications();
-      emit(RoutineMedicamentsLoadedState(medicines: medicaments));
-    } on Failure catch (e) {
-      emit(RoutineErrorState(AppString.errorWhenLoad(e.message)));
+      emit(RoutineErrorState(e.message));
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
 
+// ignore: must_be_immutable
 class SelectDaysBottomSheetWidget extends StatelessWidget {
   List<DateTime> selectedDays;
   void Function()? onPressed;
@@ -120,6 +121,5 @@ class SelectDaysBottomSheetWidget extends StatelessWidget {
         );
       },
     );
-    ;
   }
 }

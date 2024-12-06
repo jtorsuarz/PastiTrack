@@ -1,7 +1,7 @@
-import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
 
+// ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   String subtitle;
 
@@ -12,7 +12,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    String completeText = "${AppString.appTitle} ${AppString.routines}";
+    String completeText = "${AppString.appTitle} ";
     if (subtitle.isNotEmpty) {
       completeText += " $subtitle";
     }

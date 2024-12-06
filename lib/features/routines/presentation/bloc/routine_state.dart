@@ -40,3 +40,8 @@ class RoutineErrorAlertState extends RoutineState {
   final String error;
   RoutineErrorAlertState(this.error);
 }
+
+class RoutineSuccessAlertState extends RoutineState {
+  final String message;
+  RoutineSuccessAlertState(this.message);
+}

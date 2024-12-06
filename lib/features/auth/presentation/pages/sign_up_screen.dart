@@ -14,7 +14,10 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(AppString.signUp)),
+      appBar: AppBar(
+        title: const Text(AppString.signUp),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: BlocConsumer<AuthBloc, AuthState>(
@@ -37,6 +40,7 @@ class SignUpScreen extends StatelessWidget {
                   controller: emailController,
                   decoration: const InputDecoration(labelText: AppString.email),
                 ),
+                CustomSizedBoxes.get20(),
                 TextField(
                   controller: passwordController,
                   decoration:

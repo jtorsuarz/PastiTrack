@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
 import 'package:pasti_track/widgets/custom_paddings.dart';
@@ -7,7 +9,7 @@ import 'package:pasti_track/widgets/custom_paddings.dart';
 class RoutineCard extends StatelessWidget {
   final Routine routine;
 
-  const RoutineCard({required this.routine});
+  const RoutineCard({super.key, required this.routine});
 
   @override
   Widget build(BuildContext context) {
@@ -16,38 +18,49 @@ class RoutineCard extends StatelessWidget {
       child: ListTile(
         title: Text(routine.routineId),
         subtitle: Text(
-            'Frecuencia: ${routine.frequency} - Hora: ${routine.dosageTime}'), //
-        trailing: IconButton(
-          icon: const Icon(Icons.delete),
-          onPressed: () {
-            // Confirmar la eliminación de la rutina
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Eliminar Rutina'),
-                  content:
-                      Text('¿Está seguro de que desea eliminar esta rutina?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Cancelar'),
+          AppString.frecuencyAndHourFormat(
+              routine.frequency, routine.dosageTime),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+                onPressed: () => context.push(
+                      AppUrls.addEditRoutinesPath,
+                      extra: routine,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        BlocProvider.of<RoutineBloc>(context)
-                            .add(DeleteRoutineEvent(routine.routineId));
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Eliminar'),
-                    ),
-                  ],
+                icon: const Icon(Icons.edit)),
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text(AppString.routineDeleted),
+                      content: const Text(AppString.routineDeleteConfirmation),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(AppString.cancel),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            BlocProvider.of<RoutineBloc>(context)
+                                .add(DeleteRoutineEvent(routine.routineId));
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(AppString.delete),
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
-            );
-          },
+            )
+          ],
         ),
       ),
     );

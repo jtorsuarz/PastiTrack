@@ -21,8 +21,8 @@ class RoutineLocalDataSource {
     return await database.deleteRoutine(id);
   }
 
-  Future<int> updateRoutine(Routine Routine) async {
+  Future<int> updateRoutine(Routine routine) async {
     return await database.updateRoutine(
-        Routine.routineId, Routine.toJsonWithoutId());
+        routine.routineId, routine.toJsonWithoutId());
   }
 }

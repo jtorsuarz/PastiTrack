@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
 class SignInScreen extends StatelessWidget {
   final TextEditingController emailController =
@@ -15,7 +16,10 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(AppString.signIn)),
+      appBar: AppBar(
+        title: const Text(AppString.signIn),
+        centerTitle: true,
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthLoading || state is AuthInitial) {
@@ -41,12 +45,14 @@ class SignInScreen extends StatelessWidget {
                 decoration: const InputDecoration(labelText: AppString.email),
                 keyboardType: TextInputType.emailAddress,
               ),
+              CustomSizedBoxes.get20(),
               TextField(
                 controller: passwordController,
                 decoration:
                     const InputDecoration(labelText: AppString.password),
                 obscureText: true,
               ),
+              CustomSizedBoxes.get20(),
               ElevatedButton(
                 onPressed: () {
                   final email = emailController.text;
@@ -56,15 +62,17 @@ class SignInScreen extends StatelessWidget {
                 },
                 child: const Text(AppString.signIn),
               ),
+              CustomSizedBoxes.get20(),
               ElevatedButton(
                 onPressed: () {
-                  context.go(AppUrls.signUpPath);
+                  context.push(AppUrls.signUpPath);
                 },
                 child: const Text(AppString.signUp),
               ),
+              CustomSizedBoxes.get20(),
               ElevatedButton(
                 onPressed: () {
-                  context.go(AppUrls.forgotPasswordPath);
+                  context.push(AppUrls.forgotPasswordPath);
                 },
                 child: const Text(AppString.forgotPassword),
               ),
