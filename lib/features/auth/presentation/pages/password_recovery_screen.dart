@@ -15,7 +15,10 @@ class PasswordRecoveryScreen extends StatelessWidget {
     final emailController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(title: const Text(AppString.recoveryPassword)),
+      appBar: AppBar(
+        title: const Text(AppString.recoveryPassword),
+        centerTitle: true,
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthPasswordRecoverySuccess) {

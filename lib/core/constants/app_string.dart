@@ -16,7 +16,7 @@ class AppString {
   static const String medicines = 'Medicinas';
   static const String routines = 'Rutinas';
   static const String history = 'Historial';
-  static const String settings = 'Ajustes';
+  static const String settings = 'Configuración';
   static const String profile = 'Perfil';
   static const String editProfile = 'Editar Perfil';
   static const String changeTheme = 'Cambiar Tema';
@@ -43,6 +43,7 @@ class AppString {
   static const String medicaments = 'Medicamentos';
   static const String medicament = 'Medicamento';
   static const String noMedicines = 'No hay medicamentos registrados';
+  static const String loadMedicines = 'Cargando medicamentos...';
   static const String deleteMedication = 'Borrar medicamento';
   static const String confirmElimination = 'Confirmar Eliminación';
   static const String editMedication = 'Editar Medicamento';
@@ -52,6 +53,47 @@ class AppString {
   static const String update = 'Actualizar';
   static const String successUpdated = 'Actualizado correctamente.';
   static const String successAdded = 'Añadido correctamente.';
+  static const String routineAdd = 'Agregar Rutina';
+  static const String routineCreate = 'Crear Rutina';
+  static const String rutineEdit = 'Editar Rutina';
+  static const String selectDays = 'Seleccionar dias';
+  static const String selectDayIndividual = 'Seleccionar Día Individual';
+  static const String selectRangeDate = 'Seleccionar Rango de Fechas';
+  static const String daysSelected = 'Días Seleccionados:';
+  static const String noSelectDays = 'No se han seleccionado días.';
+  static const String routineName = 'Nombre de la Rutina';
+  static const String selectMedicament = 'Seleccione un medicamento';
+  static const String frecuency = 'Frecuencia';
+  static const String selectFrequency = 'Seleccione una frecuencia';
+  static const String selectHour = 'Seleccionar Hora';
+  static const String routineSaved = 'Rutina guardada';
+  static const String selectHourGeneral = 'Seleccionar Hora General';
+  static const String useHourGeneral = 'Usar Hora General';
+  static const String customized = 'Personalizada';
+  static const String selectDayofWeek = 'Seleccione un día de la semana';
+  static const String dayOfWeek = 'Día de la Semana';
+  static const String weekly = 'Semanal';
+  static const String daily = 'Diaria';
+  static const String monday = 'lunes';
+  static const String tuesday = 'martes';
+  static const String wednesday = 'miércoles';
+  static const String thursday = 'jueves';
+  static const String friday = 'viernes';
+  static const String saturday = 'sábado';
+  static const String sunday = 'domingo';
+  static const String routineMustProvideLeastOnSchedule =
+      'Debe proporcionar al menos un horario para la rutina.';
+  static const String routineYouMustProvideRangeOfDays =
+      'Debe indicar un intervalo de días para la rutina.';
+  static const String routinesEmpty = 'No hay rutinas creadas.';
+  static const String routinesList = 'Listado de Rutinas';
+  static const String routineSuccessfullyAdded = 'Rutina agregada con éxito';
+  static const String routineSuccessfullyUpdated =
+      'Rutina actualizada con éxito';
+  static const String routineSuccessfullyRemoved = 'Rutina eliminada con éxito';
+  static const String routineDeleted = 'Eliminar Rutina';
+  static const String routineDeleteConfirmation =
+      '¿Está seguro de que desea eliminar esta rutina?';
 
   // * Success messages
   static const String success = 'Éxito';
@@ -92,6 +134,10 @@ class AppString {
   static const String errorAuthentication = 'Error de autenticación';
   static const String canNotBeActionCheckYourConnectivityTryAgain =
       'No se puede realizar esta acción, compruebe su conectividad e inténtelo de nuevo.';
+  static String eitherDayOfWeekMustBeProvided =
+      'Se debe proporcionar dayOfWeek';
+  static String eitherCustomTimesMustBeProvided =
+      'Se debe proporcionar customDays o customTimes';
 
   // ? Functions return a string
   static String userFromTime(v) => 'Usuario desde: $v';
@@ -115,4 +161,12 @@ class AppString {
   static String errorWhenDelete(v) => 'Error al eliminar: $v';
   static String errorWhenUpdate(v) => 'Error al actualizar: $v';
   static String errorWhenLoad(v) => 'Error al cargar: $v';
+  static String hourSelectedWithFormat(v) => 'Hora: $v';
+  static String dateSelectedWithFormat(v, times) =>
+      '${v.day}/${v.month}/${v.year}: ${times ?? 'No Seleccionada'}';
+  static String errorInvalidFrecuency(v) => 'Frecuencia no válida: $v';
+  static String errorActionRequired(v) => 'Error acción requerida: $v';
+  static String frecuencyAndHourFormat(f, h) => 'Frecuencia: $f - Hora: $h';
+  static String invalidKeyDataTime(v) => 'Clave inválida para DateTime: $v';
+  static String invalidFormatHour(v) => 'Formato de hora inválido: $v';
 }

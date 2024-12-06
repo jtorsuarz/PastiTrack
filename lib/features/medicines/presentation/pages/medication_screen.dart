@@ -5,16 +5,20 @@ import 'package:pasti_track/features/medicines/presentation/bloc/medicament_bloc
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/features/medicines/presentation/widget/medication_card_widget.dart';
 
+// ignore: must_be_immutable
 class MedicationScreen extends StatelessWidget {
-  const MedicationScreen({super.key});
+  bool showAppBar;
+  MedicationScreen({super.key, this.showAppBar = true});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppString.medicationManagement),
-        centerTitle: true,
-      ),
+      appBar: showAppBar
+          ? AppBar(
+              title: const Text(AppString.medicationManagement),
+              centerTitle: true,
+            )
+          : null,
       body: BlocListener<MedicamentBloc, MedicamentState>(
         listener: (context, state) {
           if (state is MedicamentErrorState) {
@@ -48,6 +52,7 @@ class MedicationScreen extends StatelessWidget {
         onPressed: () {
           context.push(AppUrls.addEditMedicinesPath);
         },
+        heroTag: AppString.addMedication,
         child: const Icon(Icons.add),
       ),
     );

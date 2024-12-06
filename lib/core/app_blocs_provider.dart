@@ -11,6 +11,10 @@ import 'package:pasti_track/features/profile/domain/usecases/update_profile_imag
 import 'package:pasti_track/features/profile/domain/usecases/update_profile_use_case.dart';
 import 'package:pasti_track/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pasti_track/features/profile/presentation/bloc/profile_event.dart';
+import 'package:pasti_track/features/routines/data/datasources/routine_local_datasource.dart';
+import 'package:pasti_track/features/routines/data/datasources/routine_remote_datasource.dart';
+import 'package:pasti_track/features/routines/data/repositories/routine_repository_impl.dart';
+import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/single_child_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,6 +59,18 @@ class AppBlocProviders {
               MedicamentRemoteDataSource(),
             ),
           )..add(LoadMedicationsEvent()),
+        ),
+        BlocProvider(
+          create: (ctx) => RoutineBloc(
+            RoutineRepositoryImpl(
+              RoutineLocalDataSource(),
+              RoutineRemoteDataSource(),
+            ),
+            MedicamentRepositoryImpl(
+              MedicamentLocalDataSource(),
+              MedicamentRemoteDataSource(),
+            ),
+          )..add(LoadRoutinesEvent()),
         )
       ];
 }

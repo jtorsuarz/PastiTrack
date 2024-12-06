@@ -16,7 +16,12 @@ class AuthWrapper extends StatelessWidget {
           return ErrorScreen(error: state.message);
         }
         if (state is AuthLoading || state is AuthInitial) {
-          return const Center(child: CircularProgressIndicator());
+          return Container(
+            color: Colors.white,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
         if (state is AuthAuthenticated) {
           return const HomeScreen();

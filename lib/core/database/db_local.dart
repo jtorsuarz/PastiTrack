@@ -56,14 +56,19 @@ class DBLocal {
 
     await db.execute('''
       CREATE TABLE routines (
-        routine_id TEXT PRIMARY KEY,
-        medicine_id TEXT,
-        frequency TEXT NOT NULL,
-        dosage_time TEXT NOT NULL,
-        user_id TEXT,
-        FOREIGN KEY (medicine_id) REFERENCES medicines(medicine_id),
-        FOREIGN KEY (user_id) REFERENCES Users(user_id)
-      )
+          routine_id TEXT PRIMARY KEY,
+          medicine_id TEXT,
+          frequency TEXT NOT NULL, -- Diaria, Semanal, Personalizada
+          dosage_time TEXT NOT NULL, -- Hora en formato HH:mm
+          custom_times TEXT, -- JSON o CSV para horarios por día personalizado
+          day_of_week TEXT, 
+          custom_days TEXT,
+          user_id TEXT,
+          description TEXT,
+          date_updated TEXT,
+          FOREIGN KEY (medicine_id) REFERENCES medicines(medicine_id),
+          FOREIGN KEY (user_id) REFERENCES Users(user_id)
+      );
     ''');
 
     await db.execute('''
@@ -147,12 +152,12 @@ class DBLocal {
     );
   }
 
-  Future<int> insertRutina(Map<String, dynamic> rutina) async {
+  Future<int> insertRoutine(Map<String, dynamic> rutina) async {
     Database db = await database;
     return await db.insert('routines', rutina);
   }
 
-  Future<List<Map<String, dynamic>>> getRutinas() async {
+  Future<List<Map<String, dynamic>>> getRoutines() async {
     Database db = await database;
     return await db.query('routines');
   }
@@ -170,17 +175,17 @@ class DBLocal {
     return null;
   }
 
-  Future<int> updateRutina(Map<String, dynamic> rutina) async {
+  Future<int> updateRoutine(String id, Map<String, dynamic> rutina) async {
     Database db = await database;
     return await db.update(
       'routines',
       rutina,
       where: 'routine_id = ?',
-      whereArgs: [rutina['routine_id']],
+      whereArgs: [id],
     );
   }
 
-  Future<int> deleteRutina(String rutinaId) async {
+  Future<int> deleteRoutine(String rutinaId) async {
     Database db = await database;
     return await db.delete(
       'routines',

@@ -14,6 +14,10 @@ import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
 import 'package:pasti_track/features/medicines/presentation/pages/add_medication_screen.dart';
 import 'package:pasti_track/features/medicines/presentation/pages/medication_screen.dart';
 import 'package:pasti_track/features/profile/presentation/pages/profile_screen.dart';
+import 'package:pasti_track/features/routines/domain/entities/routine.dart';
+import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
+import 'package:pasti_track/features/routines/presentation/pages/create_routine_screen.dart';
+import 'package:pasti_track/features/routines/presentation/pages/routines.dart';
 import 'package:pasti_track/features/settings/presentation/pages/settings_screen.dart';
 
 class AppRouter {
@@ -51,7 +55,7 @@ class AppRouter {
       GoRoute(
         path: AppUrls.settingsPath,
         builder: (BuildContext context, GoRouterState state) =>
-            const SettingsScreen(),
+            SettingsScreen(),
       ),
       GoRoute(
         path: AppUrls.editProfilePath,
@@ -66,7 +70,7 @@ class AppRouter {
       GoRoute(
         path: AppUrls.medicinesPath,
         builder: (BuildContext context, GoRouterState state) =>
-            const MedicationScreen(),
+            MedicationScreen(),
       ),
       GoRoute(
           path: AppUrls.addEditMedicinesPath,
@@ -77,13 +81,18 @@ class AppRouter {
       GoRoute(
         path: AppUrls.routinesPath,
         builder: (BuildContext context, GoRouterState state) {
-          return const Center(
-              child: Text(
-            AppUrls.routinesPath,
-            style: TextStyle(color: Colors.amber),
-          ));
+          return Routines();
         },
       ),
+      GoRoute(
+          path: AppUrls.addEditRoutinesPath,
+          builder: (BuildContext context, GoRouterState state) {
+            final routine = state.extra as Routine?;
+            return BlocProvider.value(
+              value: context.read<RoutineBloc>(),
+              child: AddEditRoutineScreen(routine: routine),
+            );
+          }),
       GoRoute(
         path: AppUrls.historyPath,
         builder: (BuildContext context, GoRouterState state) {

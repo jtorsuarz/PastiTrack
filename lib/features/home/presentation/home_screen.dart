@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
-import 'package:pasti_track/features/home/presentation/home_content.dart';
 import 'package:pasti_track/features/medicines/presentation/pages/medication_screen.dart';
+import 'package:pasti_track/features/routines/presentation/pages/routines.dart';
+import 'package:pasti_track/features/settings/presentation/pages/settings_screen.dart';
 import 'package:pasti_track/widgets/custom_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,28 +15,37 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  String subTextAppBar = "";
 
   final List<Widget> _pages = [
-    const HomeContent(),
-    const MedicationScreen(),
-    const Center(
-      child: Text(
-        AppUrls.routinesPath,
-        style: TextStyle(color: Colors.amber),
-      ),
-    ),
+    Routines(showAppBar: false),
+    MedicationScreen(showAppBar: false),
+    SettingsScreen(showAppBar: false),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      switch (_selectedIndex) {
+        case 0:
+          subTextAppBar = AppString.routines;
+          break;
+        case 1:
+          subTextAppBar = AppString.medicaments;
+          break;
+        case 2:
+          subTextAppBar = AppString.settings;
+          break;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: CustomAppBar(
+        subtitle: subTextAppBar,
+      ),
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,
@@ -43,12 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.home), label: AppString.home),
+              icon: Icon(CupertinoIcons.alarm), label: AppString.routines),
           BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.bandage_fill),
               label: AppString.medicines),
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.alarm), label: AppString.routines),
+              icon: Icon(CupertinoIcons.settings), label: AppString.settings),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

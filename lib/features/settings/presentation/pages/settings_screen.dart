@@ -8,8 +8,10 @@ import 'package:pasti_track/features/settings/presentation/widgets/dark_mode_swi
 import 'package:pasti_track/features/settings/presentation/widgets/settings_tile_widget.dart';
 import 'package:pasti_track/features/settings/presentation/widgets/theme_dropdown_widget.dart';
 
+// ignore: must_be_immutable
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  bool showAppBar;
+  SettingsScreen({super.key, this.showAppBar = true});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -33,6 +35,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool showAppBar = widget.showAppBar;
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUnauthenticated) {
@@ -40,9 +44,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(AppString.settings),
-        ),
+        appBar: showAppBar
+            ? AppBar(
+                title: const Text(AppString.settings),
+              )
+            : null,
         body: ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
