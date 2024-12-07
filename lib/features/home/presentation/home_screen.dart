@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
+import 'package:pasti_track/core/helper/app_logger.dart';
+import 'package:pasti_track/features/medication_history/presentation/page/mark_dose_screen.dart';
 import 'package:pasti_track/features/medicines/presentation/pages/medication_screen.dart';
 import 'package:pasti_track/features/routines/presentation/pages/routines.dart';
 import 'package:pasti_track/features/settings/presentation/pages/settings_screen.dart';
@@ -17,27 +19,51 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   String subTextAppBar = "";
 
-  final List<Widget> _pages = [
-    Routines(showAppBar: false),
-    MedicationScreen(showAppBar: false),
-    SettingsScreen(showAppBar: false),
+  final List<Map> _options = [
+    {
+      "title": AppString.routines,
+      "screen": Routines(showAppBar: false),
+      "navigator": const BottomNavigationBarItem(
+        icon: Icon(CupertinoIcons.alarm),
+        label: AppString.routines,
+      ),
+    },
+    {
+      "title": AppString.medicaments,
+      "screen": MedicationScreen(showAppBar: false),
+      "navigator": const BottomNavigationBarItem(
+        icon: Icon(CupertinoIcons.bandage_fill),
+        label: AppString.medicines,
+      ),
+    },
+    {
+      "title": AppString.settings,
+      "screen": SettingsScreen(showAppBar: false),
+      "navigator": const BottomNavigationBarItem(
+        icon: Icon(CupertinoIcons.settings),
+        label: AppString.settings,
+      ),
+    },
   ];
+
+  final List<Widget> _pages = [];
+  final List<BottomNavigationBarItem> _navigators = [];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      switch (_selectedIndex) {
-        case 0:
-          subTextAppBar = AppString.routines;
-          break;
-        case 1:
-          subTextAppBar = AppString.medicaments;
-          break;
-        case 2:
-          subTextAppBar = AppString.settings;
-          break;
-      }
+      subTextAppBar = _options[index]['title'];
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for (var e in _options) {
+      _pages.add(e["screen"]);
+      _navigators.add(e["navigator"]);
+    }
   }
 
   @override
@@ -51,15 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: _pages,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.alarm), label: AppString.routines),
-          BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.bandage_fill),
-              label: AppString.medicines),
-          BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.settings), label: AppString.settings),
-        ],
+        items: _navigators,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),

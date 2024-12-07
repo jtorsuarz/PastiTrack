@@ -26,50 +26,47 @@ import 'package:pasti_track/features/auth/domain/usecases/signup_user_usecase.da
 import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
 
 class AppBlocProviders {
+  static final _authRepoImpl = AuthRepositoryImpl(AuthRemoteDataSource());
+  static final _profileRepoImpl = ProfileRepositoryImpl();
+  static final _medicamentRepoImpl = MedicamentRepositoryImpl(
+    MedicamentLocalDataSource(),
+    MedicamentRemoteDataSource(),
+  );
+  static final _routineRepoImpl = RoutineRepositoryImpl(
+    RoutineLocalDataSource(),
+    RoutineRemoteDataSource(),
+  );
+
   static List<SingleChildWidget> get(firebase) => [
         BlocProvider(create: (context) => ThemeBloc()),
+        // Firebase
         BlocProvider(
           create: (context) => AuthBloc(
             firebase,
-            SignInUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
-            SignUpUserUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
-            PasswordRecoveryUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
+            SignInUseCase(_authRepoImpl),
+            SignUpUserUseCase(_authRepoImpl),
+            PasswordRecoveryUseCase(_authRepoImpl),
           )..add(AuthCheckRequested()),
         ),
+        // Notifications
+        // Screens Logic UX
         BlocProvider(
           create: (context) => ProfileBloc(
-            LoadProfileUseCase(
-              ProfileRepositoryImpl(),
-            ),
-            UpdateProfileUseCase(
-              ProfileRepositoryImpl(),
-            ),
-            ChangePasswordUseCase(
-              ProfileRepositoryImpl(),
-            ),
-            UpdateProfileImageUseCase(
-              ProfileRepositoryImpl(),
-            ),
+            LoadProfileUseCase(_profileRepoImpl),
+            UpdateProfileUseCase(_profileRepoImpl),
+            ChangePasswordUseCase(_profileRepoImpl),
+            UpdateProfileImageUseCase(_profileRepoImpl),
           )..add(LoadProfileEvent()),
         ),
         BlocProvider(
           create: (ctx) => MedicamentBloc(
-            MedicamentRepositoryImpl(
-              MedicamentLocalDataSource(),
-              MedicamentRemoteDataSource(),
-            ),
+            _medicamentRepoImpl,
           )..add(LoadMedicationsEvent()),
         ),
         BlocProvider(
           create: (ctx) => RoutineBloc(
-            RoutineRepositoryImpl(
-              RoutineLocalDataSource(),
-              RoutineRemoteDataSource(),
-            ),
-            MedicamentRepositoryImpl(
-              MedicamentLocalDataSource(),
-              MedicamentRemoteDataSource(),
-            ),
+            _routineRepoImpl,
+            _medicamentRepoImpl,
           )..add(LoadRoutinesEvent()),
         )
       ];
