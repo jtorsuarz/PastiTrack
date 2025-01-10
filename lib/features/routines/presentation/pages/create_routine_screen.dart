@@ -91,15 +91,12 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
         title: Text(
             _routine == null ? AppString.routineCreate : AppString.rutineEdit),
         leading: IconButton(
-          onPressed: () {},
-          icon: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               context.read<RoutineBloc>().add(LoadRoutinesEvent());
               context.pop();
             },
           ),
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
