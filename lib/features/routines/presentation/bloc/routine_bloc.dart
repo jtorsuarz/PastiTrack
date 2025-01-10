@@ -91,7 +91,8 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
 
       await repository.addRoutine(event.routine);
       await repository.syncData();
-      emit(RoutineAddEditSuccessState(AppString.routineSuccessfullyAdded));
+      emit(RoutineSuccessAlertState(AppString.routineSuccessfullyAdded));
+      add(LoadRoutinesEvent());
     } on Failure catch (e) {
       emit(RoutineErrorState(AppString.errorWhenCreate(e.message)));
     }
