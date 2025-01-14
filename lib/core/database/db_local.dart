@@ -82,6 +82,20 @@ class DBLocal {
         FOREIGN KEY (user_id) REFERENCES Users(user_id)
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE events (
+        event_id TEXT PRIMARY KEY,
+        routine_id TEXT,
+        medicine_id TEXT,
+        date_scheduled TEXT NOT NULL,
+        status TEXT,
+        date_done TEXT,
+        date_updated TEXT NOT NULL,
+        FOREIGN KEY (routine_id) REFERENCES routines(routine_id),
+        FOREIGN KEY (medicine_id) REFERENCES Users(medicine_id)
+      )
+    ''');
   }
 
   // CRUD functions for tables
@@ -230,6 +244,67 @@ class DBLocal {
       'history',
       where: 'history_id = ?',
       whereArgs: [historialId],
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getAllEvents() async {
+    Database db = await database;
+    return await db.query('events');
+  }
+
+  Future<Map<String, dynamic>?> getEventById(String eventId) async {
+    Database db = await database;
+    final result = await db.query(
+      'events',
+      where: 'event_id = ?',
+      whereArgs: [eventId],
+    );
+    return result.isNotEmpty ? result.first : null;
+  }
+
+  Future<int> insertEvent(Map<String, dynamic> event) async {
+    Database db = await database;
+    return await db.insert(
+      'events',
+      event,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<int> updateEventStatusAndDates({
+    required String eventId,
+    required String status,
+    String? dateDone,
+  }) async {
+    Database db = await database;
+    final updatedValues = {
+      'status': status,
+      'date_done': dateDone,
+    };
+
+    return await db.update(
+      'events',
+      updatedValues,
+      where: 'event_id = ?',
+      whereArgs: [eventId],
+    );
+  }
+
+  Future<int> deleteEvent(String eventId) async {
+    Database db = await database;
+    return await db.delete(
+      'events',
+      where: 'event_id = ?',
+      whereArgs: [eventId],
+    );
+  }
+
+  Future<int> deleteEventsByRoutineId(String routineId) async {
+    Database db = await database;
+    return await db.delete(
+      'events',
+      where: 'routine_id = ?',
+      whereArgs: [routineId],
     );
   }
 }

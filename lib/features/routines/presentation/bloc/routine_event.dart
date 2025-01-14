@@ -12,6 +12,11 @@ class AddRoutineEvent extends RoutineEvent {
   AddRoutineEvent(this.routine, this.isGeneralTime);
 }
 
+class CreateRoutineEventsEvent extends RoutineEvent {
+  final Routine routine;
+  CreateRoutineEventsEvent(this.routine);
+}
+
 class UpdateRoutineEvent extends RoutineEvent {
   final Routine routine;
   UpdateRoutineEvent(this.routine);

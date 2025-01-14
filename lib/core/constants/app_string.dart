@@ -94,6 +94,11 @@ class AppString {
   static const String routineDeleted = 'Eliminar Rutina';
   static const String routineDeleteConfirmation =
       '¿Está seguro de que desea eliminar esta rutina?';
+  static const String events = 'Eventos';
+  static const String event = 'Evento';
+  static const String eventsFromRoutine = 'Eventos de Rutina';
+  static const String noScheduledEventsFound =
+      'No se encontraros eventos programados.';
 
   // * Success messages
   static const String success = 'Éxito';

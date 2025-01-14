@@ -51,6 +51,26 @@ enum RoutineDays {
     }
   }
 
-  // Método que devuelve una lista de todos los valores del enum
+  static int numericValue(val) {
+    switch (val) {
+      case AppString.monday:
+        return 1;
+      case AppString.tuesday:
+        return 2;
+      case AppString.wednesday:
+        return 3;
+      case AppString.thursday:
+        return 4;
+      case AppString.friday:
+        return 5;
+      case AppString.saturday:
+        return 6;
+      case AppString.sunday:
+        return 7;
+      default:
+        throw ArgumentError(AppString.errorInvalidFrecuency(val.toString()));
+    }
+  }
+
   static List<RoutineDays> get allValues => RoutineDays.values;
 }

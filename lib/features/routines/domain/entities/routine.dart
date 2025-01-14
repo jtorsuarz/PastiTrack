@@ -104,7 +104,7 @@ class Routine {
   }
 
   TimeOfDay? get getTimeOfDay {
-    if (dayOfWeek == null && customTimes == null) {
+    if (dayOfWeek == null) {
       return null;
     }
     final timeParts =

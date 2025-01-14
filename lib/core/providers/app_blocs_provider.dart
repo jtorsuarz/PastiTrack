@@ -1,4 +1,8 @@
 import 'package:pasti_track/core/theme/bloc/theme_bloc.dart';
+import 'package:pasti_track/features/events/data/datasources/event_local_datasource.dart';
+import 'package:pasti_track/features/events/data/datasources/event_remote_datasource.dart';
+import 'package:pasti_track/features/events/data/repositories/event_repository_impl.dart';
+import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/features/medicines/data/datasources/medicament_local_datasource.dart';
 import 'package:pasti_track/features/medicines/data/datasources/medicament_remote_datasource.dart';
 import 'package:pasti_track/features/medicines/data/repositories/medicament_repository_impl.dart';
@@ -32,6 +36,8 @@ class AppBlocProviders {
     MedicamentLocalDataSource(),
     MedicamentRemoteDataSource(),
   );
+  static final _eventRepoImpl =
+      EventRepositoryImpl(EventLocalDataSource(), EventRemoteDataSource());
   static final _routineRepoImpl = RoutineRepositoryImpl(
     RoutineLocalDataSource(),
     RoutineRemoteDataSource(),
@@ -67,7 +73,16 @@ class AppBlocProviders {
           create: (ctx) => RoutineBloc(
             _routineRepoImpl,
             _medicamentRepoImpl,
-          )..add(LoadRoutinesEvent()),
+            _eventRepoImpl,
+          )..add(
+              LoadRoutinesEvent(),
+            ),
+        ),
+        BlocProvider(
+          create: (ctx) => EventsBloc(_eventRepoImpl)
+            ..add(
+              LoadingEventsEvent(),
+            ),
         )
       ];
 }

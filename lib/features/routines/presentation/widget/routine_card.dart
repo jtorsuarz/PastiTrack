@@ -25,11 +25,14 @@ class RoutineCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-                onPressed: () => context.push(
-                      AppUrls.addEditRoutinesPath,
-                      extra: routine,
-                    ),
-                icon: const Icon(Icons.edit)),
+              onPressed: () => context.push(
+                AppUrls.addEditRoutinesPath,
+                extra: routine,
+              ),
+              icon: const Icon(
+                Icons.edit,
+              ),
+            ),
             IconButton(
               icon: const Icon(Icons.delete),
               onPressed: () {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
-import 'package:pasti_track/core/helper/app_logger.dart';
+import 'package:pasti_track/features/events/presentation/pages/events_screen.dart';
 import 'package:pasti_track/features/medicines/presentation/pages/medication_screen.dart';
 import 'package:pasti_track/features/routines/presentation/pages/routines.dart';
 import 'package:pasti_track/features/settings/presentation/pages/settings_screen.dart';
@@ -19,6 +19,14 @@ class _HomeScreenState extends State<HomeScreen> {
   String subTextAppBar = "";
 
   final List<Map> _options = [
+    {
+      "title": AppString.events,
+      "screen": EventsScreen(showAppBar: false),
+      "navigator": const BottomNavigationBarItem(
+        icon: Icon(CupertinoIcons.calendar),
+        label: AppString.events,
+      ),
+    },
     {
       "title": AppString.routines,
       "screen": Routines(showAppBar: false),
@@ -57,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     for (var e in _options) {
       _pages.add(e["screen"]);

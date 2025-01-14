@@ -54,6 +54,34 @@ class DBRemote {
     return await _userRef.collection('Routines').get();
   }
 
+  // CRUD Operations for Events
+  Future<void> addEvent(String rutinaId, Map<String, dynamic> rutina) async {
+    await _userRef.collection('Events').doc(rutinaId).set(rutina);
+  }
+
+  Future<void> updateEvent(String rutinaId, Map<String, dynamic> rutina) async {
+    await _userRef.collection('Events').doc(rutinaId).update(rutina);
+  }
+
+  Future<void> deleteEvent(String rutinaId) async {
+    await _userRef.collection('Events').doc(rutinaId).delete();
+  }
+
+  Future<void> deleteEventsByRoutineId(String routineId) async {
+    final querySnapshot = await _userRef
+        .collection('Events')
+        .where('routine_id', isEqualTo: routineId)
+        .get();
+
+    for (var doc in querySnapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  Future<QuerySnapshot> getEvents() async {
+    return await _userRef.collection('Events').get();
+  }
+
   // CRUD Operations for History
   Future<void> addHistorial(
       String historialId, Map<String, dynamic> history) async {

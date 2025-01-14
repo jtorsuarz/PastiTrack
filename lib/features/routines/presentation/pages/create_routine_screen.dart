@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
+import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine_frequency.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
@@ -91,12 +92,12 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
         title: Text(
             _routine == null ? AppString.routineCreate : AppString.rutineEdit),
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              context.read<RoutineBloc>().add(LoadRoutinesEvent());
-              context.pop();
-            },
-          ),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.read<RoutineBloc>().add(LoadRoutinesEvent());
+            context.pop();
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -286,7 +287,6 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                                 customTimes: customTimes,
                                 dateUpdated: DateTime.now().toString(),
                               );
-                              AppLogger.p("module", DateTime.now().toString());
                               context.read<RoutineBloc>().add(
                                   AddRoutineEvent(routine, _useGeneralTime));
                             }
