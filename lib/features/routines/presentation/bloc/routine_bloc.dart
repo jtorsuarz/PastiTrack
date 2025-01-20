@@ -3,25 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/errors/failures.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
-import 'package:pasti_track/features/events/data/repositories/event_repository_impl.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
-import 'package:pasti_track/features/medicines/data/repositories/medicament_repository_impl.dart';
 import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
-import 'package:pasti_track/features/routines/data/repositories/routine_repository_impl.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine_days.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine_frequency.dart';
+import 'package:pasti_track/features/routines/domain/usecases/add_event.dart';
+import 'package:pasti_track/features/routines/domain/usecases/add_routine.dart';
+import 'package:pasti_track/features/routines/domain/usecases/delete_event_by_routine.dart';
+import 'package:pasti_track/features/routines/domain/usecases/delete_routine.dart';
+import 'package:pasti_track/features/routines/domain/usecases/get_all_routines.dart';
+import 'package:pasti_track/features/routines/domain/usecases/get_medications.dart';
+import 'package:pasti_track/features/routines/domain/usecases/update_routine.dart';
 
 part 'routine_event.dart';
 part 'routine_state.dart';
 
 class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
-  final RoutineRepositoryImpl repository;
-  final EventRepositoryImpl eventRepository;
-  final MedicamentRepositoryImpl repositoryMedicaments;
+  final GetAllRoutines getAllRoutines;
+  final GetAllMedications getAllMedications;
+  final AddRoutine addRoutine;
+  final UpdateRoutine updateRoutine;
+  final DeleteRoutine deleteRoutine;
+  final DeleteEventByRoutine deleteEventByRoutine;
+  final AddEvent addEvent;
 
-  RoutineBloc(this.repository, this.repositoryMedicaments, this.eventRepository)
-      : super(RoutineLoadingState()) {
+  RoutineBloc(
+    this.getAllRoutines,
+    this.getAllMedications,
+    this.addRoutine,
+    this.updateRoutine,
+    this.deleteRoutine,
+    this.deleteEventByRoutine,
+    this.addEvent,
+  ) : super(RoutineLoadingState()) {
     on<LoadRoutinesMedicamentsEvent>(_onLoadRoutinesMedicamentsEvent);
     on<LoadRoutinesEvent>(_onLoadRoutinesEvent);
     on<AddRoutineEvent>(_onAddRoutine);
@@ -32,10 +47,8 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
 
   void _onLoadRoutinesEvent(
       LoadRoutinesEvent event, Emitter<RoutineState> emit) async {
-    emit(RoutineLoadingState());
     try {
-      await repository.syncData();
-      final routines = await repository.getRoutines();
+      final routines = await getAllRoutines.call();
       emit(RoutineLoadedState(routines: routines));
     } on Failure catch (e) {
       emit(RoutineErrorState(e.message));
@@ -45,8 +58,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
   void _onLoadRoutinesMedicamentsEvent(
       LoadRoutinesMedicamentsEvent event, Emitter<RoutineState> emit) async {
     try {
-      await repository.syncData();
-      final medicaments = await repositoryMedicaments.getMedications();
+      final medicaments = await getAllMedications.call();
       emit(RoutineMedicamentsLoadedState(medicines: medicaments));
     } on Failure catch (e) {
       emit(RoutineErrorState(e.message));
@@ -60,7 +72,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           emit(
             RoutineErrorAlertState(AppString.routineYouMustProvideRangeOfDays),
           );
-          final medicaments = await repositoryMedicaments.getMedications();
+          final medicaments = await getAllMedications.call();
           emit(RoutineMedicamentsLoadedState(medicines: medicaments));
           return;
         }
@@ -70,7 +82,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
               RoutineErrorAlertState(
                   AppString.routineMustProvideLeastOnSchedule),
             );
-            final medicaments = await repositoryMedicaments.getMedications();
+            final medicaments = await getAllMedications.call();
             emit(RoutineMedicamentsLoadedState(medicines: medicaments));
             return;
           }
@@ -80,7 +92,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
               RoutineErrorAlertState(
                   AppString.routineMustProvideLeastOnSchedule),
             );
-            final medicaments = await repositoryMedicaments.getMedications();
+            final medicaments = await getAllMedications.call();
             emit(RoutineMedicamentsLoadedState(medicines: medicaments));
             return;
           }
@@ -90,14 +102,13 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           emit(
             RoutineErrorAlertState(AppString.routineMustProvideLeastOnSchedule),
           );
-          final medicaments = await repositoryMedicaments.getMedications();
+          final medicaments = await getAllMedications.call();
           emit(RoutineMedicamentsLoadedState(medicines: medicaments));
           return;
         }
       }
 
-      await repository.addRoutine(event.routine);
-      await repository.syncData();
+      await addRoutine.call(event.routine);
       emit(RoutineSuccessAlertState(AppString.routineSuccessfullyAdded));
       add(CreateRoutineEventsEvent(event.routine));
     } on Failure catch (e) {
@@ -151,7 +162,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
         DateTime dateScheduled = date;
         AppLogger.p("CustomDaysWithTime", dateScheduled);
 
-        futures.add(eventRepository.add(EventEntity(
+        futures.add(addEvent.call(EventEntity(
           eventId: DateTime.now().toIso8601String(),
           routineId: routine.routineId,
           medicineId: routine.medicineId,
@@ -174,7 +185,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
       UpdateRoutineEvent event, Emitter<RoutineState> emit) async {
     emit(RoutineLoadingState());
     try {
-      await repository.updateRoutine(event.routine);
+      await updateRoutine.call(event.routine);
       emit(RoutineSuccessAlertState(AppString.routineSuccessfullyUpdated));
       add(LoadRoutinesEvent());
     } on Failure catch (e) {
@@ -186,8 +197,8 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
       DeleteRoutineEvent event, Emitter<RoutineState> emit) async {
     emit(RoutineLoadingState());
     try {
-      await repository.deleteRoutine(event.id);
-      await eventRepository.deleteByRoutine(event.id);
+      await deleteRoutine.call(event.id);
+      await deleteEventByRoutine.call(event.id);
       add(LoadRoutinesEvent());
       emit(RoutineSuccessAlertState(AppString.routineSuccessfullyRemoved));
     } on RoutineErrorAlertState catch (e) {

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:pasti_track/core/errors/failures.dart';
+import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/medicines/data/repositories/medicament_repository_impl.dart';
 import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
 
@@ -11,6 +12,7 @@ class MedicamentBloc extends Bloc<MedicamentEvent, MedicamentState> {
 
   MedicamentBloc(this.repository) : super(MedicamentInitialState()) {
     on<LoadMedicationsEvent>((event, emit) async {
+      AppLogger.p("module", event.toString());
       try {
         final medicamentos = await repository.getMedications();
         await repository.syncData();

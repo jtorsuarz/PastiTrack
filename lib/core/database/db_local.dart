@@ -252,6 +252,17 @@ class DBLocal {
     return await db.query('events');
   }
 
+  Future<List<Map<String, dynamic>>> getPendingEvents(
+      DateTime currentDate) async {
+    Database db = await database;
+    final result = await db.query(
+      'events',
+      where: 'status = ? AND date_scheduled <= ?',
+      whereArgs: [0, currentDate.toIso8601String()], // 0 = false (pendiente)
+    );
+    return result;
+  }
+
   Future<Map<String, dynamic>?> getEventById(String eventId) async {
     Database db = await database;
     final result = await db.query(

@@ -1,6 +1,6 @@
 part of 'medicament_bloc.dart';
 
-sealed class MedicamentEvent {}
+abstract class MedicamentEvent {}
 
 class LoadMedicationsEvent extends MedicamentEvent {}
 

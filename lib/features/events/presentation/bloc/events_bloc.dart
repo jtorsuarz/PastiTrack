@@ -1,15 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:pasti_track/core/errors/failures.dart';
-import 'package:pasti_track/features/events/data/repositories/event_repository_impl.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
+import 'package:pasti_track/features/events/domain/usecases/get_all_events.dart';
+import 'package:pasti_track/features/events/domain/usecases/mark_event_as_done.dart';
+import 'package:pasti_track/features/events/domain/usecases/schedule_notifications.dart';
 
 part 'events_event.dart';
 part 'events_state.dart';
 
 class EventsBloc extends Bloc<EventsEvent, EventsState> {
-  EventRepositoryImpl eventsRepository;
+  final MarkEventAsDone markEventAsDone;
+  final ScheduleNotifications scheduleNotifications;
+  final GetAllEvents getAllEvents;
 
-  EventsBloc(this.eventsRepository) : super(EventsLoadingState()) {
+  EventsBloc(
+      this.markEventAsDone, this.scheduleNotifications, this.getAllEvents)
+      : super(EventsLoadingState()) {
     on<LoadingEventsEvent>(_onLoadingEventsEvent);
     on<EventChangeStatusEvent>(_onEventChangeStatusEvent);
   }
@@ -17,7 +23,7 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
       LoadingEventsEvent event, Emitter<EventsState> emit) async {
     try {
       emit(EventsLoadingState());
-      final events = await eventsRepository.getAll();
+      final events = await getAllEvents.call();
       emit(EventsDataState(events));
     } on Failure catch (error) {
       emit(EventsErrorState(error.toString()));
@@ -30,8 +36,8 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
 
     try {
       emit(EventsLoadingState());
-      await eventsRepository.updateStatusEvent(eventId);
-      emit(EventsDataState(await eventsRepository.getAll()));
+      await markEventAsDone.call(eventId);
+      emit(EventsDataState(await getAllEvents.call()));
     } on Failure catch (error) {
       emit(EventsErrorState(error.toString()));
     }

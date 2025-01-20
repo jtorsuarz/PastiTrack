@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
-import 'package:pasti_track/core/theme/bloc/theme_bloc.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
 import 'package:pasti_track/widgets/custom_paddings.dart';
@@ -15,16 +14,18 @@ class RoutineCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int themeId = context.read<ThemeBloc>().state.selectedColor;
     return Card(
       margin: CustomPaddings.getAll15(),
       child: ListTile(
         title: Text(routine.routineId),
-        subtitle: Wrap(
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            CustomSizedBoxes.get10(),
             Text(
               AppString.frecuencyFormat(routine.frequency),
             ),
+            CustomSizedBoxes.get10(),
             Text(
               AppString.hourFormat(routine.dosageTime),
             ),

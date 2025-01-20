@@ -38,4 +38,11 @@ class EventRemoteDataSource {
 
     AppLogger.p("Remote updateStatusEvent", event);
   }
+
+  Future<List<EventEntity>> getPendingEvents(DateTime currentDate) async {
+    final events = await dbremote.getPendingEvents(currentDate);
+    return events.docs.map((doc) {
+      return EventEntity.fromJson(doc.data() as Map<String, dynamic>);
+    }).toList();
+  }
 }

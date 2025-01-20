@@ -86,6 +86,15 @@ class DBRemote {
     return await _userRef.collection('Events').get();
   }
 
+  Future<QuerySnapshot> getPendingEvents(DateTime currentDate) async {
+    return await _userRef
+        .collection('Events')
+        .where('status', isEqualTo: false) // Solo eventos pendientes
+        .where('date_scheduled',
+            isLessThanOrEqualTo: currentDate.toIso8601String())
+        .get();
+  }
+
   // CRUD Operations for History
   Future<void> addHistorial(
       String historialId, Map<String, dynamic> history) async {

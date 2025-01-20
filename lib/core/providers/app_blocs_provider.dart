@@ -1,7 +1,11 @@
+import 'package:pasti_track/core/notifications/notification_service.dart';
 import 'package:pasti_track/core/theme/bloc/theme_bloc.dart';
 import 'package:pasti_track/features/events/data/datasources/event_local_datasource.dart';
 import 'package:pasti_track/features/events/data/datasources/event_remote_datasource.dart';
 import 'package:pasti_track/features/events/data/repositories/event_repository_impl.dart';
+import 'package:pasti_track/features/events/domain/usecases/get_all_events.dart';
+import 'package:pasti_track/features/events/domain/usecases/mark_event_as_done.dart';
+import 'package:pasti_track/features/events/domain/usecases/schedule_notifications.dart';
 import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/features/medicines/data/datasources/medicament_local_datasource.dart';
 import 'package:pasti_track/features/medicines/data/datasources/medicament_remote_datasource.dart';
@@ -18,6 +22,13 @@ import 'package:pasti_track/features/profile/presentation/bloc/profile_event.dar
 import 'package:pasti_track/features/routines/data/datasources/routine_local_datasource.dart';
 import 'package:pasti_track/features/routines/data/datasources/routine_remote_datasource.dart';
 import 'package:pasti_track/features/routines/data/repositories/routine_repository_impl.dart';
+import 'package:pasti_track/features/routines/domain/usecases/add_event.dart';
+import 'package:pasti_track/features/routines/domain/usecases/add_routine.dart';
+import 'package:pasti_track/features/routines/domain/usecases/delete_event_by_routine.dart';
+import 'package:pasti_track/features/routines/domain/usecases/delete_routine.dart';
+import 'package:pasti_track/features/routines/domain/usecases/get_all_routines.dart';
+import 'package:pasti_track/features/routines/domain/usecases/get_medications.dart';
+import 'package:pasti_track/features/routines/domain/usecases/update_routine.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/single_child_widget.dart';
@@ -36,6 +47,7 @@ class AppBlocProviders {
     MedicamentLocalDataSource(),
     MedicamentRemoteDataSource(),
   );
+  static final _notification = NotificationService();
   static final _eventRepoImpl =
       EventRepositoryImpl(EventLocalDataSource(), EventRemoteDataSource());
   static final _routineRepoImpl = RoutineRepositoryImpl(
@@ -71,15 +83,22 @@ class AppBlocProviders {
         ),
         BlocProvider(
           create: (ctx) => RoutineBloc(
-            _routineRepoImpl,
-            _medicamentRepoImpl,
-            _eventRepoImpl,
+            GetAllRoutines(_routineRepoImpl),
+            GetAllMedications(_medicamentRepoImpl),
+            AddRoutine(_routineRepoImpl),
+            UpdateRoutine(_routineRepoImpl),
+            DeleteRoutine(_routineRepoImpl),
+            DeleteEventByRoutine(_eventRepoImpl),
+            AddEvent(_eventRepoImpl),
           )..add(
               LoadRoutinesEvent(),
             ),
         ),
         BlocProvider(
-          create: (ctx) => EventsBloc(_eventRepoImpl)
+          create: (ctx) => EventsBloc(
+              MarkEventAsDone(_eventRepoImpl),
+              ScheduleNotifications(_notification),
+              GetAllEvents(_eventRepoImpl))
             ..add(
               LoadingEventsEvent(),
             ),

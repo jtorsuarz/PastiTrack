@@ -39,7 +39,9 @@ class RoutineRepositoryImpl implements RoutineRepository {
   Future<int> addRoutine(Routine routines) async {
     try {
       final result = await localDB.addRoutine(routines);
-      if (await isConnected()) await remoteDB.addRoutine(routines);
+      if (await isConnected()) {
+        await remoteDB.addRoutine(routines);
+      }
       AppLogger.p("Routine", "addRoutine ");
       return result;
     } catch (e) {
