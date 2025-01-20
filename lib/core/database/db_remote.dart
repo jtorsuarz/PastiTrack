@@ -78,6 +78,10 @@ class DBRemote {
     }
   }
 
+  Future<DocumentSnapshot> getEvent(String eventId) async {
+    return await _userRef.collection('Events').doc(eventId).get();
+  }
+
   Future<QuerySnapshot> getEvents() async {
     return await _userRef.collection('Events').get();
   }

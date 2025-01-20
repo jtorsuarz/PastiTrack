@@ -6,4 +6,5 @@ abstract class EventRepository {
   Future<int> update(EventEntity event);
   Future<void> delete(String eventId);
   Future<void> deleteByRoutine(String routineId);
+  Future<int> updateStatusEvent(String eventId);
 }

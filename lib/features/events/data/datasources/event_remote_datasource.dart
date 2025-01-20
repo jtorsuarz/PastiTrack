@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pasti_track/core/database/db_remote.dart';
+import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 
 class EventRemoteDataSource {
@@ -29,5 +31,11 @@ class EventRemoteDataSource {
 
   Future<void> updateEvent(EventEntity event) async {
     await dbremote.updateEvent(event.medicineId, event.toJsonWithoutId());
+  }
+
+  Future<void> updateStatusEvent(String id, String dateDone) async {
+    DocumentSnapshot event = await dbremote.getEvent(id);
+
+    AppLogger.p("Remote updateStatusEvent", event);
   }
 }

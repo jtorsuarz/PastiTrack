@@ -158,7 +158,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           dateScheduled: dateScheduled,
           dateUpdated: DateTime.now(),
           dateDone: null,
-          status: null,
+          status: false,
         )));
       }
 

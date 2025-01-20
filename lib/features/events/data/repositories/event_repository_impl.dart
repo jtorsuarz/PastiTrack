@@ -86,6 +86,21 @@ class EventRepositoryImpl implements EventRepository {
     }
   }
 
+  @override
+  Future<int> updateStatusEvent(String eventId) async {
+    try {
+      String dateDone = DateTime.now().toIso8601String();
+      final result = await localDB.updateStatusEvent(eventId, dateDone);
+      if (await isConnected())
+        await remoteDB.updateStatusEvent(eventId, dateDone);
+      AppLogger.p("Event", "updateStatusEvent");
+      return result;
+    } catch (e) {
+      AppLogger.p("Catch Event", "updateStatusEvent ${e.toString()}");
+      throw Failure(AppString.errorWhenUpdate(AppString.event));
+    }
+  }
+
   Future<void> syncData() async {
     if (await isConnected()) {
       List<EventEntity> localEvents = await getAll();

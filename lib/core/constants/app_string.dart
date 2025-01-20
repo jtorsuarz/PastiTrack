@@ -111,6 +111,7 @@ class AppString {
       'Perfil actualizado exitosamente.';
   static const String entryName = 'Ingrese el nombre';
   static const String entryDosage = 'Ingrese la dosis';
+  static const String statusWithTwoPoint = 'Estado: ';
 
   // ! Error Messages
   static const String error = 'Error';
@@ -143,6 +144,11 @@ class AppString {
       'Se debe proporcionar dayOfWeek';
   static String eitherCustomTimesMustBeProvided =
       'Se debe proporcionar customDays o customTimes';
+  static String take = "Tomado";
+  static String pending = "Pendiente";
+
+  static String registerTake = "Registro de Toma: ";
+  static String dateScheduled = "Fecha Programada: ";
 
   // ? Functions return a string
   static String userFromTime(v) => 'Usuario desde: $v';
@@ -171,7 +177,8 @@ class AppString {
       '${v.day}/${v.month}/${v.year}: ${times ?? 'No Seleccionada'}';
   static String errorInvalidFrecuency(v) => 'Frecuencia no válida: $v';
   static String errorActionRequired(v) => 'Error acción requerida: $v';
-  static String frecuencyAndHourFormat(f, h) => 'Frecuencia: $f - Hora: $h';
+  static String frecuencyFormat(v) => 'Frecuencia: $v';
+  static String hourFormat(v) => 'Hora: $v';
   static String invalidKeyDataTime(v) => 'Clave inválida para DateTime: $v';
   static String invalidFormatHour(v) => 'Formato de hora inválido: $v';
 }

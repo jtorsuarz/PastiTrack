@@ -4,6 +4,7 @@ import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
+import 'package:pasti_track/features/events/presentation/widgets/event_card.dart';
 
 class EventsScreen extends StatelessWidget {
   bool showAppBar;
@@ -14,6 +15,7 @@ class EventsScreen extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<EventsBloc, EventsState>(
         listener: (context, state) {
+          AppLogger.p("EventsScreen", "EventsStates ${state.toString()}");
           if (state is EventsErrorAlertState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error)),
@@ -45,14 +47,13 @@ class EventsScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: events.length,
               itemBuilder: (context, index) {
-                final event = state.events[index];
-                return Text("EVENTO : ${event.dateScheduled}");
+                return EventCard(event: state.events[index]);
               },
             );
           }
 
           return Center(
-            child: Text("Hello world 2!"),
+            child: Text(AppString.errorWhenLoad(AppString.events)),
           );
         },
       ),

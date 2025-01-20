@@ -271,14 +271,11 @@ class DBLocal {
     );
   }
 
-  Future<int> updateEventStatusAndDates({
-    required String eventId,
-    required String status,
-    String? dateDone,
-  }) async {
+  Future<int> updateEventStatusAndDates(
+      {required String eventId, required String dateDone}) async {
     Database db = await database;
     final updatedValues = {
-      'status': status,
+      'status': true,
       'date_done': dateDone,
     };
 

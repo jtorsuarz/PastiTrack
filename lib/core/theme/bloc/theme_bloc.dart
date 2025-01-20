@@ -8,15 +8,13 @@ part 'theme_state.dart';
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc()
       : super(ThemeState(
-          themeData: AppTheme(selectedColor: AppDotEnv.selectedColorInitial)
-              .theme(
-                  isDarkMode: AppDotEnv
-                      .isDarkMode), // Inicializa con el tema predeterminado
+          themeData: AppTheme(
+            selectedColor: AppDotEnv.selectedColorInitial,
+          ).theme(isDarkMode: AppDotEnv.isDarkMode),
           selectedColor: AppDotEnv.selectedColorInitial,
           isDarkMode: AppDotEnv.isDarkMode,
         )) {
     on<ChangeThemeColor>((event, emit) {
-      // Cambiar el color del tema
       final newTheme = AppTheme(selectedColor: event.colorIndex)
           .theme(isDarkMode: state.isDarkMode);
       emit(state.copyWith(
@@ -26,7 +24,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     });
 
     on<ToggleDarkMode>((event, emit) {
-      // Cambiar entre modo claro y oscuro
       final newTheme = AppTheme(selectedColor: state.selectedColor)
           .theme(isDarkMode: event.isDarkMode);
       emit(state.copyWith(

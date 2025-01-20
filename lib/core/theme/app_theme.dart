@@ -112,4 +112,6 @@ class AppTheme {
   }
 
   static int lengthColorList() => colorThemes.length;
+
+  static Color getCurrentColor(c) => colorThemes[c];
 }

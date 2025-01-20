@@ -25,11 +25,12 @@ class EventLocalDataSource {
     await database.deleteEventsByRoutineId(routineId);
   }
 
-  Future<int> updateEvent(EventEntity event) async {
+  Future<int> updateStatusEvent(String eventId, String dateDone) async {
     return await database.updateEventStatusAndDates(
-      eventId: event.eventId,
-      status: event.status!,
-      dateDone: event.dateDone.toString(),
-    );
+        eventId: eventId, dateDone: dateDone);
+  }
+
+  Future<int> updateEvent(EventEntity event) async {
+    return Future.value(1);
   }
 }
