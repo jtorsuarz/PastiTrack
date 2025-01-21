@@ -4,6 +4,7 @@ import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/errors/failures.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
+import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine_days.dart';
@@ -146,7 +147,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           dateScheduled: dateScheduled,
           dateUpdated: DateTime.now(),
           dateDone: null,
-          status: false,
+          status: EventStatus.pending,
         )));
       }
 
@@ -170,7 +171,8 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
       final eventsToKeep = existingEvents.where((event) {
         // Eventos pasados o marcados como tomados
         return event.dateScheduled.isBefore(DateTime.now()) ||
-            event.status ||
+            event.status.name == "pending" ||
+            event.status.name == "missed" ||
             event.dateDone != null;
       }).toList();
 
@@ -200,7 +202,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           dateScheduled: date,
           dateUpdated: DateTime.now(),
           dateDone: null,
-          status: false,
+          status: EventStatus.pending,
         ));
       }
 

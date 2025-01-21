@@ -1,3 +1,4 @@
+import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:sqflite/sqflite.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
@@ -259,7 +260,7 @@ class DBLocal {
 
   Future<List<Map<String, dynamic>>> getAllEvents() async {
     Database db = await database;
-    return await db.query('events');
+    return await db.query("events");
   }
 
   Future<List<Map<String, dynamic>>> getPendingEvents(
@@ -292,11 +293,21 @@ class DBLocal {
     );
   }
 
+  Future<int> updateEvent(Map<String, dynamic> json) async {
+    Database db = await database;
+    return await db.update(
+      'events',
+      json,
+      where: 'event_id = ?',
+      whereArgs: [json['event_id']],
+    );
+  }
+
   Future<int> updateEventStatusAndDates(
       {required String eventId, required String dateDone}) async {
     Database db = await database;
     final updatedValues = {
-      'status': true,
+      'status': EventStatus.completed.name,
       'date_done': dateDone,
     };
 

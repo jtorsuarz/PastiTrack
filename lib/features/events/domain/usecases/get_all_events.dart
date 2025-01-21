@@ -7,6 +7,11 @@ class GetAllEvents {
   GetAllEvents(this.repository);
 
   Future<List<EventEntity>> call() async {
-    return await repository.getAll();
+    List<EventEntity> events = await repository.getAll();
+    // order by date and update status in passed and register if tome is not
+    // expired yet
+    events.sort((a, b) => b.dateScheduled.compareTo(a.dateScheduled));
+
+    return events;
   }
 }

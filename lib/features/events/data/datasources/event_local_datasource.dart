@@ -31,7 +31,7 @@ class EventLocalDataSource {
   }
 
   Future<int> updateEvent(EventEntity event) async {
-    return Future.value(1);
+    return await database.updateEvent(event.toJson());
   }
 
   Future<List<EventEntity>> getPendingEvents(DateTime currentDate) async {

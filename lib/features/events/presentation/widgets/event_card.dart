@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
+import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
@@ -22,14 +23,11 @@ class EventCard extends StatefulWidget {
 class _EventCardState extends State<EventCard> {
   late EventEntity eventEntity;
   late bool isTaken;
-  late String eventStatus;
-
   @override
   void initState() {
     super.initState();
     eventEntity = widget.event;
     isTaken = eventEntity.dateDone == null ? false : true;
-    eventStatus = isTaken ? AppString.take : AppString.pending;
   }
 
   @override
@@ -77,10 +75,10 @@ class _EventCardState extends State<EventCard> {
                           ),
                         ),
                         Text(
-                          eventStatus,
+                          eventEntity.status.name,
                           style: TextStyle(
                             fontSize: 14,
-                            color: isTaken ? Colors.green : Colors.blue,
+                            color: getStatusColor(eventEntity.status.name),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -98,7 +96,7 @@ class _EventCardState extends State<EventCard> {
                           "${eventEntity.dateDone?.toLocal() ?? AppString.pending}",
                           style: TextStyle(
                             fontSize: 14,
-                            color: isTaken ? Colors.green : Colors.blue,
+                            color: getStatusColor(eventEntity.status.name),
                             fontWeight: FontWeight.bold,
                           ),
                         )

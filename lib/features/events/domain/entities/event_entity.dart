@@ -1,4 +1,5 @@
 import 'package:pasti_track/core/helper/app_logger.dart';
+import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:pasti_track/features/medicines/data/datasources/medicament_local_datasource.dart';
 import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
 
@@ -7,7 +8,7 @@ class EventEntity {
   final String routineId;
   final String medicineId;
   final DateTime dateScheduled;
-  final bool status;
+  EventStatus status;
   final DateTime? dateDone;
   final DateTime dateUpdated;
 
@@ -28,7 +29,7 @@ class EventEntity {
       routineId: json['routine_id'] as String,
       medicineId: json['medicine_id'] as String,
       dateScheduled: DateTime.parse(json['date_scheduled'] as String),
-      status: getStatus(json['status']),
+      status: EventStatus.values.byName(json['status'] as String),
       dateDone: json['date_done'] != null
           ? DateTime.parse(json['date_done'] as String)
           : null,
@@ -42,7 +43,7 @@ class EventEntity {
       'routine_id': routineId,
       'medicine_id': medicineId,
       'date_scheduled': dateScheduled.toIso8601String(),
-      'status': status,
+      'status': status.name,
       'date_done': dateDone?.toIso8601String(),
       'date_updated': dateUpdated.toIso8601String(),
     };
@@ -53,14 +54,11 @@ class EventEntity {
       'routine_id': routineId,
       'medicine_id': medicineId,
       'date_scheduled': dateScheduled.toIso8601String(),
-      'status': status,
+      'status': status.name,
       'date_done': dateDone?.toIso8601String(),
       'date_updated': dateUpdated.toIso8601String(),
     };
   }
-
-  static bool getStatus(status) =>
-      (status is int) ? status == 1 : status == true;
 
   Future<String> medicationName() async {
     MedicamentLocalDataSource db = MedicamentLocalDataSource();
