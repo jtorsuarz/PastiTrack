@@ -44,7 +44,8 @@ class Routines extends StatelessWidget {
         builder: (context, state) {
           if (state is RoutineLoadingState) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is RoutineLoadedState) {
+          }
+          if (state is RoutineLoadedState) {
             if (state.routines.isEmpty) {
               return const Center(child: Text(AppString.routinesEmpty));
             }
@@ -55,7 +56,8 @@ class Routines extends StatelessWidget {
                 return RoutineCard(routine: routine);
               },
             );
-          } else if (state is RoutineErrorState) {
+          }
+          if (state is RoutineErrorState) {
             return Center(child: Text(state.error));
           } else {
             return const Center(child: Text(AppString.errorUnknown));

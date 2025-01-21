@@ -247,6 +247,16 @@ class DBLocal {
     );
   }
 
+  Future<List<Map<String, dynamic>>> getEventsByRoutine(
+      String routineId) async {
+    Database db = await database;
+    return await db.query(
+      'events',
+      where: 'routine_id = ?',
+      whereArgs: [routineId],
+    );
+  }
+
   Future<List<Map<String, dynamic>>> getAllEvents() async {
     Database db = await database;
     return await db.query('events');

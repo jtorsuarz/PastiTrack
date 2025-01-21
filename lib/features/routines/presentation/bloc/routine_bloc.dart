@@ -8,11 +8,13 @@ import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine_days.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine_frequency.dart';
+import 'package:pasti_track/features/routines/domain/usecases/delete_event.dart';
 import 'package:pasti_track/features/routines/domain/usecases/add_event.dart';
 import 'package:pasti_track/features/routines/domain/usecases/add_routine.dart';
 import 'package:pasti_track/features/routines/domain/usecases/delete_event_by_routine.dart';
 import 'package:pasti_track/features/routines/domain/usecases/delete_routine.dart';
 import 'package:pasti_track/features/routines/domain/usecases/get_all_routines.dart';
+import 'package:pasti_track/features/routines/domain/usecases/get_events_by_routine.dart';
 import 'package:pasti_track/features/routines/domain/usecases/get_medications.dart';
 import 'package:pasti_track/features/routines/domain/usecases/update_routine.dart';
 
@@ -25,17 +27,21 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
   final AddRoutine addRoutine;
   final UpdateRoutine updateRoutine;
   final DeleteRoutine deleteRoutine;
+  final GetEventsByRoutine getEventsByRoutineId;
   final DeleteEventByRoutine deleteEventByRoutine;
   final AddEvent addEvent;
+  final DeleteEvent deleteEventById;
 
   RoutineBloc(
-    this.getAllRoutines,
     this.getAllMedications,
+    this.getAllRoutines,
     this.addRoutine,
     this.updateRoutine,
     this.deleteRoutine,
+    this.getEventsByRoutineId,
     this.deleteEventByRoutine,
     this.addEvent,
+    this.deleteEventById,
   ) : super(RoutineLoadingState()) {
     on<LoadRoutinesMedicamentsEvent>(_onLoadRoutinesMedicamentsEvent);
     on<LoadRoutinesEvent>(_onLoadRoutinesEvent);
@@ -67,8 +73,9 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
 
   void _onAddRoutine(AddRoutineEvent event, Emitter<RoutineState> emit) async {
     try {
-      if (event.routine.frequency == RoutineFrequency.custom.description) {
-        if (event.routine.customDays!.isEmpty) {
+      Routine routine = event.routine;
+      if (routine.frequency == RoutineFrequency.custom.description) {
+        if (routine.customDays!.isEmpty) {
           emit(
             RoutineErrorAlertState(AppString.routineYouMustProvideRangeOfDays),
           );
@@ -77,7 +84,8 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           return;
         }
         if (event.isGeneralTime) {
-          if (event.routine.dosageTime.isEmpty) {
+          routine.customTimes = {};
+          if (routine.dosageTime.isEmpty) {
             emit(
               RoutineErrorAlertState(
                   AppString.routineMustProvideLeastOnSchedule),
@@ -87,7 +95,9 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
             return;
           }
         } else {
-          if (event.routine.customTimes!.isEmpty) {
+          routine.dosageTime = "";
+          routine.customDays = [];
+          if (routine.customTimes!.isEmpty) {
             emit(
               RoutineErrorAlertState(
                   AppString.routineMustProvideLeastOnSchedule),
@@ -98,7 +108,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           }
         }
       } else {
-        if (event.routine.dosageTime.isEmpty) {
+        if (routine.dosageTime.isEmpty) {
           emit(
             RoutineErrorAlertState(AppString.routineMustProvideLeastOnSchedule),
           );
@@ -108,9 +118,10 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
         }
       }
 
-      await addRoutine.call(event.routine);
+      await addRoutine.call(routine);
       emit(RoutineSuccessAlertState(AppString.routineSuccessfullyAdded));
-      add(CreateRoutineEventsEvent(event.routine));
+      emit(RoutineLoadingState());
+      add(CreateRoutineEventsEvent(routine));
     } on Failure catch (e) {
       emit(RoutineErrorState(AppString.errorWhenCreate(e.message)));
     }
@@ -118,45 +129,11 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
 
   void _onCreateRoutineEventsEvent(
       CreateRoutineEventsEvent event, Emitter<RoutineState> emit) async {
+    emit(RoutineLoadingState());
     try {
       final routine = event.routine;
-      final String frecuency = routine.frequency;
-      List<DateTime> daysOfYear = [];
       List<Future<void>> futures = [];
-
-      final timeParts = routine.getTimeOfDay;
-      final int hourNow = timeParts == null ? 0 : timeParts.hour;
-      final int minuteNow = timeParts == null ? 0 : timeParts.minute;
-
-      // diaria genera registro dependiendo del dia actual hasta el fin de año
-      if (frecuency == RoutineFrequency.daily.description) {
-        AppLogger.p("Crear Evento", "FRECUENCY $frecuency");
-        daysOfYear =
-            getRemainingDatesCurrentYear(hour: hourNow, minute: minuteNow);
-      }
-
-      // generamos registros cada 7 dias.
-      if (frecuency == RoutineFrequency.weekly.description) {
-        AppLogger.p("Crear Evento", "FRECUENCY $frecuency");
-        daysOfYear = getRemainingDatesCurrentYearByDay(
-            day: RoutineDays.numericValue(routine.dayOfWeek),
-            hour: hourNow,
-            minute: minuteNow);
-      }
-
-      // personalizada, se crean las fechas indicadas, pero previamente se tiene que evaluar el tipo de hora que se usa.
-      if (frecuency == RoutineFrequency.custom.description) {
-        AppLogger.p("Crear Evento", "FRECUENCY $frecuency");
-        AppLogger.p("CustomDays", routine.customDays);
-        if (routine.getCustomTimes.isNotEmpty) {
-          daysOfYear = mergeDateTimeAndTimeOfDay(routine.getCustomTimes);
-        } else {
-          daysOfYear = routine.customDays!
-              .map((date) => DateTime.parse(date!)
-                  .copyWith(hour: hourNow, minute: minuteNow))
-              .toList();
-        }
-      }
+      List<DateTime> daysOfYear = _generateEventDatesFromRoutine(routine);
 
       for (DateTime date in daysOfYear) {
         DateTime dateScheduled = date;
@@ -183,10 +160,52 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
 
   void _onUpdateRoutine(
       UpdateRoutineEvent event, Emitter<RoutineState> emit) async {
-    emit(RoutineLoadingState());
     try {
-      await updateRoutine.call(event.routine);
+      emit(RoutineLoadingState());
+      Routine routine = event.routine;
+      List<EventEntity> existingEvents =
+          await getEventsByRoutineId.call(event.routine.routineId);
+
+      // Dividir los eventos en los que se mantienen y los que no
+      final eventsToKeep = existingEvents.where((event) {
+        // Eventos pasados o marcados como tomados
+        return event.dateScheduled.isBefore(DateTime.now()) ||
+            event.status ||
+            event.dateDone != null;
+      }).toList();
+
+      for (EventEntity eventEntity in eventsToKeep) {
+        AppLogger.p("eventsToKeep", eventEntity.toJson());
+      }
+
+      final eventsToDelete = existingEvents.where((event) {
+        // Filtrar eventos que no están en `eventsToKeep`
+        return !eventsToKeep.contains(event);
+      }).toList();
+
+      await updateRoutine.call(routine);
+
+      // Eliminar los eventos que no se mantienen
+      for (var event in eventsToDelete) {
+        await deleteEventById.call(event.eventId);
+      }
+
+      List<DateTime> newEvents = _generateEventDatesFromRoutine(routine);
+      // Crear nuevos eventos en base a la rutina actualizada
+      for (DateTime date in newEvents) {
+        await addEvent.call(EventEntity(
+          eventId: DateTime.now().toIso8601String(),
+          routineId: routine.routineId,
+          medicineId: routine.medicineId,
+          dateScheduled: date,
+          dateUpdated: DateTime.now(),
+          dateDone: null,
+          status: false,
+        ));
+      }
+
       emit(RoutineSuccessAlertState(AppString.routineSuccessfullyUpdated));
+      emit(RoutineLoadingState());
       add(LoadRoutinesEvent());
     } on Failure catch (e) {
       emit(RoutineErrorState(e.message));
@@ -195,11 +214,12 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
 
   void _onDeleteRoutine(
       DeleteRoutineEvent event, Emitter<RoutineState> emit) async {
-    emit(RoutineLoadingState());
     try {
+      emit(RoutineLoadingState());
       await deleteRoutine.call(event.id);
       await deleteEventByRoutine.call(event.id);
       add(LoadRoutinesEvent());
+      emit(RoutineLoadingState());
       emit(RoutineSuccessAlertState(AppString.routineSuccessfullyRemoved));
     } on RoutineErrorAlertState catch (e) {
       emit(RoutineErrorAlertState(e.error));
@@ -207,6 +227,48 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
     } on Failure catch (e) {
       emit(RoutineErrorState(e.message));
     }
+  }
+
+  List<DateTime> _generateEventDatesFromRoutine(Routine routine) {
+    final String frecuency = routine.frequency;
+    List<DateTime> daysOfYear = [];
+
+    final timeParts = routine.getTimeOfDay;
+    final int hourNow = timeParts == null ? 0 : timeParts.hour;
+    final int minuteNow = timeParts == null ? 0 : timeParts.minute;
+
+    // diaria genera registro dependiendo del dia actual hasta el fin de año
+    if (frecuency == RoutineFrequency.daily.description) {
+      AppLogger.p("Crear Evento", "FRECUENCY $frecuency");
+      daysOfYear =
+          getRemainingDatesCurrentYear(hour: hourNow, minute: minuteNow);
+    }
+
+    // generamos registros cada 7 dias.
+    if (frecuency == RoutineFrequency.weekly.description) {
+      AppLogger.p("Crear Evento", "FRECUENCY $frecuency");
+      daysOfYear = getRemainingDatesCurrentYearByDay(
+          day: RoutineDays.numericValue(routine.dayOfWeek),
+          hour: hourNow,
+          minute: minuteNow);
+    }
+
+    // personalizada, se crean las fechas indicadas, pero previamente se tiene que evaluar el tipo de hora que se usa.
+    if (frecuency == RoutineFrequency.custom.description) {
+      AppLogger.p(
+          "RoutineFrequency.custom Crear Evento", "FRECUENCY $frecuency");
+      AppLogger.p("RoutineFrequency getCustomTimes", routine.toJsonWithoutId());
+      if (routine.getCustomTimes.isNotEmpty) {
+        daysOfYear = mergeDateTimeAndTimeOfDay(routine.getCustomTimes);
+      } else {
+        daysOfYear = routine.customDays!
+            .map((date) => DateTime.parse(date!)
+                .copyWith(hour: hourNow, minute: minuteNow))
+            .toList();
+      }
+    }
+
+    return daysOfYear;
   }
 
   List<DateTime> getRemainingDatesCurrentYear(

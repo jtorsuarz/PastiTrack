@@ -63,8 +63,8 @@ class DBRemote {
     await _userRef.collection('Events').doc(rutinaId).update(rutina);
   }
 
-  Future<void> deleteEvent(String rutinaId) async {
-    await _userRef.collection('Events').doc(rutinaId).delete();
+  Future<void> deleteEvent(String eventId) async {
+    await _userRef.collection('Events').doc(eventId).delete();
   }
 
   Future<void> deleteEventsByRoutineId(String routineId) async {

@@ -7,10 +7,12 @@ import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
 class EventCard extends StatefulWidget {
   final EventEntity event;
+  final String medicationName;
 
   const EventCard({
     super.key,
     required this.event,
+    required this.medicationName,
   });
 
   @override
@@ -27,7 +29,7 @@ class _EventCardState extends State<EventCard> {
     super.initState();
     eventEntity = widget.event;
     isTaken = eventEntity.dateDone == null ? false : true;
-    eventStatus = isTaken ? AppString.take : AppString.pending.toUpperCase();
+    eventStatus = isTaken ? AppString.take : AppString.pending;
   }
 
   @override
@@ -46,28 +48,22 @@ class _EventCardState extends State<EventCard> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      eventEntity.eventId,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     CustomSizedBoxes.get10(),
                     Wrap(
                       children: [
                         const Text(
-                          "${AppString.medicament} :",
+                          "${AppString.medicament}: ",
                           style: TextStyle(
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          eventEntity.medicineId,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: isTaken ? Colors.green : Colors.red,
+                          widget.medicationName,
+                          style: const TextStyle(
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
                         )
                       ],
@@ -84,10 +80,28 @@ class _EventCardState extends State<EventCard> {
                           eventStatus,
                           style: TextStyle(
                             fontSize: 14,
-                            color: isTaken ? Colors.green : Colors.red,
+                            color: isTaken ? Colors.green : Colors.blue,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                      ],
+                    ),
+                    Wrap(
+                      children: [
+                        Text(
+                          AppString.registerTake,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "${eventEntity.dateDone?.toLocal() ?? AppString.pending}",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: isTaken ? Colors.green : Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
                       ],
                     ),
                     Wrap(
@@ -100,27 +114,8 @@ class _EventCardState extends State<EventCard> {
                         ),
                         Text(
                           "${eventEntity.dateScheduled}",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: isTaken ? Colors.green : Colors.red,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ],
-                    ),
-                    Wrap(
-                      children: [
-                        Text(
-                          AppString.registerTake,
                           style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "${eventEntity.dateDone?.toLocal()}",
-                          style: TextStyle(
                             fontSize: 14,
-                            color: isTaken ? Colors.green : Colors.red,
                             fontWeight: FontWeight.bold,
                           ),
                         )

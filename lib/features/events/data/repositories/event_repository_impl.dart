@@ -103,6 +103,16 @@ class EventRepositoryImpl implements EventRepository {
   }
 
   @override
+  Future<List<EventEntity>> getAllByRoutine(String routineId) {
+    try {
+      return localDB.getEventsByRoutine(routineId);
+    } catch (e) {
+      AppLogger.p("Catch Event", "getAllByRoutine ${e.toString()}");
+      throw Failure(AppString.errorWhenLoad(AppString.event));
+    }
+  }
+
+  @override
   Future<List<EventEntity>> getPendingEvents(DateTime currentDate) async {
     try {
       await remoteDB.getPendingEvents(currentDate);

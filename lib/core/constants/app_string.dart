@@ -112,6 +112,7 @@ class AppString {
   static const String entryName = 'Ingrese el nombre';
   static const String entryDosage = 'Ingrese la dosis';
   static const String statusWithTwoPoint = 'Estado: ';
+  static const String noName = 'S/NA';
 
   // ! Error Messages
   static const String error = 'Error';
@@ -181,4 +182,8 @@ class AppString {
   static String hourFormat(v) => 'Hora: $v';
   static String invalidKeyDataTime(v) => 'Clave inválida para DateTime: $v';
   static String invalidFormatHour(v) => 'Formato de hora inválido: $v';
+  static String scheduleNotificationTitle(v) =>
+      '💊💊 Quedan 5 minutos para tomar tu medicamento $v!';
+  static String scheduleNotificationBody(v) =>
+      'Recuerda tomar tu medicamento: name a las ${v.hour}:${v.minute}. Tu salud es lo primero.';
 }

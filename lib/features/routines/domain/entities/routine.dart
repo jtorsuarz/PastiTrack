@@ -7,10 +7,10 @@ class Routine {
   final String routineId;
   final String medicineId;
   final String frequency;
-  final String dosageTime;
+  String dosageTime;
   final String? dayOfWeek;
-  final List<String?>? customDays;
-  final Map<String?, String?>? customTimes;
+  List<String?>? customDays;
+  Map<String?, String?>? customTimes;
   final String? userId;
   final String dateUpdated;
   final String? description;
@@ -104,9 +104,7 @@ class Routine {
   }
 
   TimeOfDay? get getTimeOfDay {
-    if (dayOfWeek == null) {
-      return null;
-    }
+    if (dosageTime.isEmpty) return null;
     final timeParts =
         dosageTime.split(":").map((part) => int.parse(part)).toList();
     return TimeOfDay(hour: timeParts[0], minute: timeParts[1]);

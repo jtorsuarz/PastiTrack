@@ -40,4 +40,11 @@ class EventLocalDataSource {
       return EventEntity.fromJson(json);
     }).toList();
   }
+
+  Future<List<EventEntity>> getEventsByRoutine(String routineId) async {
+    final result = await database.getEventsByRoutine(routineId);
+    return result.map((json) {
+      return EventEntity.fromJson(json);
+    }).toList();
+  }
 }

@@ -22,11 +22,13 @@ import 'package:pasti_track/features/profile/presentation/bloc/profile_event.dar
 import 'package:pasti_track/features/routines/data/datasources/routine_local_datasource.dart';
 import 'package:pasti_track/features/routines/data/datasources/routine_remote_datasource.dart';
 import 'package:pasti_track/features/routines/data/repositories/routine_repository_impl.dart';
+import 'package:pasti_track/features/routines/domain/usecases/delete_event.dart';
 import 'package:pasti_track/features/routines/domain/usecases/add_event.dart';
 import 'package:pasti_track/features/routines/domain/usecases/add_routine.dart';
 import 'package:pasti_track/features/routines/domain/usecases/delete_event_by_routine.dart';
 import 'package:pasti_track/features/routines/domain/usecases/delete_routine.dart';
 import 'package:pasti_track/features/routines/domain/usecases/get_all_routines.dart';
+import 'package:pasti_track/features/routines/domain/usecases/get_events_by_routine.dart';
 import 'package:pasti_track/features/routines/domain/usecases/get_medications.dart';
 import 'package:pasti_track/features/routines/domain/usecases/update_routine.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
@@ -86,13 +88,15 @@ class AppBlocProviders {
       ),
       BlocProvider(
         create: (ctx) => RoutineBloc(
-          GetAllRoutines(_routineRepoImpl),
           GetAllMedications(_medicamentRepoImpl),
+          GetAllRoutines(_routineRepoImpl),
           AddRoutine(_routineRepoImpl),
           UpdateRoutine(_routineRepoImpl),
           DeleteRoutine(_routineRepoImpl),
+          GetEventsByRoutine(_eventRepoImpl),
           DeleteEventByRoutine(_eventRepoImpl),
           AddEvent(_eventRepoImpl),
+          DeleteEvent(_eventRepoImpl),
         )..add(
             LoadRoutinesEvent(),
           ),

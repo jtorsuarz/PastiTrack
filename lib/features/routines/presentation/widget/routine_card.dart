@@ -27,7 +27,9 @@ class RoutineCard extends StatelessWidget {
             ),
             CustomSizedBoxes.get10(),
             Text(
-              AppString.hourFormat(routine.dosageTime),
+              AppString.hourFormat(routine.dosageTime.isEmpty
+                  ? AppString.customized
+                  : routine.dosageTime),
             ),
           ],
         ),
