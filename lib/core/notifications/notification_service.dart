@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz_data;
 
@@ -14,7 +18,7 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> initializeNotifications() async {
+  Future<void> initializeNotifications(useCase) async {
     // Initialize timezone data
     tz_data.initializeTimeZones();
 
@@ -26,9 +30,31 @@ class NotificationService {
       android: androidInitializationSettings,
     );
 
+    _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestExactAlarmsPermission();
+
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
+      onDidReceiveNotificationResponse: (response) =>
+          _onDidReceiveNotificationResponse(response, useCase),
     );
+  }
+
+  Future<void> _onDidReceiveNotificationResponse(
+      NotificationResponse response, useCase) async {
+    String eventId = response.payload!;
+
+    if (response.actionId != null) {
+      if (response.actionId == 'ACCEPT') {
+        useCase.call(eventId);
+        print("Toma de medicamento aceptada");
+      }
+    } else {
+      // if click notification
+      print("Toma de medicamento en pantalla ${response.payload}");
+    }
   }
 
   Future<void> showNotification(
@@ -58,25 +84,45 @@ class NotificationService {
     required int id,
     required String title,
     required String body,
-    required DateTime scheduledTime, required DateTime scheduledDate,
+    required DateTime dateTime,
   }) async {
+    AppLogger.p(
+        "module", tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)));
+
     await _flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
       body,
-      tz.TZDateTime.from(scheduledTime, tz.local),
-      const NotificationDetails(
+      tz.TZDateTime.from(dateTime, tz.local),
+      NotificationDetails(
         android: AndroidNotificationDetails(
           'pasti_track_channel',
           'PastiTrack Notifications',
           channelDescription: 'Notifications for medication reminders',
           importance: Importance.max,
-          priority: Priority.high,
+          priority: Priority.max,
+          additionalFlags: Int32List.fromList([4]),
+          actions: <AndroidNotificationAction>[
+            AndroidNotificationAction(
+              'ACCEPT',
+              'Aceptar',
+              showsUserInterface: true,
+              titleColor: Colors.green[800],
+            ),
+            AndroidNotificationAction(
+              'REJECT',
+              'Rechazar',
+              showsUserInterface: true,
+              titleColor: Colors.red[800],
+            ),
+          ],
         ),
       ),
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: id.toString(),
     );
   }
 

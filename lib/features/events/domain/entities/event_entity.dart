@@ -1,4 +1,6 @@
 import 'package:pasti_track/core/helper/app_logger.dart';
+import 'package:pasti_track/features/medicines/data/datasources/medicament_local_datasource.dart';
+import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
 
 class EventEntity {
   final String eventId;
@@ -59,4 +61,10 @@ class EventEntity {
 
   static bool getStatus(status) =>
       (status is int) ? status == 1 : status == true;
+
+  Future<String> medicationName() async {
+    MedicamentLocalDataSource db = MedicamentLocalDataSource();
+    Medicament medicament = await db.getMedicationById(medicineId);
+    return medicament.name;
+  }
 }

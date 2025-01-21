@@ -8,13 +8,19 @@ class ScheduleNotifications {
 
   Future<void> call(List<EventEntity> events) async {
     for (final event in events) {
+      String medicationName = await event.medicationName();
+      // get hour time from dateSchedule
+      String hourProgrammed = event.dateScheduled.toString().split(' ')[1];
+
+      // schedule notification for 5 minutes before the event
+      DateTime dateTimeBeforeEvent =
+          event.dateScheduled.subtract(const Duration(minutes: 5));
       await notificationService.scheduleNotification(
         id: event.eventId.hashCode,
-        title: 'Recuerda tomar tu medicamento',
+        title: '��Quedan 5 minutos para tomar tu medicamento!',
         body:
-            'El medicamento asociado a la rutina ${event.routineId} está programado.',
-        scheduledDate: event.dateScheduled,
-        scheduledTime: DateTime.now(),
+            'Recuerda tomar tu medicamento: $medicationName programado para las ${hourProgrammed[0]}:${hourProgrammed[1]}. Tu salud es lo primero.',
+        dateTime: dateTimeBeforeEvent,
       );
     }
   }

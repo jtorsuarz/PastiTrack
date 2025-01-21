@@ -55,53 +55,55 @@ class AppBlocProviders {
     RoutineRemoteDataSource(),
   );
 
-  static List<SingleChildWidget> get(firebase) => [
-        BlocProvider(create: (context) => ThemeBloc()),
-        // Firebase
-        BlocProvider(
-          create: (context) => AuthBloc(
-            firebase,
-            SignInUseCase(_authRepoImpl),
-            SignUpUserUseCase(_authRepoImpl),
-            PasswordRecoveryUseCase(_authRepoImpl),
-          )..add(AuthCheckRequested()),
-        ),
-        // Notifications
-        // Screens Logic UX
-        BlocProvider(
-          create: (context) => ProfileBloc(
-            LoadProfileUseCase(_profileRepoImpl),
-            UpdateProfileUseCase(_profileRepoImpl),
-            ChangePasswordUseCase(_profileRepoImpl),
-            UpdateProfileImageUseCase(_profileRepoImpl),
-          )..add(LoadProfileEvent()),
-        ),
-        BlocProvider(
-          create: (ctx) => MedicamentBloc(
-            _medicamentRepoImpl,
-          )..add(LoadMedicationsEvent()),
-        ),
-        BlocProvider(
-          create: (ctx) => RoutineBloc(
-            GetAllRoutines(_routineRepoImpl),
-            GetAllMedications(_medicamentRepoImpl),
-            AddRoutine(_routineRepoImpl),
-            UpdateRoutine(_routineRepoImpl),
-            DeleteRoutine(_routineRepoImpl),
-            DeleteEventByRoutine(_eventRepoImpl),
-            AddEvent(_eventRepoImpl),
-          )..add(
-              LoadRoutinesEvent(),
-            ),
-        ),
-        BlocProvider(
-          create: (ctx) => EventsBloc(
-              MarkEventAsDone(_eventRepoImpl),
-              ScheduleNotifications(_notification),
-              GetAllEvents(_eventRepoImpl))
-            ..add(
-              LoadingEventsEvent(),
-            ),
-        )
-      ];
+  static List<SingleChildWidget> get(firebase) {
+    NotificationService()
+        .initializeNotifications(MarkEventAsDone(_eventRepoImpl));
+    return [
+      BlocProvider(create: (context) => ThemeBloc()),
+      // Firebase
+      BlocProvider(
+        create: (context) => AuthBloc(
+          firebase,
+          SignInUseCase(_authRepoImpl),
+          SignUpUserUseCase(_authRepoImpl),
+          PasswordRecoveryUseCase(_authRepoImpl),
+        )..add(AuthCheckRequested()),
+      ),
+      // Notifications
+      // Screens Logic UX
+      BlocProvider(
+        create: (context) => ProfileBloc(
+          LoadProfileUseCase(_profileRepoImpl),
+          UpdateProfileUseCase(_profileRepoImpl),
+          ChangePasswordUseCase(_profileRepoImpl),
+          UpdateProfileImageUseCase(_profileRepoImpl),
+        )..add(LoadProfileEvent()),
+      ),
+      BlocProvider(
+        create: (ctx) => MedicamentBloc(
+          _medicamentRepoImpl,
+        )..add(LoadMedicationsEvent()),
+      ),
+      BlocProvider(
+        create: (ctx) => RoutineBloc(
+          GetAllRoutines(_routineRepoImpl),
+          GetAllMedications(_medicamentRepoImpl),
+          AddRoutine(_routineRepoImpl),
+          UpdateRoutine(_routineRepoImpl),
+          DeleteRoutine(_routineRepoImpl),
+          DeleteEventByRoutine(_eventRepoImpl),
+          AddEvent(_eventRepoImpl),
+        )..add(
+            LoadRoutinesEvent(),
+          ),
+      ),
+      BlocProvider(
+        create: (ctx) => EventsBloc(MarkEventAsDone(_eventRepoImpl),
+            ScheduleNotifications(_notification), GetAllEvents(_eventRepoImpl))
+          ..add(
+            LoadingEventsEvent(),
+          ),
+      )
+    ];
+  }
 }

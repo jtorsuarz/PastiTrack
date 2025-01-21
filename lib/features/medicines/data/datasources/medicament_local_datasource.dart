@@ -13,6 +13,11 @@ class MedicamentLocalDataSource {
     }).toList();
   }
 
+  Future<Medicament> getMedicationById(String id) async {
+    final json = await database.getMedicamentById(id);
+    return Medicament.fromJson(json!);
+  }
+
   Future<int> addMedicament(Medicament medicament) async {
     return await database.insertMedicament(medicament.toJson());
   }
