@@ -25,7 +25,7 @@ class EventRepositoryImpl implements EventRepository {
   @override
   Future<List<EventEntity>> getAll() async {
     try {
-      final result = await localDB.getEvents();
+      final result = await localDB.getAll();
       if (await isConnected()) await remoteDB.getAll();
       AppLogger.p("Event", "getAll");
       return result;

@@ -6,7 +6,7 @@ class EventLocalDataSource {
 
   EventLocalDataSource();
 
-  Future<List<EventEntity>> getEvents() async {
+  Future<List<EventEntity>> getAll() async {
     final result = await database.getAllEvents();
     return result.map((json) {
       return EventEntity.fromJson(json);

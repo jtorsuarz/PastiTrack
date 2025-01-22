@@ -1,13 +1,14 @@
+import 'package:pasti_track/features/events/data/repositories/event_repository_impl.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 import 'package:pasti_track/features/events/domain/entities/event_status.dart';
-import 'package:pasti_track/features/events/domain/repositories/event_repository.dart';
 
 class GetAllEvents {
-  final EventRepository repository;
+  final EventRepositoryImpl repository;
 
   GetAllEvents(this.repository);
 
   Future<List<EventEntity>> call() async {
+    await repository.syncData();
     List<EventEntity> events = await repository.getAll();
 
     // Actualizamos el estado de los eventos que ya pasaron

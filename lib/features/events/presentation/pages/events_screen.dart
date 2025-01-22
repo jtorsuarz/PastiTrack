@@ -7,8 +7,8 @@ import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/features/events/presentation/widgets/event_card.dart';
 
 class EventsScreen extends StatelessWidget {
-  bool showAppBar;
-  EventsScreen({super.key, this.showAppBar = true});
+  final bool showAppBar;
+  const EventsScreen({super.key, this.showAppBar = true});
 
   @override
   Widget build(BuildContext context) {
