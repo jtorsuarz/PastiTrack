@@ -169,8 +169,8 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
 
       // Dividir los eventos en los que se mantienen y los que no
       final eventsToKeep = existingEvents.where((event) {
-        return event.status == EventStatus.passed ||
-            event.status == EventStatus.completed ||
+        return (event.status == EventStatus.completed ||
+                event.status == EventStatus.passed) ||
             event.dateDone != null;
       }).toList();
 

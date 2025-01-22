@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/core/config.dart';
+import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
@@ -22,12 +23,30 @@ class EventCard extends StatefulWidget {
 
 class _EventCardState extends State<EventCard> {
   late EventEntity eventEntity;
+  late bool isAvailable;
+  late bool isPassed;
   late bool isTaken;
+  late String buttonText;
   @override
   void initState() {
     super.initState();
     eventEntity = widget.event;
-    isTaken = eventEntity.dateDone == null ? false : true;
+    isPassed = eventEntity.status == EventStatus.passed ? true : false;
+    isTaken = eventEntity.status == EventStatus.completed ? true : false;
+    // is available
+    isAvailable = isPassed || isTaken;
+
+    buttonText = AppString.registerTake;
+
+    if (isTaken) {
+      buttonText = AppString.take;
+    }
+    if (isPassed) {
+      buttonText = AppString.passed;
+    }
+
+    AppLogger.p("EventEntity", eventEntity.eventId);
+    AppLogger.p("EventEntity", isPassed);
   }
 
   @override
@@ -127,7 +146,7 @@ class _EventCardState extends State<EventCard> {
             Column(
               children: [
                 ElevatedButton(
-                  onPressed: isTaken
+                  onPressed: isAvailable
                       ? null
                       : () {
                           context
@@ -135,9 +154,9 @@ class _EventCardState extends State<EventCard> {
                               .add(EventChangeStatusEvent(eventEntity.eventId));
                         },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isTaken ? Colors.grey : Colors.teal,
+                    backgroundColor: isAvailable ? Colors.grey : Colors.teal,
                   ),
-                  child: Text(isTaken ? "Tomado" : "Marcar como Tomado"),
+                  child: Text(buttonText),
                 ),
               ],
             ),

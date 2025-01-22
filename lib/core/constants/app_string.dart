@@ -150,6 +150,8 @@ class AppString {
   static String registerTake = "Registro de Toma: ";
   static String dateScheduled = "Fecha Programada: ";
 
+  static String passed = "No tomado";
+
   // ? Functions return a string
   static String userFromTime(v) => 'Usuario desde: $v';
   static String redirectAutomaticSeconds(s) =>
