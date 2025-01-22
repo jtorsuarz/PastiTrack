@@ -51,6 +51,7 @@ class _AuthenticatedHomeState extends State<_AuthenticatedHome> {
   Future<void> _initializeNotifications() async {
     final eventsBloc = context.read<EventsBloc>();
     await NotificationService().initializeNotifications(
+      context,
       eventsBloc.markEventAsDone,
       eventsBloc,
       LoadingEventsEvent(),

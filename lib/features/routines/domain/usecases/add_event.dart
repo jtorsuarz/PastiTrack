@@ -21,7 +21,7 @@ class AddEvent {
           title: AppString.scheduleNotificationTitle(medicamentName),
           body: AppString.scheduleNotificationBody(event.dateScheduled),
           dateTime: event.dateScheduled,
-          objectId: event.eventId,
+          objectEntity: event,
         );
       }
       event.registrationScheduledNotification = 1;

@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
+import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz_data;
 
@@ -19,7 +22,7 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> initializeNotifications(useCase, bloc, event) async {
+  Future<void> initializeNotifications(ctx, useCase, bloc, event) async {
     // Initialize timezone data
     tz_data.initializeTimeZones();
 
@@ -39,23 +42,27 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (response) =>
-          _onDidReceiveNotificationResponse(response, useCase, bloc, event),
+          _onDidReceiveNotificationResponse(
+              response, ctx, useCase, bloc, event),
     );
   }
 
   Future<void> _onDidReceiveNotificationResponse(
-      NotificationResponse response, useCase, bloc, event) async {
-    String eventId = response.payload!;
+      NotificationResponse response, ctx, useCase, bloc, event) async {
+    var eventRecieved = response.payload!;
 
     if (response.actionId != null) {
       if (response.actionId == 'ACCEPT') {
-        useCase.call(eventId);
+        useCase.call(eventRecieved);
         bloc.add(event);
         // reload bloc getEvents
       }
     } else {
-      // if click notification
-      print("Toma de medicamento en pantalla ${response.payload}");
+      // redirect to GoRoute AppUrls.eventRegisterTakePath
+      Map<String, dynamic> eventMap = jsonDecode(eventRecieved);
+      EventEntity event = EventEntity.fromJson(eventMap);
+      GoRouter.of(ctx)
+          .pushReplacement(AppUrls.eventRegisterTakePath, extra: event);
     }
   }
 
@@ -86,8 +93,10 @@ class NotificationService {
     required String title,
     required String body,
     required DateTime dateTime,
-    required String objectId,
+    required EventEntity objectEntity,
   }) async {
+    String entityJson = jsonEncode(objectEntity.toJson());
+
     AppLogger.p(
         "module", tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)));
 
@@ -125,7 +134,7 @@ class NotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
-      payload: objectId.toString(),
+      payload: entityJson,
     );
   }
 

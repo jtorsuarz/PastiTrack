@@ -1,11 +1,9 @@
-import 'package:pasti_track/core/notifications/notification_service.dart';
 import 'package:pasti_track/core/theme/bloc/theme_bloc.dart';
 import 'package:pasti_track/features/events/data/datasources/event_local_datasource.dart';
 import 'package:pasti_track/features/events/data/datasources/event_remote_datasource.dart';
 import 'package:pasti_track/features/events/data/repositories/event_repository_impl.dart';
 import 'package:pasti_track/features/events/domain/usecases/get_all_events.dart';
 import 'package:pasti_track/features/events/domain/usecases/mark_event_as_done.dart';
-import 'package:pasti_track/features/events/domain/usecases/schedule_notifications.dart';
 import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/features/medicines/data/datasources/medicament_local_datasource.dart';
 import 'package:pasti_track/features/medicines/data/datasources/medicament_remote_datasource.dart';
@@ -53,7 +51,6 @@ class AppBlocProviders {
     MedicamentLocalDataSource(),
     MedicamentRemoteDataSource(),
   );
-  static final _notification = NotificationService();
   static final _eventRepoImpl =
       EventRepositoryImpl(EventLocalDataSource(), EventRemoteDataSource());
   static final _routineRepoImpl = RoutineRepositoryImpl(
@@ -108,10 +105,8 @@ class AppBlocProviders {
       ),
       BlocProvider(
         create: (ctx) => EventsBloc(
-          MarkEventAsDone(_eventRepoImpl),
-          ScheduleNotifications(_notification),
-          GetAllEvents(_eventRepoImpl),
-        )..add(
+            MarkEventAsDone(_eventRepoImpl), GetAllEvents(_eventRepoImpl))
+          ..add(
             LoadingEventsEvent(),
           ),
       )

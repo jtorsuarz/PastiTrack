@@ -3,18 +3,15 @@ import 'package:pasti_track/core/errors/failures.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 import 'package:pasti_track/features/events/domain/usecases/get_all_events.dart';
 import 'package:pasti_track/features/events/domain/usecases/mark_event_as_done.dart';
-import 'package:pasti_track/features/events/domain/usecases/schedule_notifications.dart';
 
 part 'events_event.dart';
 part 'events_state.dart';
 
 class EventsBloc extends Bloc<EventsEvent, EventsState> {
   final MarkEventAsDone markEventAsDone;
-  final ScheduleNotifications scheduleNotifications;
   final GetAllEvents getAllEvents;
 
-  EventsBloc(
-      this.markEventAsDone, this.scheduleNotifications, this.getAllEvents)
+  EventsBloc(this.markEventAsDone, this.getAllEvents)
       : super(EventsLoadingState()) {
     on<LoadingEventsEvent>(_onLoadingEventsEvent);
     on<EventChangeStatusEvent>(_onEventChangeStatusEvent);

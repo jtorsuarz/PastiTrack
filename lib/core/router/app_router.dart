@@ -8,6 +8,8 @@ import 'package:pasti_track/features/auth/presentation/pages/password_recovery_s
 import 'package:pasti_track/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:pasti_track/features/auth/presentation/pages/sign_up_screen.dart';
 import 'package:pasti_track/features/auth/presentation/pages/sign_up_success_screen.dart';
+import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
+import 'package:pasti_track/features/events/presentation/pages/event_detail_screen.dart';
 import 'package:pasti_track/features/home/presentation/home_screen.dart';
 import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
@@ -93,6 +95,13 @@ class AppRouter {
               child: AddEditRoutineScreen(routine: routine),
             );
           }),
+      GoRoute(
+        path: AppUrls.eventRegisterTakePath,
+        builder: (BuildContext context, GoRouterState state) {
+          final event = state.extra as EventEntity?;
+          return EventDetailScreen(event: event);
+        },
+      ),
     ],
     redirect: (context, state) {
       // Obtiene el estado del AuthBloc
