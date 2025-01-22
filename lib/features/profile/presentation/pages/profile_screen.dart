@@ -1,11 +1,8 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pasti_track/core/config.dart';
-import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/profile/data/models/user_model.dart';
 import 'package:pasti_track/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pasti_track/features/profile/presentation/bloc/profile_event.dart';

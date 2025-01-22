@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:pasti_track/features/home/presentation/home_screen.dart';
 import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
 class SignUpScreen extends StatelessWidget {

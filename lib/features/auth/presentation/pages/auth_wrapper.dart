@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/core/errors/error_screen.dart';
-import 'package:pasti_track/core/notifications/notification_service.dart';
 import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:pasti_track/features/auth/presentation/pages/sign_in_screen.dart';
-import 'package:pasti_track/features/events/domain/usecases/mark_event_as_done.dart';
 import 'package:pasti_track/features/home/presentation/home_screen.dart';
 
 class AuthWrapper extends StatelessWidget {
