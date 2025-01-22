@@ -12,7 +12,7 @@ class EventEntity {
   EventStatus status;
   final DateTime? dateDone;
   final DateTime dateUpdated;
-  bool registrationScheduledNotification;
+  int registrationScheduledNotification;
 
   EventEntity({
     required this.eventId,
@@ -22,24 +22,21 @@ class EventEntity {
     required this.dateUpdated,
     required this.status,
     this.dateDone,
-    this.registrationScheduledNotification = false,
+    this.registrationScheduledNotification = 0,
   });
 
   factory EventEntity.fromJson(Map<String, dynamic> json) {
-    AppLogger.p("EventEntity.fromJson", json);
-
     var scheduleStatus = json['registration_scheduled_notification'];
     if (scheduleStatus is String) {
       int? tryNumer = int.tryParse(scheduleStatus);
 
       if (tryNumer is int) {
-        scheduleStatus = tryNumer == 1 ? true : false;
+        scheduleStatus = tryNumer == 1 ? 1 : 0;
       } else {
         bool? tryBool = bool.tryParse(scheduleStatus);
-        scheduleStatus = tryBool! ? true : false;
+        scheduleStatus = tryBool! ? 1 : 0;
       }
     }
-    AppLogger.p("EventEntity.fromJson scheduleStatus", scheduleStatus);
 
     return EventEntity(
       eventId: json['event_id'] as String,
@@ -56,7 +53,7 @@ class EventEntity {
   }
 
   Map<String, dynamic> toJson() {
-    AppLogger.p("EventEntity.toJson", registrationScheduledNotification);
+    AppLogger.p("EventEntity.eventId", eventId);
     return {
       'event_id': eventId,
       'routine_id': routineId,

@@ -42,24 +42,6 @@ class EventsScreen extends StatelessWidget {
             List<EventEntity> events = state.events;
 
             if (events.isEmpty) {
-              // return Center(
-              //   child: ElevatedButton(
-              //       onPressed: () async {
-              //         // get hour time from dateSchedule
-              //         DateTime dateSchedule = DateTime.now().add(
-              //           Duration(seconds: 5),
-              //         );
-
-              //         // schedule notification for 5 minutes before the event
-              //         await NotificationService().scheduleNotification(
-              //           id: 1.hashCode,
-              //           title: AppString.scheduleNotificationTitle("v"),
-              //           body: AppString.scheduleNotificationBody(dateSchedule),
-              //           dateTime: dateSchedule,
-              //         );
-              //       },
-              //       child: Text("click me")),
-              // );
               return const Center(
                 child: Text(AppString.noScheduledEventsFound),
               );

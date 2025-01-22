@@ -21,6 +21,7 @@ class ScheduleNotifications {
         body:
             'Recuerda tomar tu medicamento: $medicationName programado para las ${hourProgrammed[0]}:${hourProgrammed[1]}. Tu salud es lo primero.',
         dateTime: dateTimeBeforeEvent,
+        objectId: "", // recordar esto.
       );
     }
   }

@@ -138,9 +138,8 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
 
       for (DateTime date in daysOfYear) {
         DateTime dateScheduled = date;
-        AppLogger.p("CustomDaysWithTime", dateScheduled);
 
-        futures.add(addEvent.call(EventEntity(
+        EventEntity event = EventEntity(
           eventId: DateTime.now().toIso8601String(),
           routineId: routine.routineId,
           medicineId: routine.medicineId,
@@ -148,7 +147,9 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           dateUpdated: DateTime.now(),
           dateDone: null,
           status: EventStatus.pending,
-        )));
+        );
+
+        futures.add(addEvent.call(event));
       }
 
       await Future.wait(futures);

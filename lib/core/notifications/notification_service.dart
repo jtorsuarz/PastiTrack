@@ -19,7 +19,7 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> initializeNotifications(useCase) async {
+  Future<void> initializeNotifications(useCase, bloc, event) async {
     // Initialize timezone data
     tz_data.initializeTimeZones();
 
@@ -39,17 +39,19 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (response) =>
-          _onDidReceiveNotificationResponse(response, useCase),
+          _onDidReceiveNotificationResponse(response, useCase, bloc, event),
     );
   }
 
   Future<void> _onDidReceiveNotificationResponse(
-      NotificationResponse response, useCase) async {
+      NotificationResponse response, useCase, bloc, event) async {
     String eventId = response.payload!;
 
     if (response.actionId != null) {
       if (response.actionId == 'ACCEPT') {
         useCase.call(eventId);
+        bloc.add(event);
+        // reload bloc getEvents
       }
     } else {
       // if click notification
@@ -84,6 +86,7 @@ class NotificationService {
     required String title,
     required String body,
     required DateTime dateTime,
+    required String objectId,
   }) async {
     AppLogger.p(
         "module", tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)));
@@ -122,7 +125,7 @@ class NotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
-      payload: id.toString(),
+      payload: objectId.toString(),
     );
   }
 
