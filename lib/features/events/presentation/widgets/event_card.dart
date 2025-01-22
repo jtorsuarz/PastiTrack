@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/core/config.dart';
-import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
@@ -10,11 +9,13 @@ import 'package:pasti_track/widgets/custom_sizes_box.dart';
 class EventCard extends StatefulWidget {
   final EventEntity event;
   final String medicationName;
+  ThemeData themeData;
 
-  const EventCard({
+  EventCard({
     super.key,
     required this.event,
     required this.medicationName,
+    required this.themeData,
   });
 
   @override
@@ -44,9 +45,6 @@ class _EventCardState extends State<EventCard> {
     if (isPassed) {
       buttonText = AppString.passed;
     }
-
-    AppLogger.p("EventEntity", eventEntity.eventId);
-    AppLogger.p("EventEntity", isPassed);
   }
 
   @override
@@ -153,8 +151,15 @@ class _EventCardState extends State<EventCard> {
                               .read<EventsBloc>()
                               .add(EventChangeStatusEvent(eventEntity.eventId));
                         },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isAvailable ? Colors.grey : Colors.teal,
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(
+                      widget.themeData.buttonTheme.colorScheme
+                          ?.primary, // Botón con color del tema
+                    ),
+                    foregroundColor: WidgetStateProperty.all(
+                      widget.themeData.buttonTheme.colorScheme
+                          ?.onPrimary, // Color del texto del botón
+                    ),
                   ),
                   child: Text(buttonText),
                 ),

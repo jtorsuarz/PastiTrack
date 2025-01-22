@@ -12,10 +12,13 @@ class EventsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var themeData = Theme.of(context);
+
     return Scaffold(
       body: BlocConsumer<EventsBloc, EventsState>(
         listener: (context, state) {
           AppLogger.p("EventsScreen", "EventsStates ${state.toString()}");
+          themeData = Theme.of(context);
           if (state is EventsErrorAlertState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error)),
@@ -78,6 +81,7 @@ class EventsScreen extends StatelessWidget {
                       return EventCard(
                         event: entity,
                         medicationName: medicationName,
+                        themeData: themeData,
                       );
                     }
                   },
