@@ -14,8 +14,10 @@ class GetAllEvents {
     // Actualizamos el estado de los eventos que ya pasaron
     DateTime now = DateTime.now();
     for (var event in events) {
-      if (event.dateScheduled.add(const Duration(minutes: 60)).isBefore(now) &&
-          event.status != EventStatus.completed) {
+      DateTime dateSchedule = event.dateScheduled;
+      // dateSchedule = dateSchedule.add(const Duration(minutes: 60));
+
+      if (dateSchedule.isBefore(now) && event.status != EventStatus.completed) {
         event.status = EventStatus.passed;
         await repository.update(event);
       }
