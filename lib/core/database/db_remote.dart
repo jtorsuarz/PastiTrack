@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 
 class DBRemote {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -55,22 +56,29 @@ class DBRemote {
   }
 
   // CRUD Operations for Events
-  Future<void> addEvent(String rutinaId, Map<String, dynamic> rutina) async {
-    await _userRef.collection('Events').doc(rutinaId).set(rutina);
+  Future<void> addEvent(String eventId, Map<String, dynamic> event) async {
+    await _userRef.collection('Events').doc(eventId).set(event);
   }
 
-  Future<void> updateEvent(String rutinaId, Map<String, dynamic> rutina) async {
-    await _userRef.collection('Events').doc(rutinaId).update(rutina);
+  Future<void> updateEvent(String eventId, Map<String, dynamic> event) async {
+    await _userRef.collection('Events').doc(eventId).update(event);
+  }
+
+  Future<void> updateEventStatus(String eventId, String dateDone) async {
+    await _userRef
+        .collection('Events')
+        .doc(eventId)
+        .update({"status": EventStatus.completed.name, "date_done": dateDone});
   }
 
   Future<void> deleteEvent(String eventId) async {
     await _userRef.collection('Events').doc(eventId).delete();
   }
 
-  Future<void> deleteEventsByRoutineId(String routineId) async {
+  Future<void> deleteEventsByRoutineId(String eventId) async {
     final querySnapshot = await _userRef
         .collection('Events')
-        .where('routine_id', isEqualTo: routineId)
+        .where('routine_id', isEqualTo: eventId)
         .get();
 
     for (var doc in querySnapshot.docs) {
@@ -89,7 +97,7 @@ class DBRemote {
   Future<QuerySnapshot> getPendingEvents(DateTime currentDate) async {
     return await _userRef
         .collection('Events')
-        .where('status', isEqualTo: false) // Solo eventos pendientes
+        .where('status', isEqualTo: EventStatus.pending.name)
         .where('date_scheduled',
             isLessThanOrEqualTo: currentDate.toIso8601String())
         .get();

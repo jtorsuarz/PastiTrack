@@ -8,7 +8,7 @@ class EventRemoteDataSource {
 
   EventRemoteDataSource();
 
-  Future<List<EventEntity>> getEvents() async {
+  Future<List<EventEntity>> getAll() async {
     final querySnapshot = await dbremote.getEvents();
     return querySnapshot.docs.map((doc) {
       var m = doc.data() as Map<String, dynamic>;
@@ -17,7 +17,7 @@ class EventRemoteDataSource {
     }).toList();
   }
 
-  Future<void> addEvent(EventEntity event) async {
+  Future<void> add(EventEntity event) async {
     await dbremote.addEvent(event.eventId, event.toJsonWithoutId());
   }
 
@@ -25,21 +25,19 @@ class EventRemoteDataSource {
     await dbremote.deleteEvent(id);
   }
 
-  Future<void> deleteEventsByRoutineId(String id) async {
+  Future<void> deleteByRoutineId(String id) async {
     await dbremote.deleteEventsByRoutineId(id);
   }
 
-  Future<void> updateEvent(EventEntity event) async {
-    await dbremote.updateEvent(event.medicineId, event.toJsonWithoutId());
+  Future<void> update(EventEntity event) async {
+    await dbremote.updateEvent(event.eventId, event.toJsonWithoutId());
   }
 
-  Future<void> updateStatusEvent(String id, String dateDone) async {
-    DocumentSnapshot event = await dbremote.getEvent(id);
-
-    AppLogger.p("Remote updateStatusEvent", event);
+  Future<void> updateStatus(String id, String dateDone) async {
+    await dbremote.updateEventStatus(id, dateDone);
   }
 
-  Future<List<EventEntity>> getPendingEvents(DateTime currentDate) async {
+  Future<List<EventEntity>> getPendings(DateTime currentDate) async {
     final events = await dbremote.getPendingEvents(currentDate);
     return events.docs.map((doc) {
       return EventEntity.fromJson(doc.data() as Map<String, dynamic>);

@@ -26,7 +26,7 @@ class EventRepositoryImpl implements EventRepository {
   Future<List<EventEntity>> getAll() async {
     try {
       final result = await localDB.getEvents();
-      if (await isConnected()) await remoteDB.getEvents();
+      if (await isConnected()) await remoteDB.getAll();
       AppLogger.p("Event", "getAll");
       return result;
     } catch (e) {
@@ -39,7 +39,7 @@ class EventRepositoryImpl implements EventRepository {
   Future<void> add(EventEntity event) async {
     try {
       await localDB.addEvent(event);
-      if (await isConnected()) await remoteDB.addEvent(event);
+      if (await isConnected()) await remoteDB.add(event);
       AppLogger.p("Event", "add");
     } catch (e) {
       AppLogger.p("Catch Event", "add ${e.toString()}");
@@ -64,7 +64,7 @@ class EventRepositoryImpl implements EventRepository {
     try {
       await localDB.deleteEventsByRoutineId(routineId);
       if (await isConnected()) {
-        await remoteDB.deleteEventsByRoutineId(routineId);
+        await remoteDB.deleteByRoutineId(routineId);
       }
       AppLogger.p("Event", "deleteByRoutine");
     } catch (e) {
@@ -77,7 +77,7 @@ class EventRepositoryImpl implements EventRepository {
   Future<int> update(EventEntity event) async {
     try {
       final result = await localDB.updateEvent(event);
-      if (await isConnected()) await remoteDB.updateEvent(event);
+      if (await isConnected()) await remoteDB.update(event);
       AppLogger.p("Event", "update");
       return result;
     } catch (e) {
@@ -92,7 +92,7 @@ class EventRepositoryImpl implements EventRepository {
       String dateDone = DateTime.now().toIso8601String();
       final result = await localDB.updateStatusEvent(eventId, dateDone);
       if (await isConnected()) {
-        await remoteDB.updateStatusEvent(eventId, dateDone);
+        await remoteDB.updateStatus(eventId, dateDone);
       }
       AppLogger.p("Event", "updateStatusEvent");
       return result;
@@ -115,7 +115,7 @@ class EventRepositoryImpl implements EventRepository {
   @override
   Future<List<EventEntity>> getPendingEvents(DateTime currentDate) async {
     try {
-      await remoteDB.getPendingEvents(currentDate);
+      await remoteDB.getPendings(currentDate);
       AppLogger.p("Event", "updateStatusEvent");
       return localDB.getPendingEvents(currentDate);
     } catch (e) {
@@ -127,7 +127,7 @@ class EventRepositoryImpl implements EventRepository {
   Future<void> syncData() async {
     if (await isConnected()) {
       List<EventEntity> localEvents = await getAll();
-      List<EventEntity> remoteEvents = await remoteDB.getEvents();
+      List<EventEntity> remoteEvents = await remoteDB.getAll();
 
       Map<String, EventEntity> remoteEventMap = {
         for (var event in remoteEvents) event.eventId: event
@@ -141,13 +141,13 @@ class EventRepositoryImpl implements EventRepository {
           DateTime remoteDate = remoteEvent.dateUpdated;
 
           if (localDate.isAfter(remoteDate)) {
-            await remoteDB.updateEvent(localEvent);
+            await remoteDB.update(localEvent);
           } else if (remoteDate.isAfter(localDate)) {
             await localDB.updateEvent(remoteEvent);
           }
           remoteEventMap.remove(localEvent.eventId);
         } else {
-          await remoteDB.addEvent(localEvent);
+          await remoteDB.add(localEvent);
         }
       }
 

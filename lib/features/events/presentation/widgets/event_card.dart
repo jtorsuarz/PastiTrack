@@ -93,7 +93,7 @@ class _EventCardState extends State<EventCard> {
                           ),
                         ),
                         Text(
-                          "${eventEntity.dateDone?.toLocal() ?? AppString.pending}",
+                          "${eventEntity.dateDone?.toLocal() ?? eventEntity.status.name}",
                           style: TextStyle(
                             fontSize: 14,
                             color: getStatusColor(eventEntity.status.name),
@@ -111,7 +111,7 @@ class _EventCardState extends State<EventCard> {
                           ),
                         ),
                         Text(
-                          "${eventEntity.dateScheduled}",
+                          eventEntity.formatDateTime(eventEntity.dateScheduled),
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,

@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:pasti_track/features/medicines/data/datasources/medicament_local_datasource.dart';
@@ -64,5 +65,10 @@ class EventEntity {
     MedicamentLocalDataSource db = MedicamentLocalDataSource();
     Medicament medicament = await db.getMedicationById(medicineId);
     return medicament.name;
+  }
+
+  String formatDateTime(DateTime dateTime) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm a');
+    return formatter.format(dateTime);
   }
 }

@@ -169,31 +169,22 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
 
       // Dividir los eventos en los que se mantienen y los que no
       final eventsToKeep = existingEvents.where((event) {
-        // Eventos pasados o marcados como tomados
-        return event.dateScheduled.isBefore(DateTime.now()) ||
-            event.status.name == "pending" ||
-            event.status.name == "missed" ||
+        return event.status == EventStatus.passed ||
+            event.status == EventStatus.completed ||
             event.dateDone != null;
       }).toList();
 
-      for (EventEntity eventEntity in eventsToKeep) {
-        AppLogger.p("eventsToKeep", eventEntity.toJson());
-      }
-
       final eventsToDelete = existingEvents.where((event) {
-        // Filtrar eventos que no están en `eventsToKeep`
         return !eventsToKeep.contains(event);
       }).toList();
 
       await updateRoutine.call(routine);
 
-      // Eliminar los eventos que no se mantienen
       for (var event in eventsToDelete) {
         await deleteEventById.call(event.eventId);
       }
 
       List<DateTime> newEvents = _generateEventDatesFromRoutine(routine);
-      // Crear nuevos eventos en base a la rutina actualizada
       for (DateTime date in newEvents) {
         await addEvent.call(EventEntity(
           eventId: DateTime.now().toIso8601String(),
