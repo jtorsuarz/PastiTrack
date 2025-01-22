@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Map> _options = [
     {
       "title": AppString.events,
-      "screen": EventsScreen(showAppBar: false),
+      "screen": const EventsScreen(showAppBar: false),
       "navigator": const BottomNavigationBarItem(
         icon: Icon(CupertinoIcons.calendar),
         label: AppString.events,
