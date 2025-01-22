@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pasti_track/core/config.dart';
+import 'package:pasti_track/core/notifications/notification_service.dart';
 import 'package:pasti_track/features/auth/domain/usecases/password_recovery.dart';
 import 'package:pasti_track/features/auth/domain/usecases/sign_in_usecase.dart';
 import 'package:pasti_track/features/auth/domain/usecases/signup_user_usecase.dart';
+import 'package:pasti_track/features/events/domain/usecases/mark_event_as_done.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -17,9 +19,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final PasswordRecoveryUseCase _passwordRecoveryUseCase;
   final Completer<void> _completer = Completer<void>();
 
-  AuthBloc(this._firebaseAuth, this._signInUseCase, this._signUpUserUseCase,
-      this._passwordRecoveryUseCase)
-      : super(AuthInitial()) {
+  AuthBloc(
+    this._firebaseAuth,
+    this._signInUseCase,
+    this._signUpUserUseCase,
+    this._passwordRecoveryUseCase,
+  ) : super(AuthInitial()) {
     on<AuthCheckRequested>((event, emit) async {
       emit(AuthLoading());
       try {
@@ -61,7 +66,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         await _signUpUserUseCase.call(
             email: event.email, password: event.password);
-        emit(AuthSignUpSuccess());
+        emit(AuthAuthenticated(_firebaseAuth.currentUser!));
       } catch (error) {
         emit(AuthError(AppString.errorSignUp));
       }

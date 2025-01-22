@@ -16,8 +16,8 @@ class RemoveMedicamentEvent extends MedicamentEvent {
   RemoveMedicamentEvent(this.id);
 }
 
-class UpdateMedicament extends MedicamentEvent {
+class UpdateMedicamentEvent extends MedicamentEvent {
   final Medicament medicamento;
 
-  UpdateMedicament(this.medicamento);
+  UpdateMedicamentEvent(this.medicamento);
 }

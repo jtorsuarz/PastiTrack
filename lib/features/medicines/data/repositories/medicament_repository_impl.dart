@@ -17,6 +17,12 @@ class MedicamentRepositoryImpl implements MedicamentRepository {
     this.remoteDB,
   );
 
+  Future<void> initialize() async {
+    if (await isConnected()) {
+      await syncData();
+    }
+  }
+
   Future<bool> isConnected() async {
     var connectivityResult = await _connectivity.checkConnectivity();
     return connectivityResult.first != ConnectivityResult.none;

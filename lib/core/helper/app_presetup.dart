@@ -12,9 +12,11 @@ class AppPresetup {
 
   static init() async {
     WidgetsFlutterBinding.ensureInitialized();
+
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Europe/Madrid'));
   }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:pasti_track/features/home/presentation/home_screen.dart';
 import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -22,8 +23,8 @@ class SignUpScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
-            if (state is AuthSignUpSuccess) {
-              context.go(AppUrls.signUpSuccessPath);
+            if (state is AuthAuthenticated) {
+              context.push(AppUrls.homePath);
             } else if (state is AuthError) {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text(state.message)));

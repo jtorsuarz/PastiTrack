@@ -10,6 +10,10 @@ import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/features/medicines/data/datasources/medicament_local_datasource.dart';
 import 'package:pasti_track/features/medicines/data/datasources/medicament_remote_datasource.dart';
 import 'package:pasti_track/features/medicines/data/repositories/medicament_repository_impl.dart';
+import 'package:pasti_track/features/medicines/domain/usecases/add_medicament.dart';
+import 'package:pasti_track/features/medicines/domain/usecases/delete_medicament.dart';
+import 'package:pasti_track/features/medicines/domain/usecases/get_medications.dart';
+import 'package:pasti_track/features/medicines/domain/usecases/update_medicament.dart';
 import 'package:pasti_track/features/medicines/presentation/bloc/medicament_bloc.dart';
 
 import 'package:pasti_track/features/profile/data/repositories/profile_repository_impl.dart';
@@ -58,8 +62,6 @@ class AppBlocProviders {
   );
 
   static List<SingleChildWidget> get(firebase) {
-    NotificationService()
-        .initializeNotifications(MarkEventAsDone(_eventRepoImpl));
     return [
       BlocProvider(create: (context) => ThemeBloc()),
       // Firebase
@@ -83,7 +85,10 @@ class AppBlocProviders {
       ),
       BlocProvider(
         create: (ctx) => MedicamentBloc(
-          _medicamentRepoImpl,
+          GetAllMedicaments(_medicamentRepoImpl),
+          AddMedicament(_medicamentRepoImpl),
+          UpdateMedicament(_medicamentRepoImpl),
+          DeleteMedicament(_medicamentRepoImpl),
         )..add(LoadMedicationsEvent()),
       ),
       BlocProvider(
@@ -102,9 +107,11 @@ class AppBlocProviders {
           ),
       ),
       BlocProvider(
-        create: (ctx) => EventsBloc(MarkEventAsDone(_eventRepoImpl),
-            ScheduleNotifications(_notification), GetAllEvents(_eventRepoImpl))
-          ..add(
+        create: (ctx) => EventsBloc(
+          MarkEventAsDone(_eventRepoImpl),
+          ScheduleNotifications(_notification),
+          GetAllEvents(_eventRepoImpl),
+        )..add(
             LoadingEventsEvent(),
           ),
       )

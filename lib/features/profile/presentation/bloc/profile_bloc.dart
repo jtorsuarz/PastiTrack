@@ -26,7 +26,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       LoadProfileEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileLoading());
     try {
-      final profile = await loadProfile();
+      final profile = await loadProfile.call();
       emit(ProfileLoaded(profile: profile!));
     } catch (e) {
       emit(
@@ -39,7 +39,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       UpdateProfileEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileLoading());
     try {
-      await updateProfile(event.name);
+      await updateProfile.call(event.name);
       emit(ProfileUpdated());
       add(LoadProfileEvent());
     } catch (e) {
@@ -53,8 +53,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       ChangePasswordEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileLoading());
     try {
-      await changePassword(event.newPassword);
-      final profile = await loadProfile();
+      await changePassword.call(event.newPassword);
+      final profile = await loadProfile.call();
       emit(ProfilePasswordChanged(profile: profile!));
       add(LoadProfileEvent());
     } catch (e) {
@@ -68,7 +68,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       UpdateProfileImageEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileLoading());
     try {
-      await updateProfileImage(event.imagePath);
+      await updateProfileImage.call(event.imagePath);
       emit(ProfileUpdated());
       add(LoadProfileEvent());
     } catch (e) {

@@ -102,7 +102,7 @@ class _AddEditMedicamentScreenState extends State<AddEditMedicamentScreen> {
                         );
                         context
                             .read<MedicamentBloc>()
-                            .add(UpdateMedicament(medicamentUpdated));
+                            .add(UpdateMedicamentEvent(medicamentUpdated));
 
                         message = AppString.successUpdated;
                       } else {

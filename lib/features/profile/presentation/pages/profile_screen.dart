@@ -1,13 +1,17 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pasti_track/core/config.dart';
+import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/profile/data/models/user_model.dart';
 import 'package:pasti_track/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:pasti_track/features/profile/presentation/bloc/profile_event.dart';
 import 'package:pasti_track/features/profile/presentation/bloc/profile_state.dart';
 import 'package:pasti_track/widgets/custom_sizes_box.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -93,14 +97,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Future<String> getCacheImagePath(String fileName) async {
+    final directory = await getTemporaryDirectory();
+    return '${directory.path}/$fileName';
+  }
+
+  getImageProfile(String? imagePath) {
+    if (imagePath == null) {
+      return AssetImage(AppImages.userDefault) as ImageProvider;
+    }
+
+    final file = File(imagePath);
+    if (file.existsSync()) {
+      return FileImage(file);
+    } else {
+      return AssetImage(AppImages.userDefault);
+    }
+  }
+
   Widget _buildProfileImage(ProfileModel profile) {
+    String? imagePath = profile.photoUrl;
+
     return GestureDetector(
       onTap: () => _selectImage(),
       child: CircleAvatar(
         radius: 75,
-        backgroundImage: profile.photoUrl != null
-            ? FileImage(File(profile.photoUrl!))
-            : AssetImage(AppImages.userDefault) as ImageProvider,
+        backgroundImage: getImageProfile(imagePath),
       ),
     );
   }
