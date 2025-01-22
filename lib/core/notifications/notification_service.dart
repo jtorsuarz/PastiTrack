@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz_data;
@@ -49,7 +50,6 @@ class NotificationService {
     if (response.actionId != null) {
       if (response.actionId == 'ACCEPT') {
         useCase.call(eventId);
-        print("Toma de medicamento aceptada");
       }
     } else {
       // if click notification
@@ -59,16 +59,15 @@ class NotificationService {
 
   Future<void> showNotification(
       {required int id, required String title, required String body}) async {
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-      'pasti_track_channel', // Unique channel ID
-      'PastiTrack Notifications', // Channel name
-      channelDescription: 'Notifications for medication reminders',
+    AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      AppDotEnv.notificationUniqueChannelId,
+      AppDotEnv.notificationChannelName,
+      channelDescription: AppDotEnv.notificationChannelDescription,
       importance: Importance.max,
       priority: Priority.high,
     );
 
-    const NotificationDetails notificationDetails = NotificationDetails(
+    NotificationDetails notificationDetails = NotificationDetails(
       android: androidDetails,
     );
 
@@ -118,7 +117,8 @@ class NotificationService {
           ],
         ),
       ),
-      androidAllowWhileIdle: true,
+      // androidAllowWhileIdle: true,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,

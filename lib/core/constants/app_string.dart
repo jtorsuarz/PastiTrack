@@ -15,7 +15,6 @@ class AppString {
   static const String home = 'Inicio';
   static const String medicines = 'Medicinas';
   static const String routines = 'Rutinas';
-  static const String history = 'Historial';
   static const String settings = 'Configuración';
   static const String profile = 'Perfil';
   static const String editProfile = 'Editar Perfil';

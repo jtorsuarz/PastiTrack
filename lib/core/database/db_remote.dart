@@ -102,23 +102,4 @@ class DBRemote {
             isLessThanOrEqualTo: currentDate.toIso8601String())
         .get();
   }
-
-  // CRUD Operations for History
-  Future<void> addHistorial(
-      String historialId, Map<String, dynamic> history) async {
-    await _userRef.collection('History').doc(historialId).set(history);
-  }
-
-  Future<void> updateHistorial(
-      String historialId, Map<String, dynamic> history) async {
-    await _userRef.collection('History').doc(historialId).update(history);
-  }
-
-  Future<void> deleteHistorial(String historialId) async {
-    await _userRef.collection('History').doc(historialId).delete();
-  }
-
-  Future<QuerySnapshot> getHistorial() async {
-    return await _userRef.collection('History').get();
-  }
 }

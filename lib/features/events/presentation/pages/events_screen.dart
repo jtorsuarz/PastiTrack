@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
-import 'package:pasti_track/core/notifications/notification_service.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/features/events/presentation/widgets/event_card.dart';

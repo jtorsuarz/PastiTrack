@@ -73,18 +73,6 @@ class DBLocal {
     ''');
 
     await db.execute('''
-      CREATE TABLE history (
-        history_id TEXT PRIMARY KEY,
-        routine_id TEXT,
-        take_status TEXT NOT NULL,
-        date TEXT NOT NULL,
-        user_id TEXT,
-        FOREIGN KEY (routine_id) REFERENCES routines(routine_id),
-        FOREIGN KEY (user_id) REFERENCES Users(user_id)
-      )
-    ''');
-
-    await db.execute('''
       CREATE TABLE events (
         event_id TEXT PRIMARY KEY,
         routine_id TEXT,
@@ -93,6 +81,7 @@ class DBLocal {
         status TEXT,
         date_done TEXT,
         date_updated TEXT NOT NULL,
+        registration_scheduled_notification TEXT NOT NULL,
         FOREIGN KEY (routine_id) REFERENCES routines(routine_id),
         FOREIGN KEY (medicine_id) REFERENCES Users(medicine_id)
       )
@@ -206,45 +195,6 @@ class DBLocal {
       'routines',
       where: 'routine_id = ?',
       whereArgs: [rutinaId],
-    );
-  }
-
-  Future<int> insertHistorial(Map<String, dynamic> history) async {
-    Database db = await database;
-    return await db.insert('history', history);
-  }
-
-  Future<List<Map<String, dynamic>>> getHistorial() async {
-    Database db = await database;
-    return await db.query('history');
-  }
-
-  Future<List<Map<String, dynamic>>> getHistorialByRutinaId(
-      String rutinaId) async {
-    Database db = await database;
-    return await db.query(
-      'history',
-      where: 'routine_id = ?',
-      whereArgs: [rutinaId],
-    );
-  }
-
-  Future<int> updateHistorial(Map<String, dynamic> history) async {
-    Database db = await database;
-    return await db.update(
-      'history',
-      history,
-      where: 'history_id = ?',
-      whereArgs: [history['history_id']],
-    );
-  }
-
-  Future<int> deleteHistorial(String historialId) async {
-    Database db = await database;
-    return await db.delete(
-      'history',
-      where: 'history_id = ?',
-      whereArgs: [historialId],
     );
   }
 

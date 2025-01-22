@@ -12,6 +12,7 @@ class EventEntity {
   EventStatus status;
   final DateTime? dateDone;
   final DateTime dateUpdated;
+  bool registrationScheduledNotification;
 
   EventEntity({
     required this.eventId,
@@ -21,6 +22,7 @@ class EventEntity {
     required this.dateUpdated,
     required this.status,
     this.dateDone,
+    this.registrationScheduledNotification = false,
   });
 
   factory EventEntity.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,8 @@ class EventEntity {
           ? DateTime.parse(json['date_done'] as String)
           : null,
       dateUpdated: DateTime.parse(json['date_updated'] as String),
+      registrationScheduledNotification:
+          json['registration_scheduled_notification'] as bool,
     );
   }
 
@@ -47,6 +51,7 @@ class EventEntity {
       'status': status.name,
       'date_done': dateDone?.toIso8601String(),
       'date_updated': dateUpdated.toIso8601String(),
+      'registration_scheduled_notification': registrationScheduledNotification,
     };
   }
 
@@ -58,6 +63,7 @@ class EventEntity {
       'status': status.name,
       'date_done': dateDone?.toIso8601String(),
       'date_updated': dateUpdated.toIso8601String(),
+      'registration_scheduled_notification': registrationScheduledNotification,
     };
   }
 
