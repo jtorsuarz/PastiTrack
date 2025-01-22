@@ -93,16 +93,6 @@ class AppRouter {
               child: AddEditRoutineScreen(routine: routine),
             );
           }),
-      GoRoute(
-        path: AppUrls.historyPath,
-        builder: (BuildContext context, GoRouterState state) {
-          return const Center(
-              child: Text(
-            AppUrls.historyPath,
-            style: TextStyle(color: Colors.amber),
-          ));
-        },
-      ),
     ],
     redirect: (context, state) {
       // Obtiene el estado del AuthBloc
