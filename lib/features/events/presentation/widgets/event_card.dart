@@ -104,7 +104,7 @@ class _EventCardState extends State<EventCard> {
                     Wrap(
                       children: [
                         Text(
-                          AppString.registerTake,
+                          AppString.registerTakeWithTwoPoint,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -153,15 +153,17 @@ class _EventCardState extends State<EventCard> {
                         },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(
-                      widget.themeData.buttonTheme.colorScheme
-                          ?.primary, // Botón con color del tema
+                      !isAvailable
+                          ? widget.themeData.buttonTheme.colorScheme?.primary
+                          : Colors.grey[100],
                     ),
                     foregroundColor: WidgetStateProperty.all(
-                      widget.themeData.buttonTheme.colorScheme
-                          ?.onPrimary, // Color del texto del botón
+                      !isAvailable
+                          ? widget.themeData.buttonTheme.colorScheme?.onPrimary
+                          : Colors.grey,
                     ),
                   ),
-                  child: Text(buttonText),
+                  child: Text(buttonText.toUpperCase()),
                 ),
               ],
             ),

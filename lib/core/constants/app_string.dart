@@ -147,7 +147,8 @@ class AppString {
   static String take = "Tomado";
   static String pending = "Pendiente";
 
-  static String registerTake = "Registro de Toma: ";
+  static String registerTakeWithTwoPoint = "Registro de Toma: ";
+  static String registerTake = "Registrar Toma";
   static String dateScheduled = "Fecha Programada: ";
 
   static String passed = "No tomado";
