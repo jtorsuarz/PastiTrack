@@ -120,7 +120,7 @@ class AppString {
   static const String noName = 'S/NA';
   static const String registerRoutines = 'Registro de rutinas';
   static const String rememberToRecordYourRoutinesToStayInControl =
-      'Remember to record your routines to stay in control.';
+      'Recuerda registrar tus rutinas para mantener el control.';
 
   /// ! Error Messages
   static const String error = 'Error';
