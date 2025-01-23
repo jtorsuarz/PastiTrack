@@ -21,7 +21,6 @@ class GetAllEvents {
       }
     }
 
-    // Ordenamos los eventos:
     events.sort((a, b) {
       if (a.status == EventStatus.completed) return 1;
       if (b.status == EventStatus.completed) return -1;

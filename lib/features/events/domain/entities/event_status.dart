@@ -8,7 +8,6 @@ enum EventStatus {
   canceled,
 }
 
-// Función que devuelve el color basado en el status
 Color getStatusColor(String status) {
   switch (status) {
     case 'pending':
@@ -20,6 +19,6 @@ Color getStatusColor(String status) {
     case 'canceled':
       return Colors.red;
     default:
-      return Colors.grey; // Color por defecto si no coincide
+      return Colors.grey;
   }
 }

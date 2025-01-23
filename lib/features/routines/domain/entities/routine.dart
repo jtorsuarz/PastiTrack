@@ -115,9 +115,8 @@ class Routine {
       return [];
     }
     return customDays!
-        .where(
-            (item) => item != null && item.isNotEmpty) // Filtrar nulos y vacíos
-        .map((e) => DateTime.parse(e!)) // Convertir cada String a DateTime
+        .where((item) => item != null && item.isNotEmpty)
+        .map((e) => DateTime.parse(e!))
         .toList();
   }
 

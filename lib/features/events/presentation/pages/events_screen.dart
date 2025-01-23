@@ -52,7 +52,7 @@ class EventsScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 EventEntity entity = state.events[index];
                 return FutureBuilder<String>(
-                  future: entity.medicationName(), // Llama al método asíncrono.
+                  future: entity.medicationName(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();

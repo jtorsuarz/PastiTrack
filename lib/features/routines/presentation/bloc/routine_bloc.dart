@@ -168,7 +168,6 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
       List<EventEntity> existingEvents =
           await getEventsByRoutineId.call(event.routine.routineId);
 
-      // Dividir los eventos en los que se mantienen y los que no
       final eventsToKeep = existingEvents.where((event) {
         return (event.status == EventStatus.completed ||
                 event.status == EventStatus.passed) ||
@@ -231,14 +230,12 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
     final int hourNow = timeParts == null ? 0 : timeParts.hour;
     final int minuteNow = timeParts == null ? 0 : timeParts.minute;
 
-    // diaria genera registro dependiendo del dia actual hasta el fin de año
     if (frecuency == RoutineFrequency.daily.description) {
       AppLogger.p("Crear Evento", "FRECUENCY $frecuency");
       daysOfYear =
           getRemainingDatesCurrentYear(hour: hourNow, minute: minuteNow);
     }
 
-    // generamos registros cada 7 dias.
     if (frecuency == RoutineFrequency.weekly.description) {
       AppLogger.p("Crear Evento", "FRECUENCY $frecuency");
       daysOfYear = getRemainingDatesCurrentYearByDay(
@@ -247,7 +244,6 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
           minute: minuteNow);
     }
 
-    // personalizada, se crean las fechas indicadas, pero previamente se tiene que evaluar el tipo de hora que se usa.
     if (frecuency == RoutineFrequency.custom.description) {
       AppLogger.p(
           "RoutineFrequency.custom Crear Evento", "FRECUENCY $frecuency");
@@ -310,7 +306,6 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
       DateTime date = entry.key;
       TimeOfDay time = entry.value;
 
-      // Fusionar DateTime con TimeOfDay
       return DateTime(
         date.year,
         date.month,

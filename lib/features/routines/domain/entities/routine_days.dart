@@ -9,7 +9,6 @@ enum RoutineDays {
   saturday,
   sunday;
 
-  // Método para convertir los valores del enum a un texto legible
   String get description {
     switch (this) {
       case RoutineDays.monday:
@@ -29,7 +28,6 @@ enum RoutineDays {
     }
   }
 
-  // Método para convertir un texto a un enum (por si llega de la base de datos o Firestore)
   static RoutineDays fromString(String value) {
     switch (value) {
       case AppString.monday:

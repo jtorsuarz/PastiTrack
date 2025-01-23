@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
 
-// ignore: must_be_immutable
 class SelectDaysBottomSheetWidget extends StatelessWidget {
   List<DateTime> selectedDays;
   void Function()? onPressed;
@@ -24,7 +23,6 @@ class SelectDaysBottomSheetWidget extends StatelessWidget {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
-                  // Selector de Día Individual
                   DateTime? picked = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
@@ -34,7 +32,7 @@ class SelectDaysBottomSheetWidget extends StatelessWidget {
                   if (picked != null && !selectedDays.contains(picked)) {
                     setState(() {
                       selectedDays.add(picked);
-                      selectedDays.sort(); // Ordena las fechas
+                      selectedDays.sort();
                     });
                   }
                 },
@@ -43,7 +41,6 @@ class SelectDaysBottomSheetWidget extends StatelessWidget {
               const SizedBox(height: 8),
               ElevatedButton(
                 onPressed: () async {
-                  // Selector de Rango de Fechas
                   DateTimeRange? range = await showDateRangePicker(
                     context: context,
                     firstDate: DateTime(2000),
@@ -64,9 +61,8 @@ class SelectDaysBottomSheetWidget extends StatelessWidget {
                     }
                     setState(() {
                       selectedDays.addAll(rangeDays);
-                      selectedDays =
-                          selectedDays.toSet().toList(); // Evita duplicados
-                      selectedDays.sort(); // Ordena las fechas
+                      selectedDays = selectedDays.toSet().toList();
+                      selectedDays.sort();
                     });
                   }
                 },
@@ -106,7 +102,7 @@ class SelectDaysBottomSheetWidget extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context); // Cancelar y cerrar
+                      Navigator.pop(context);
                     },
                     child: const Text(AppString.cancel),
                   ),

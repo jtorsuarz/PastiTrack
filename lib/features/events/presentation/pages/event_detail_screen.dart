@@ -79,7 +79,6 @@ class EventDetailScreen extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // Redirigir a Home directamente
                           context.pushReplacement(AppUrls.homePath);
                         },
                         child: Text(AppString.omitter),

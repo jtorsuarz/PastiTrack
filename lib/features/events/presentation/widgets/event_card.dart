@@ -34,7 +34,6 @@ class _EventCardState extends State<EventCard> {
     eventEntity = widget.event;
     isPassed = eventEntity.status == EventStatus.passed ? true : false;
     isTaken = eventEntity.status == EventStatus.completed ? true : false;
-    // is available
     isAvailable = isPassed || isTaken;
 
     buttonText = AppString.registerTake;
@@ -163,9 +162,7 @@ class _EventCardState extends State<EventCard> {
                           : Colors.grey,
                     ),
                     minimumSize: WidgetStateProperty.all(Size(
-                      // width 100%
                       MediaQuery.of(context).size.width * 1.1,
-                      // height 48px
                       MediaQuery.of(context).size.height * 0.07,
                     )),
                   ),

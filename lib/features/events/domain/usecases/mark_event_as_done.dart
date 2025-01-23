@@ -1,5 +1,5 @@
 import 'package:pasti_track/core/helper/app_logger.dart';
-import 'package:pasti_track/core/notifications/notification_service.dart';
+import 'package:pasti_track/core/services/notification_service.dart';
 import 'package:pasti_track/features/events/domain/repositories/event_repository.dart';
 
 class MarkEventAsDone {

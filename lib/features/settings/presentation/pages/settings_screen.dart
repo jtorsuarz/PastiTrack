@@ -8,7 +8,6 @@ import 'package:pasti_track/features/settings/presentation/widgets/dark_mode_swi
 import 'package:pasti_track/features/settings/presentation/widgets/settings_tile_widget.dart';
 import 'package:pasti_track/features/settings/presentation/widgets/theme_dropdown_widget.dart';
 
-// ignore: must_be_immutable
 class SettingsScreen extends StatefulWidget {
   bool showAppBar;
   SettingsScreen({super.key, this.showAppBar = true});
@@ -52,29 +51,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
         body: ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
-            /// Show account information
             SettingsTileWidget(
               icon: Icons.person,
               title: AppString.editProfile,
               onTap: () => context.push(AppUrls.editProfilePath),
             ),
             const Divider(),
-
             const ThemeDropdownWidget(),
             const Divider(),
-
             const DarkModeSwitchWidget(),
             const Divider(),
-
-            /// Show application version
             SettingsTileWidget(
               icon: Icons.info_outline,
               title: AppString.appVersion,
               subtitle: _appVersion,
             ),
             const Divider(),
-
-            /// Option to log out
             SettingsTileWidget(
               icon: Icons.logout,
               title: AppString.logout,

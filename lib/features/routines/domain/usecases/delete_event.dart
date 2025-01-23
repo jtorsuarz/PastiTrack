@@ -1,4 +1,4 @@
-import 'package:pasti_track/core/notifications/notification_service.dart';
+import 'package:pasti_track/core/services/notification_service.dart';
 import 'package:pasti_track/features/events/data/repositories/event_repository_impl.dart';
 
 class DeleteEvent {

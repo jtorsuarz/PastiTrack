@@ -5,7 +5,6 @@ enum RoutineFrequency {
   weekly,
   custom;
 
-  // Método para convertir los valores del enum a un texto legible
   String get description {
     switch (this) {
       case RoutineFrequency.daily:
@@ -17,7 +16,6 @@ enum RoutineFrequency {
     }
   }
 
-  // Método para convertir un texto a un enum (por si llega de la base de datos o Firestore)
   static RoutineFrequency fromString(String value) {
     switch (value) {
       case AppString.daily:
@@ -31,6 +29,5 @@ enum RoutineFrequency {
     }
   }
 
-  // Método que devuelve una lista de todos los valores del enum
   static List<RoutineFrequency> get allValues => RoutineFrequency.values;
 }

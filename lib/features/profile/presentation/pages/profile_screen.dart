@@ -140,7 +140,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _selectImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      // ignore: use_build_context_synchronously
       context
           .read<ProfileBloc>()
           .add(UpdateProfileImageEvent(imagePath: image.path));
