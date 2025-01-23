@@ -33,7 +33,6 @@
 
 ### **Herramientas de desarrollo**
 - [Mockito](https://pub.dev/packages/mockito) - Framework para la creación de mocks en tests.
-- [sqflite_common_ffi](https://pub.dev/packages/sqflite_common_ffi) - Base de datos local en pruebas.
 
 ---
 
