@@ -95,9 +95,11 @@ class AppString {
       '¿Está seguro de que desea eliminar esta rutina?';
   static const String events = 'Eventos';
   static const String event = 'Evento';
+  static const String eventNotFound = 'Evento no encontrado';
   static const String eventsFromRoutine = 'Eventos de Rutina';
   static const String noScheduledEventsFound =
       'No se encontraros eventos programados.';
+  static const String medicamentNotFound = 'No se encontró el medicamento';
 
   // * Success messages
   static const String success = 'Éxito';
@@ -110,6 +112,7 @@ class AppString {
       'Perfil actualizado exitosamente.';
   static const String entryName = 'Ingrese el nombre';
   static const String entryDosage = 'Ingrese la dosis';
+  static const String status = 'Estado';
   static const String statusWithTwoPoint = 'Estado: ';
   static const String noName = 'S/NA';
 
@@ -131,14 +134,14 @@ class AppString {
   static const String errorInvalidPassword = 'Contraseña inválida';
   static const String errorNoInternet = 'No hay conexión a internet';
   static const String errorNoData = 'No hay datos disponibles';
-  static const String unexpectedErrorOcurred = 'Ocurrió un error inesperado.';
+  static const String errorUnexpectedOcurred = 'Ocurrió un error inesperado.';
   static const String errorEmailPasswordCannotBeEmpty =
       'El correo electrónico y la contraseña no pueden estar vacíos.';
   static const String errorCommunicationServer =
       'Error al comunicarse con el servidor.';
   static const String errorUserNotFound = 'Usuario no encontrado.';
   static const String errorAuthentication = 'Error de autenticación';
-  static const String canNotBeActionCheckYourConnectivityTryAgain =
+  static const String warningCanNotBeActionCheckYourConnectivityTryAgain =
       'No se puede realizar esta acción, compruebe su conectividad e inténtelo de nuevo.';
   static String eitherDayOfWeekMustBeProvided =
       'Se debe proporcionar dayOfWeek';
@@ -149,9 +152,11 @@ class AppString {
 
   static String registerTakeWithTwoPoint = "Registro de Toma: ";
   static String registerTake = "Registrar Toma";
-  static String dateScheduled = "Fecha Programada: ";
+  static String dateScheduled = "Fecha Programada";
+  static String dateScheduledWithTwoPoints = "Fecha Programada: ";
 
   static String passed = "No tomado";
+  static String omitter = 'Omitir';
 
   // ? Functions return a string
   static String userFromTime(v) => 'Usuario desde: $v';
@@ -188,4 +193,5 @@ class AppString {
       '💊💊 Quedan 5 minutos para tomar tu medicamento $v!';
   static String scheduleNotificationBody(v) =>
       'Recuerda tomar tu medicamento: name a las ${v.hour}:${v.minute}. Tu salud es lo primero.';
+  static String textWithTwoPoints(x, y) => '$x: $y';
 }

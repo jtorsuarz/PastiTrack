@@ -4,17 +4,18 @@ import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
 class EventDetailScreen extends StatelessWidget {
   final EventEntity? event;
 
-  const EventDetailScreen({Key? key, required this.event}) : super(key: key);
+  const EventDetailScreen({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppString.event),
+        title: const Text(AppString.event),
         centerTitle: true,
       ),
       body: BlocBuilder<EventsBloc, EventsState>(
@@ -25,18 +26,15 @@ class EventDetailScreen extends StatelessWidget {
             );
           }
 
-          // Verificamos si el evento es nulo
           if (event == null) {
             return Center(
-              child: Text('Evento no encontrado',
+              child: Text(AppString.eventNotFound,
                   style: Theme.of(context).textTheme.headlineMedium),
             );
           }
 
-          // Usamos FutureBuilder para manejar la llamada asíncrona
           return FutureBuilder<String>(
-            future:
-                event!.medicationName(), // Llamada asíncrona a medicationName()
+            future: event!.medicationName(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
@@ -44,7 +42,7 @@ class EventDetailScreen extends StatelessWidget {
                 );
               } else if (snapshot.hasError) {
                 return Center(
-                  child: Text('Error al cargar el medicamento'),
+                  child: Text(AppString.errorWhenLoad(AppString.medicament)),
                 );
               } else if (snapshot.hasData) {
                 return Padding(
@@ -53,39 +51,45 @@ class EventDetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Medicamento: ${snapshot.data}', // Aquí mostramos el medicamento obtenido
+                        AppString.textWithTwoPoints(
+                            AppString.medicament, snapshot.data),
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
-                      SizedBox(height: 20),
+                      CustomSizedBoxes.get20(),
                       Text(
-                          'Fecha Programada: ${event!.dateScheduled.toLocal()}'),
-                      SizedBox(height: 20),
-                      Text('Estado: ${event!.status.name}'),
-                      SizedBox(height: 40),
+                        AppString.textWithTwoPoints(
+                          AppString.dateScheduled,
+                          event!.dateScheduled.toLocal(),
+                        ),
+                      ),
+                      CustomSizedBoxes.get20(),
+                      Text(
+                        AppString.textWithTwoPoints(
+                            AppString.status, event!.status.name),
+                      ),
+                      CustomSizedBoxes.get40(),
                       ElevatedButton(
                         onPressed: () {
-                          // Marcar evento como completado
-                          BlocProvider.of<EventsBloc>(context)
-                              .add(EventChangeStatusEvent(event!.eventId));
-
-                          // Esperar que la actualización termine y redirigir a Home
+                          BlocProvider.of<EventsBloc>(context).add(
+                            EventChangeStatusEvent(event!.eventId),
+                          );
                           context.pushReplacement(AppUrls.homePath);
                         },
-                        child: Text('Marcar como Completado'),
+                        child: Text(AppString.registerTake),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           // Redirigir a Home directamente
                           context.pushReplacement(AppUrls.homePath);
                         },
-                        child: Text('Omitir'),
+                        child: Text(AppString.omitter),
                       ),
                     ],
                   ),
                 );
               } else {
                 return const Center(
-                  child: Text('No se encontró el medicamento'),
+                  child: Text(AppString.medicamentNotFound),
                 );
               }
             },

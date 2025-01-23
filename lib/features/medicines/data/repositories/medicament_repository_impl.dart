@@ -76,7 +76,7 @@ class MedicamentRepositoryImpl implements MedicamentRepository {
         return result;
       } else {
         throw Failure(AppString.errorWhenDelete(
-            AppString.canNotBeActionCheckYourConnectivityTryAgain));
+            AppString.warningCanNotBeActionCheckYourConnectivityTryAgain));
       }
     } on Failure catch (e) {
       AppLogger.p("Catch Medicament Failure", "deleteMedicament ${e.message}");

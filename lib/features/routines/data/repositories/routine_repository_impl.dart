@@ -72,7 +72,7 @@ class RoutineRepositoryImpl implements RoutineRepository {
       }
     } catch (e) {
       throw RoutineErrorAlertState(AppString.errorWhenDelete(
-          AppString.canNotBeActionCheckYourConnectivityTryAgain));
+          AppString.warningCanNotBeActionCheckYourConnectivityTryAgain));
     }
     try {
       final result = await localDB.deleteRoutine(id);

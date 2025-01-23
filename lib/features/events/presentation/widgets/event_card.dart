@@ -122,7 +122,7 @@ class _EventCardState extends State<EventCard> {
                     Wrap(
                       children: [
                         Text(
-                          AppString.dateScheduled,
+                          AppString.dateScheduledWithTwoPoints,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -162,6 +162,12 @@ class _EventCardState extends State<EventCard> {
                           ? widget.themeData.buttonTheme.colorScheme?.onPrimary
                           : Colors.grey,
                     ),
+                    minimumSize: WidgetStateProperty.all(Size(
+                      // width 100%
+                      MediaQuery.of(context).size.width * 1.1,
+                      // height 48px
+                      MediaQuery.of(context).size.height * 0.07,
+                    )),
                   ),
                   child: Text(buttonText.toUpperCase()),
                 ),
