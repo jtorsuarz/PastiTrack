@@ -10,6 +10,10 @@ import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz_data;
 
+const hourlyReminderChannel = 'hourly_reminder_channel';
+const hourlyReminder = 'Hourly Reminder';
+const reminderRegisterPendingDoses = 'Reminder to register pending doses';
+
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
 
@@ -22,8 +26,26 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> initializeNotifications(ctx, useCase, bloc, event) async {
-    // Initialize timezone data
+  Future<void> initializeGeneralNotifications() async {
+    tz_data.initializeTimeZones();
+
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: androidInitializationSettings,
+    );
+
+    _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestExactAlarmsPermission();
+
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> initializeEventNotifications(ctx, useCase, bloc, event) async {
     tz_data.initializeTimeZones();
 
     const AndroidInitializationSettings androidInitializationSettings =
@@ -55,10 +77,8 @@ class NotificationService {
       if (response.actionId == 'ACCEPT') {
         useCase.call(eventRecieved);
         bloc.add(event);
-        // reload bloc getEvents
       }
     } else {
-      // redirect to GoRoute AppUrls.eventRegisterTakePath
       Map<String, dynamic> eventMap = jsonDecode(eventRecieved);
       EventEntity event = EventEntity.fromJson(eventMap);
       GoRouter.of(ctx)
@@ -68,10 +88,11 @@ class NotificationService {
 
   Future<void> showNotification(
       {required int id, required String title, required String body}) async {
-    AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-      AppDotEnv.notificationUniqueChannelId,
-      AppDotEnv.notificationChannelName,
-      channelDescription: AppDotEnv.notificationChannelDescription,
+    AndroidNotificationDetails androidDetails =
+        const AndroidNotificationDetails(
+      hourlyReminderChannel,
+      hourlyReminder,
+      channelDescription: reminderRegisterPendingDoses,
       importance: Importance.max,
       priority: Priority.high,
     );
@@ -107,9 +128,9 @@ class NotificationService {
       tz.TZDateTime.from(dateTime, tz.local),
       NotificationDetails(
         android: AndroidNotificationDetails(
-          'pasti_track_channel',
-          'PastiTrack Notifications',
-          channelDescription: 'Notifications for medication reminders',
+          AppDotEnv.notificationUniqueChannelId,
+          AppDotEnv.notificationChannelName,
+          channelDescription: AppDotEnv.notificationChannelDescription,
           importance: Importance.max,
           priority: Priority.max,
           additionalFlags: Int32List.fromList([4]),
@@ -129,7 +150,6 @@ class NotificationService {
           ],
         ),
       ),
-      // androidAllowWhileIdle: true,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,

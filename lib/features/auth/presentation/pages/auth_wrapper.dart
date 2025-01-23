@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/errors/error_screen.dart';
+import 'package:pasti_track/core/services/WorkManager_service.dart';
 import 'package:pasti_track/core/services/notification_service.dart';
 import 'package:pasti_track/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:pasti_track/features/auth/presentation/pages/sign_in_screen.dart';
@@ -43,18 +45,20 @@ class _AuthenticatedHome extends StatefulWidget {
 class _AuthenticatedHomeState extends State<_AuthenticatedHome> {
   @override
   void initState() {
-    super.initState();
     _initializeNotifications();
+    super.initState();
   }
 
   Future<void> _initializeNotifications() async {
     final eventsBloc = context.read<EventsBloc>();
-    await NotificationService().initializeNotifications(
+    await NotificationService().initializeEventNotifications(
       context,
       eventsBloc.markEventAsDone,
       eventsBloc,
       LoadingEventsEvent(),
     );
+
+    WorkManagerService().registerTasks();
   }
 
   @override

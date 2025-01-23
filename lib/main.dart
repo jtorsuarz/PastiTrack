@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_presetup.dart';
+import 'package:pasti_track/core/services/WorkManager_service.dart';
 import 'package:pasti_track/core/theme/bloc/theme_bloc.dart';
+import 'package:workmanager/workmanager.dart';
+
+void callbackDispatcher() => WorkManagerService.callbackDispatcher();
 
 void main() async {
   await AppPresetup.init();
+  Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: WorkManagerService.isDebugMode,
+  );
   runApp(const MyApp());
 }
 
