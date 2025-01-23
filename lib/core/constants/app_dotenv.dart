@@ -6,4 +6,6 @@ class AppDotEnv {
   static String notificationChannelName = 'PastiTrack Notifications';
   static String notificationChannelDescription =
       'Notifications for medication reminders';
+
+  static const String appName = 'PastiTrack';
 }

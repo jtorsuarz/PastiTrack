@@ -19,20 +19,14 @@ class AppTheme {
       : assert(selectedColor >= 0 && selectedColor <= colorThemes.length - 1,
             'Colors must be between 0 and ${colorThemes.length}');
 
-  // Definimos los temas claro y oscuro
   ThemeData theme({bool isDarkMode = false}) {
     return ThemeData(
       useMaterial3: true,
       colorSchemeSeed: colorThemes[selectedColor],
-      brightness: isDarkMode
-          ? Brightness.dark
-          : Brightness.light, // Soporte para dark mode
-
-      // Configuración específica para modo claro
+      brightness: isDarkMode ? Brightness.dark : Brightness.light,
       appBarTheme: AppBarTheme(
-        backgroundColor: isDarkMode
-            ? Colors.grey[900]
-            : colorThemes[selectedColor], // Color oscuro para dark mode
+        backgroundColor:
+            isDarkMode ? Colors.grey[900] : colorThemes[selectedColor],
         titleTextStyle: TextStyle(
           color: isDarkMode ? Colors.white : Colors.white,
           fontSize: 20,
@@ -40,10 +34,8 @@ class AppTheme {
         ),
         iconTheme:
             IconThemeData(color: isDarkMode ? Colors.white : Colors.white),
-        elevation: 0, // Sin sombra para un look más limpio
+        elevation: 0,
       ),
-
-      // Configuración para BottomNavigationBar
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         selectedItemColor: colorThemes[selectedColor],
         unselectedItemColor: isDarkMode ? Colors.grey[400] : Colors.grey[600],
@@ -51,14 +43,10 @@ class AppTheme {
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
       ),
-
-      // Estilo para FloatingActionButton
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: colorThemes[selectedColor],
         foregroundColor: Colors.white,
       ),
-
-      // Estilo para ElevatedButton
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: colorThemes[selectedColor],
@@ -69,13 +57,9 @@ class AppTheme {
           ),
         ),
       ),
-
-      // Configuración para campos de texto en InputDecoration
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: isDarkMode
-            ? Colors.grey[800]
-            : Colors.grey[200], // Ajuste de fondo para dark mode
+        fillColor: isDarkMode ? Colors.grey[800] : Colors.grey[200],
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: colorThemes[selectedColor]),
@@ -86,8 +70,6 @@ class AppTheme {
         ),
         labelStyle: TextStyle(color: colorThemes[selectedColor]),
       ),
-
-      // Textos
       textTheme: TextTheme(
         headlineLarge: TextStyle(
           fontSize: 32,

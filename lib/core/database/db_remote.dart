@@ -6,15 +6,15 @@ class DBRemote {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final userId = FirebaseAuth.instance.currentUser!.uid;
 
-  // Get user reference
+  /// Get user reference
   DocumentReference get _userRef => _firestore.collection('Users').doc(userId);
 
-  // Add or update a user
+  /// Add or update a user
   Future<void> addOrUpdateUser(Map<String, dynamic> user) async {
     await _userRef.set(user, SetOptions(merge: true));
   }
 
-  // CRUD Operations for Medications
+  /// CRUD Operations for Medications
   Future<QuerySnapshot> getmedicines() async {
     return await _userRef.collection('Medicines').get();
   }
@@ -37,7 +37,7 @@ class DBRemote {
     return await _userRef.collection('Medicines').doc(medicamentId).get();
   }
 
-  // CRUD Operations for Routines
+  /// CRUD Operations for Routines
   Future<void> addRoutine(String rutinaId, Map<String, dynamic> rutina) async {
     await _userRef.collection('Routines').doc(rutinaId).set(rutina);
   }
@@ -55,7 +55,7 @@ class DBRemote {
     return await _userRef.collection('Routines').get();
   }
 
-  // CRUD Operations for Events
+  /// CRUD Operations for Events
   Future<void> addEvent(String eventId, Map<String, dynamic> event) async {
     await _userRef.collection('Events').doc(eventId).set(event);
   }

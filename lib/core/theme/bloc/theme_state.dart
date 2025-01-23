@@ -11,7 +11,6 @@ class ThemeState {
     required this.isDarkMode,
   });
 
-  // Copia del estado actual con posibles modificaciones
   ThemeState copyWith({
     ThemeData? themeData,
     int? selectedColor,

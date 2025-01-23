@@ -34,7 +34,6 @@ import 'package:pasti_track/features/routines/domain/usecases/get_events_by_rout
 import 'package:pasti_track/features/routines/domain/usecases/get_medications.dart';
 import 'package:pasti_track/features/routines/domain/usecases/update_routine.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/single_child_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/features/auth/data/datasources/auth_remote_data_source.dart';
@@ -61,7 +60,6 @@ class AppBlocProviders {
   static List<SingleChildWidget> get(firebase) {
     return [
       BlocProvider(create: (context) => ThemeBloc()),
-      // Firebase
       BlocProvider(
         create: (context) => AuthBloc(
           firebase,
@@ -70,8 +68,6 @@ class AppBlocProviders {
           PasswordRecoveryUseCase(_authRepoImpl),
         )..add(AuthCheckRequested()),
       ),
-      // Notifications
-      // Screens Logic UX
       BlocProvider(
         create: (context) => ProfileBloc(
           LoadProfileUseCase(_profileRepoImpl),

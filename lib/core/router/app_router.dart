@@ -104,37 +104,36 @@ class AppRouter {
       ),
     ],
     redirect: (context, state) {
-      // Obtiene el estado del AuthBloc
       final authState = context.read<AuthBloc>().state;
       AppLogger.p("GoRouter", authState.toString());
       AppLogger.p("GoRouter", state.matchedLocation);
 
-      // Estados en los que está cargando o sin autenticar (incluyendo inicio)
+      /// States in which you are loading or unauthenticated (including startup)
       final isLoading = authState is AuthLoading ||
           authState is AuthInitial ||
           authState is AuthUnauthenticated;
 
-      // Verifica si está cargando, inicializando o no autenticado
+      /// Checks if it is loading, initialising or not authenticated.
       if (isLoading) {
-        // Si el estado está cargando o no autenticado, evita redirecciones
+        /// If the status is loading or unauthenticated, avoid redirects.
         return null;
       }
 
-      // Verifica si el usuario está autenticado
+      /// Check if the user is authenticated
       final isLoggedIn = authState is AuthAuthenticated;
 
-      // Si no está autenticado, lo redirige al login
+      /// If you are not authenticated, redirects to login
       if (!isLoggedIn) {
         return AppUrls.signInPath;
       }
 
-      // Si está autenticado pero está en la pantalla de inicio de sesión, lo redirige al home
+      /// If you are authenticated but are on the login screen, redirects you to the home page.
       final isLoggingIn = state.matchedLocation == AppUrls.signInPath;
       if (isLoggedIn && isLoggingIn) {
         return AppUrls.homePath;
       }
 
-      // Mantiene la navegación normal si todo está bien
+      /// Maintains normal navigation if everything is OK
       return null;
     },
     errorBuilder: (context, state) {

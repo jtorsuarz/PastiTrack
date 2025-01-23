@@ -1,5 +1,7 @@
+import 'package:pasti_track/core/config.dart';
+
 class AppString {
-  static const String appTitle = 'PastiTrack';
+  static const String appTitle = AppDotEnv.appName;
   static const String signIn = 'Iniciar Sesión';
   static const String welcomePastiTrack = 'Bienvenido a PastiTrack';
   static const String email = 'Correo Electrónico';
@@ -100,8 +102,9 @@ class AppString {
   static const String noScheduledEventsFound =
       'No se encontraros eventos programados.';
   static const String medicamentNotFound = 'No se encontró el medicamento';
+  static const String eventPending = 'Eventos pendientes';
 
-  // * Success messages
+  /// * Success messages
   static const String success = 'Éxito';
   static const String successPasswordChanged =
       'Contraseña cambiada exitosamente.';
@@ -115,8 +118,11 @@ class AppString {
   static const String status = 'Estado';
   static const String statusWithTwoPoint = 'Estado: ';
   static const String noName = 'S/NA';
+  static const String registerRoutines = 'Registro de rutinas';
+  static const String rememberToRecordYourRoutinesToStayInControl =
+      'Remember to record your routines to stay in control.';
 
-  // ! Error Messages
+  /// ! Error Messages
   static const String error = 'Error';
   static const String errorUnknown = 'Error desconocido';
   static const String errorVerifyStatusAuth =
@@ -147,18 +153,21 @@ class AppString {
       'Se debe proporcionar dayOfWeek';
   static String eitherCustomTimesMustBeProvided =
       'Se debe proporcionar customDays o customTimes';
-  static String take = "Tomado";
-  static String pending = "Pendiente";
+  static String take = 'Tomado';
+  static String pending = 'Pendiente';
 
-  static String registerTakeWithTwoPoint = "Registro de Toma: ";
-  static String registerTake = "Registrar Toma";
-  static String dateScheduled = "Fecha Programada";
-  static String dateScheduledWithTwoPoints = "Fecha Programada: ";
+  static String registerTakeWithTwoPoint = 'Registro de Toma: ';
+  static String registerTake = 'Registrar Toma';
+  static String dateScheduled = 'Fecha Programada';
+  static String dateScheduledWithTwoPoints = 'Fecha Programada: ';
 
-  static String passed = "No tomado";
+  static String passed = 'No tomado';
   static String omitter = 'Omitir';
 
-  // ? Functions return a string
+  static String itsTimeToCheckYourMeds =
+      '¡Es hora de revisar tus medicamentos!';
+
+  /// ? Functions return a string
   static String userFromTime(v) => 'Usuario desde: $v';
   static String redirectAutomaticSeconds(s) =>
       'Serás redirigido automáticamente en $s segundos.';
@@ -194,4 +203,6 @@ class AppString {
   static String scheduleNotificationBody(v) =>
       'Recuerda tomar tu medicamento: name a las ${v.hour}:${v.minute}. Tu salud es lo primero.';
   static String textWithTwoPoints(x, y) => '$x: $y';
+  static String youHaveXPendingEventsToRegister(x) =>
+      'Tienes $x eventos pendientes por registrar.';
 }

@@ -1,6 +1,5 @@
 import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:sqflite/sqflite.dart';
-// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 import 'dart:async';
 
@@ -22,7 +21,6 @@ class DBLocal {
     return _database!;
   }
 
-  // Initialize the database
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'pastitrack.db');
     return await openDatabase(
@@ -32,7 +30,6 @@ class DBLocal {
     );
   }
 
-  // Create tables in the database
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE Users (
@@ -88,8 +85,6 @@ class DBLocal {
     ''');
   }
 
-  // CRUD functions for tables
-  // Insertar un usuario
   Future<int> insertUsuario(Map<String, dynamic> usuario) async {
     Database db = await database;
     return await db.insert('Users', usuario);
@@ -219,7 +214,7 @@ class DBLocal {
     final result = await db.query(
       'events',
       where: 'status = ? AND date_scheduled <= ?',
-      whereArgs: [0, currentDate.toIso8601String()], // 0 = false (pendiente)
+      whereArgs: [0, currentDate.toIso8601String()],
     );
     return result;
   }
