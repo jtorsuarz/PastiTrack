@@ -1,19 +1,31 @@
 import 'package:bloc/bloc.dart';
 import 'package:pasti_track/core/errors/failures.dart';
-import 'package:pasti_track/features/medicines/data/repositories/medicament_repository_impl.dart';
+import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
+import 'package:pasti_track/features/medicines/domain/usecases/add_medicament.dart';
+import 'package:pasti_track/features/medicines/domain/usecases/delete_medicament.dart';
+import 'package:pasti_track/features/medicines/domain/usecases/get_medications.dart';
+import 'package:pasti_track/features/medicines/domain/usecases/update_medicament.dart';
 
 part 'medicament_event.dart';
 part 'medicament_state.dart';
 
 class MedicamentBloc extends Bloc<MedicamentEvent, MedicamentState> {
-  final MedicamentRepositoryImpl repository;
+  final GetAllMedicaments getAllMedications;
+  final AddMedicament addMedication;
+  final UpdateMedicament updateMedicament;
+  final DeleteMedicament deleteMedicament;
 
-  MedicamentBloc(this.repository) : super(MedicamentInitialState()) {
+  MedicamentBloc(
+    this.getAllMedications,
+    this.addMedication,
+    this.updateMedicament,
+    this.deleteMedicament,
+  ) : super(MedicamentInitialState()) {
     on<LoadMedicationsEvent>((event, emit) async {
+      AppLogger.p("module", event.toString());
       try {
-        final medicamentos = await repository.getMedications();
-        await repository.syncData();
+        final medicamentos = await getAllMedications.call();
         emit(MedicamentLoadedState(medicamentos));
       } on Failure catch (e) {
         emit(MedicamentErrorState(e.message));
@@ -22,8 +34,7 @@ class MedicamentBloc extends Bloc<MedicamentEvent, MedicamentState> {
 
     on<CreateMedicamentEvent>((event, emit) async {
       try {
-        await repository.addMedicament(event.medicament);
-        await repository.syncData();
+        await addMedication.call(event.medicament);
         add(LoadMedicationsEvent());
       } on Failure catch (e) {
         emit(MedicamentErrorState(e.message));
@@ -32,7 +43,7 @@ class MedicamentBloc extends Bloc<MedicamentEvent, MedicamentState> {
 
     on<RemoveMedicamentEvent>((event, emit) async {
       try {
-        await repository.deleteMedicament(event.id);
+        await deleteMedicament.call(event.id);
         add(LoadMedicationsEvent());
       } on Failure catch (e) {
         emit(MedicamentErrorState(e.message));
@@ -40,10 +51,9 @@ class MedicamentBloc extends Bloc<MedicamentEvent, MedicamentState> {
       }
     });
 
-    on<UpdateMedicament>((event, emit) async {
+    on<UpdateMedicamentEvent>((event, emit) async {
       try {
-        await repository.updateMedicament(event.medicamento);
-        await repository.syncData();
+        await updateMedicament.call(event.medicamento);
         add(LoadMedicationsEvent());
       } catch (e) {
         emit(MedicamentErrorState(e.toString()));

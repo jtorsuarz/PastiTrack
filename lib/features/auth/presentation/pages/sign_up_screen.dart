@@ -22,8 +22,8 @@ class SignUpScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
-            if (state is AuthSignUpSuccess) {
-              context.go(AppUrls.signUpSuccessPath);
+            if (state is AuthAuthenticated) {
+              context.push(AppUrls.homePath);
             } else if (state is AuthError) {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text(state.message)));

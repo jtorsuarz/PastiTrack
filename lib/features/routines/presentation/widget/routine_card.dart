@@ -5,6 +5,7 @@ import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/features/routines/domain/entities/routine.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
 import 'package:pasti_track/widgets/custom_paddings.dart';
+import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
 class RoutineCard extends StatelessWidget {
   final Routine routine;
@@ -17,21 +18,38 @@ class RoutineCard extends StatelessWidget {
       margin: CustomPaddings.getAll15(),
       child: ListTile(
         title: Text(routine.routineId),
-        subtitle: Text(
-          AppString.frecuencyAndHourFormat(
-              routine.frequency, routine.dosageTime),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomSizedBoxes.get10(),
+            Text(
+              AppString.frecuencyFormat(routine.frequency),
+            ),
+            CustomSizedBoxes.get10(),
+            Text(
+              AppString.hourFormat(routine.dosageTime.isEmpty
+                  ? AppString.customized
+                  : routine.dosageTime),
+            ),
+          ],
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-                onPressed: () => context.push(
-                      AppUrls.addEditRoutinesPath,
-                      extra: routine,
-                    ),
-                icon: const Icon(Icons.edit)),
+              onPressed: () => context.push(
+                AppUrls.addEditRoutinesPath,
+                extra: routine,
+              ),
+              icon: const Icon(
+                Icons.edit,
+                color: Colors.blue,
+              ),
+            ),
+            CustomSizedBoxes.get10(),
             IconButton(
               icon: const Icon(Icons.delete),
+              color: Colors.red,
               onPressed: () {
                 showDialog(
                   context: context,
@@ -59,7 +77,7 @@ class RoutineCard extends StatelessWidget {
                   },
                 );
               },
-            )
+            ),
           ],
         ),
       ),

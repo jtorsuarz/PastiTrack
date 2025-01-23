@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/core/config.dart';
+import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/medicines/presentation/bloc/medicament_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/features/medicines/presentation/widget/medication_card_widget.dart';
@@ -29,6 +30,7 @@ class MedicationScreen extends StatelessWidget {
         },
         child: BlocBuilder<MedicamentBloc, MedicamentState>(
           builder: (context, state) {
+            AppLogger.p("module", state);
             if (state is MedicamentInitialState) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is MedicamentLoadedState) {

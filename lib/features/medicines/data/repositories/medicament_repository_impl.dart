@@ -17,6 +17,12 @@ class MedicamentRepositoryImpl implements MedicamentRepository {
     this.remoteDB,
   );
 
+  Future<void> initialize() async {
+    if (await isConnected()) {
+      await syncData();
+    }
+  }
+
   Future<bool> isConnected() async {
     var connectivityResult = await _connectivity.checkConnectivity();
     return connectivityResult.first != ConnectivityResult.none;
@@ -70,7 +76,7 @@ class MedicamentRepositoryImpl implements MedicamentRepository {
         return result;
       } else {
         throw Failure(AppString.errorWhenDelete(
-            AppString.canNotBeActionCheckYourConnectivityTryAgain));
+            AppString.warningCanNotBeActionCheckYourConnectivityTryAgain));
       }
     } on Failure catch (e) {
       AppLogger.p("Catch Medicament Failure", "deleteMedicament ${e.message}");

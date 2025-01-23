@@ -21,11 +21,6 @@ class RoutineSuccessState extends RoutineState {
   RoutineSuccessState(this.message);
 }
 
-class RoutineAddEditSuccessState extends RoutineState {
-  final String message;
-  RoutineAddEditSuccessState(this.message);
-}
-
 class RoutineAddEditErrorState extends RoutineState {
   final String error;
   RoutineAddEditErrorState(this.error);

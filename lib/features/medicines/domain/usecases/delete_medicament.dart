@@ -1,9 +1,9 @@
-import 'package:pasti_track/features/medicines/domain/repositories/medicament_repository.dart';
+import 'package:pasti_track/features/medicines/data/repositories/medicament_repository_impl.dart';
 
-class DeleteMedicamento {
-  final MedicamentRepository repository;
+class DeleteMedicament {
+  final MedicamentRepositoryImpl repository;
 
-  DeleteMedicamento(this.repository);
+  DeleteMedicament(this.repository);
 
   Future<int> call(String id) async {
     return await repository.deleteMedicament(id);

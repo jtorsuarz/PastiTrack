@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
+import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
 import 'package:pasti_track/features/routines/presentation/widget/routine_card.dart';
 
@@ -37,12 +38,14 @@ class Routines extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
+            context.read<EventsBloc>().add(LoadingEventsEvent());
           }
         },
         builder: (context, state) {
           if (state is RoutineLoadingState) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is RoutineLoadedState) {
+          }
+          if (state is RoutineLoadedState) {
             if (state.routines.isEmpty) {
               return const Center(child: Text(AppString.routinesEmpty));
             }
@@ -53,7 +56,8 @@ class Routines extends StatelessWidget {
                 return RoutineCard(routine: routine);
               },
             );
-          } else if (state is RoutineErrorState) {
+          }
+          if (state is RoutineErrorState) {
             return Center(child: Text(state.error));
           } else {
             return const Center(child: Text(AppString.errorUnknown));

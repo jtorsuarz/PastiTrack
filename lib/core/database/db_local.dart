@@ -1,3 +1,4 @@
+import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:sqflite/sqflite.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
@@ -21,7 +22,6 @@ class DBLocal {
     return _database!;
   }
 
-  // Initialize the database
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'pastitrack.db');
     return await openDatabase(
@@ -31,7 +31,6 @@ class DBLocal {
     );
   }
 
-  // Create tables in the database
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE Users (
@@ -72,20 +71,21 @@ class DBLocal {
     ''');
 
     await db.execute('''
-      CREATE TABLE history (
-        history_id TEXT PRIMARY KEY,
+      CREATE TABLE events (
+        event_id TEXT PRIMARY KEY,
         routine_id TEXT,
-        take_status TEXT NOT NULL,
-        date TEXT NOT NULL,
-        user_id TEXT,
+        medicine_id TEXT,
+        date_scheduled TEXT NOT NULL,
+        status TEXT,
+        date_done TEXT,
+        date_updated TEXT NOT NULL,
+        registration_scheduled_notification TEXT NOT NULL,
         FOREIGN KEY (routine_id) REFERENCES routines(routine_id),
-        FOREIGN KEY (user_id) REFERENCES Users(user_id)
+        FOREIGN KEY (medicine_id) REFERENCES Users(medicine_id)
       )
     ''');
   }
 
-  // CRUD functions for tables
-  // Insertar un usuario
   Future<int> insertUsuario(Map<String, dynamic> usuario) async {
     Database db = await database;
     return await db.insert('Users', usuario);
@@ -194,42 +194,92 @@ class DBLocal {
     );
   }
 
-  Future<int> insertHistorial(Map<String, dynamic> history) async {
-    Database db = await database;
-    return await db.insert('history', history);
-  }
-
-  Future<List<Map<String, dynamic>>> getHistorial() async {
-    Database db = await database;
-    return await db.query('history');
-  }
-
-  Future<List<Map<String, dynamic>>> getHistorialByRutinaId(
-      String rutinaId) async {
+  Future<List<Map<String, dynamic>>> getEventsByRoutine(
+      String routineId) async {
     Database db = await database;
     return await db.query(
-      'history',
+      'events',
       where: 'routine_id = ?',
-      whereArgs: [rutinaId],
+      whereArgs: [routineId],
     );
   }
 
-  Future<int> updateHistorial(Map<String, dynamic> history) async {
+  Future<List<Map<String, dynamic>>> getAllEvents() async {
+    Database db = await database;
+    return await db.query("events");
+  }
+
+  Future<List<Map<String, dynamic>>> getPendingEvents(
+      DateTime currentDate) async {
+    Database db = await database;
+    final result = await db.query(
+      'events',
+      where: 'status = ? AND date_scheduled <= ?',
+      whereArgs: [0, currentDate.toIso8601String()],
+    );
+    return result;
+  }
+
+  Future<Map<String, dynamic>?> getEventById(String eventId) async {
+    Database db = await database;
+    final result = await db.query(
+      'events',
+      where: 'event_id = ?',
+      whereArgs: [eventId],
+    );
+    return result.isNotEmpty ? result.first : null;
+  }
+
+  Future<int> insertEvent(Map<String, dynamic> event) async {
+    Database db = await database;
+    return await db.insert(
+      'events',
+      event,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<int> updateEvent(Map<String, dynamic> json) async {
     Database db = await database;
     return await db.update(
-      'history',
-      history,
-      where: 'history_id = ?',
-      whereArgs: [history['history_id']],
+      'events',
+      json,
+      where: 'event_id = ?',
+      whereArgs: [json['event_id']],
     );
   }
 
-  Future<int> deleteHistorial(String historialId) async {
+  Future<int> updateEventStatusAndDates(
+      {required String eventId, required String dateDone}) async {
+    Database db = await database;
+    final updatedValues = {
+      'status': EventStatus.completed.name,
+      'date_done': dateDone,
+    };
+
+    return await db.update(
+      'events',
+      updatedValues,
+      where: 'event_id = ?',
+      whereArgs: [eventId],
+    );
+  }
+
+  Future<int> deleteEvent(String eventId) async {
     Database db = await database;
     return await db.delete(
-      'history',
-      where: 'history_id = ?',
-      whereArgs: [historialId],
+      'events',
+      where: 'event_id = ?',
+      whereArgs: [eventId],
+    );
+  }
+
+  Future<int> deleteEventsByRoutineId(String routineId) async {
+    Database db = await database;
+    return await db.delete(
+      'events',
+      where: 'routine_id = ?',
+      whereArgs: [routineId],
     );
   }
 }

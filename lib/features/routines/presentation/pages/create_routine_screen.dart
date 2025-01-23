@@ -21,13 +21,11 @@ class AddEditRoutineScreen extends StatefulWidget {
 class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // Variables de estado
   String? selectedMedication;
   String? _selectedFrequency;
   TimeOfDay? _generalTime;
   String? selectedDayOfWeek;
   List<DateTime> _customDays = [];
-  // ignore: prefer_final_fields
   Map<DateTime, TimeOfDay> _customTimes = {};
   bool _useGeneralTime = true;
   late Routine? _routine;
@@ -91,14 +89,11 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
         title: Text(
             _routine == null ? AppString.routineCreate : AppString.rutineEdit),
         leading: IconButton(
-          onPressed: () {},
-          icon: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              context.read<RoutineBloc>().add(LoadRoutinesEvent());
-              context.pop();
-            },
-          ),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.read<RoutineBloc>().add(LoadRoutinesEvent());
+            context.pop();
+          },
         ),
       ),
       body: Padding(
@@ -127,7 +122,6 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                 key: _formKey,
                 child: ListView(
                   children: [
-                    // Selección de Medicamento
                     buildMedicationDropdown(
                       context: context,
                       medications: state.medicines,
@@ -139,8 +133,6 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                       },
                     ),
                     CustomSizedBoxes.get15(),
-
-                    // Selección de Frecuencia
                     buildFrecuencyDropdown(
                       context: context,
                       frecuencies: RoutineFrequency.allValues,
@@ -153,8 +145,6 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                       },
                     ),
                     CustomSizedBoxes.get15(),
-
-                    // Lógica para Diaria
                     if (_selectedFrequency == AppString.daily) ...[
                       buildElevatedButtonSelectHour(
                         context: context,
@@ -172,8 +162,6 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                         generalTime: _generalTime,
                       ),
                     ],
-
-                    // Lógica para Semanal
                     if (_selectedFrequency == AppString.weekly) ...[
                       buildDayOfWeekDropdown(
                         selectedDayOfWeek: selectedDayOfWeek,
@@ -201,8 +189,6 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                       ),
                       CustomSizedBoxes.get15(),
                     ],
-
-                    // Lógica para Personalizada
                     if (_selectedFrequency == AppString.customized) ...[
                       ElevatedButton(
                         onPressed: _selectDays,
@@ -246,7 +232,6 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                           });
                         }),
                     ],
-
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
@@ -289,7 +274,6 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
                                 customTimes: customTimes,
                                 dateUpdated: DateTime.now().toString(),
                               );
-                              AppLogger.p("module", DateTime.now().toString());
                               context.read<RoutineBloc>().add(
                                   AddRoutineEvent(routine, _useGeneralTime));
                             }
@@ -307,7 +291,6 @@ class _AddEditRoutineScreenState extends State<AddEditRoutineScreen> {
               );
             } else {
               return const Center(
-                //child:Text(AppString.loadMedicines)
                 child: CircularProgressIndicator(),
               );
             }

@@ -4,8 +4,8 @@ import 'package:pasti_track/core/config.dart';
 class ConfirmDialog extends StatelessWidget {
   final String title;
   final String content;
-  final VoidCallback onConfirm; // Acción a realizar cuando se confirma
-  final VoidCallback? onCancel; // Acción opcional para cancelar
+  final VoidCallback onConfirm; 
+  final VoidCallback? onCancel; 
 
   const ConfirmDialog({
     super.key,

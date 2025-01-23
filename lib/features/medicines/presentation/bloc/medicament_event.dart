@@ -1,6 +1,6 @@
 part of 'medicament_bloc.dart';
 
-sealed class MedicamentEvent {}
+abstract class MedicamentEvent {}
 
 class LoadMedicationsEvent extends MedicamentEvent {}
 
@@ -16,8 +16,8 @@ class RemoveMedicamentEvent extends MedicamentEvent {
   RemoveMedicamentEvent(this.id);
 }
 
-class UpdateMedicament extends MedicamentEvent {
+class UpdateMedicamentEvent extends MedicamentEvent {
   final Medicament medicamento;
 
-  UpdateMedicament(this.medicamento);
+  UpdateMedicamentEvent(this.medicamento);
 }

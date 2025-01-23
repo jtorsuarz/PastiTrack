@@ -1,8 +1,8 @@
+import 'package:pasti_track/features/medicines/data/repositories/medicament_repository_impl.dart';
 import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
-import 'package:pasti_track/features/medicines/domain/repositories/medicament_repository.dart';
 
 class AddMedicament {
-  final MedicamentRepository repository;
+  final MedicamentRepositoryImpl repository;
 
   AddMedicament(this.repository);
 

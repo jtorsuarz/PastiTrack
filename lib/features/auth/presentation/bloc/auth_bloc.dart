@@ -17,9 +17,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final PasswordRecoveryUseCase _passwordRecoveryUseCase;
   final Completer<void> _completer = Completer<void>();
 
-  AuthBloc(this._firebaseAuth, this._signInUseCase, this._signUpUserUseCase,
-      this._passwordRecoveryUseCase)
-      : super(AuthInitial()) {
+  AuthBloc(
+    this._firebaseAuth,
+    this._signInUseCase,
+    this._signUpUserUseCase,
+    this._passwordRecoveryUseCase,
+  ) : super(AuthInitial()) {
     on<AuthCheckRequested>((event, emit) async {
       emit(AuthLoading());
       try {
@@ -61,7 +64,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         await _signUpUserUseCase.call(
             email: event.email, password: event.password);
-        emit(AuthSignUpSuccess());
+        emit(AuthAuthenticated(_firebaseAuth.currentUser!));
       } catch (error) {
         emit(AuthError(AppString.errorSignUp));
       }

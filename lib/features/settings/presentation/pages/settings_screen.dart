@@ -52,29 +52,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
         body: ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
-            /// Show account information
             SettingsTileWidget(
               icon: Icons.person,
               title: AppString.editProfile,
               onTap: () => context.push(AppUrls.editProfilePath),
             ),
             const Divider(),
-
             const ThemeDropdownWidget(),
             const Divider(),
-
             const DarkModeSwitchWidget(),
             const Divider(),
-
-            /// Show application version
             SettingsTileWidget(
               icon: Icons.info_outline,
               title: AppString.appVersion,
               subtitle: _appVersion,
             ),
             const Divider(),
-
-            /// Option to log out
             SettingsTileWidget(
               icon: Icons.logout,
               title: AppString.logout,

@@ -1,12 +1,13 @@
+import 'package:pasti_track/features/medicines/data/repositories/medicament_repository_impl.dart';
 import 'package:pasti_track/features/medicines/domain/entities/medicament.dart';
-import 'package:pasti_track/features/medicines/domain/repositories/medicament_repository.dart';
 
-class GetMedications {
-  final MedicamentRepository repository;
+class GetAllMedicaments {
+  final MedicamentRepositoryImpl repository;
 
-  GetMedications(this.repository);
+  GetAllMedicaments(this.repository);
 
   Future<List<Medicament>> call() async {
+    await repository.syncData();
     return await repository.getMedications();
   }
 }
