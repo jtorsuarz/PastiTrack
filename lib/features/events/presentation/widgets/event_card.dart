@@ -6,6 +6,7 @@ import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/widgets/custom_sizes_box.dart';
 
+// ignore: must_be_immutable
 class EventCard extends StatefulWidget {
   final EventEntity event;
   final String medicationName;

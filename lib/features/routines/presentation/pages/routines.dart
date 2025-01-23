@@ -6,6 +6,7 @@ import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:pasti_track/features/routines/presentation/bloc/routine_bloc.dart';
 import 'package:pasti_track/features/routines/presentation/widget/routine_card.dart';
 
+// ignore: must_be_immutable
 class Routines extends StatelessWidget {
   bool showAppBar;
   Routines({super.key, this.showAppBar = true});

@@ -6,6 +6,7 @@ import 'package:pasti_track/features/medicines/presentation/bloc/medicament_bloc
 import 'package:go_router/go_router.dart';
 import 'package:pasti_track/features/medicines/presentation/widget/medication_card_widget.dart';
 
+// ignore: must_be_immutable
 class MedicationScreen extends StatelessWidget {
   bool showAppBar;
   MedicationScreen({super.key, this.showAppBar = true});

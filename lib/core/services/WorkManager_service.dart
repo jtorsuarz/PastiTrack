@@ -1,3 +1,4 @@
+// ignore_for_file: file_names
 import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/core/tasks/notify_hourly_reminder.dart';
 import 'package:pasti_track/core/tasks/register_daily_notifications.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/errors/error_screen.dart';
 import 'package:pasti_track/core/services/WorkManager_service.dart';
 import 'package:pasti_track/core/services/notification_service.dart';

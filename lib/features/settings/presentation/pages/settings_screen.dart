@@ -8,6 +8,7 @@ import 'package:pasti_track/features/settings/presentation/widgets/dark_mode_swi
 import 'package:pasti_track/features/settings/presentation/widgets/settings_tile_widget.dart';
 import 'package:pasti_track/features/settings/presentation/widgets/theme_dropdown_widget.dart';
 
+// ignore: must_be_immutable
 class SettingsScreen extends StatefulWidget {
   bool showAppBar;
   SettingsScreen({super.key, this.showAppBar = true});

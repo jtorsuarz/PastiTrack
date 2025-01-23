@@ -1,5 +1,6 @@
 import 'package:pasti_track/features/events/domain/entities/event_status.dart';
 import 'package:sqflite/sqflite.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 import 'dart:async';
 
