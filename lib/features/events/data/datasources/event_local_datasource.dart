@@ -2,9 +2,9 @@ import 'package:pasti_track/core/database/db_local.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
 
 class EventLocalDataSource {
-  final DBLocal database = DBLocal();
+  final DBLocal database;
 
-  EventLocalDataSource();
+  EventLocalDataSource({DBLocal? database}) : database = database ?? DBLocal();
 
   Future<List<EventEntity>> getAll() async {
     final result = await database.getAllEvents();
