@@ -1,4 +1,5 @@
 class AppDotEnv {
+  static bool activeAppLogger = false;
   static const String appVersion = '1.0.0';
   static int selectedColorInitial = 2;
   static bool isDarkMode = false;
