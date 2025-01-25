@@ -7,7 +7,6 @@ import 'package:workmanager/workmanager.dart';
 class WorkManagerService {
   static const hourlyReminderTask = "hourly_reminder";
   static const dailyNotificationTask = "daily_notification";
-  static const isDebugMode = true;
 
   void registerTasks() {
     AppLogger.p("WorkManagerService", "registerTasks");

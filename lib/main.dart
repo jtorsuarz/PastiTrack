@@ -11,10 +11,8 @@ void callbackDispatcher() => WorkManagerService.callbackDispatcher();
 
 void main() async {
   await AppPresetup.init();
-  Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: WorkManagerService.isDebugMode,
-  );
+  Workmanager().initialize(callbackDispatcher,
+      isInDebugMode: AppDotEnv.isDebugModeWorkManager);
   runApp(const MyApp());
 }
 
