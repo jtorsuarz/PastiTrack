@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/services/WorkManager_service.dart';
 import 'package:pasti_track/core/services/notification_service.dart';
@@ -45,8 +44,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLoggedIn>((event, emit) async {
       emit(AuthLoading());
       try {
-        await _signInUseCase.call(event.email, event.password);
-        emit(AuthAuthenticated(_firebaseAuth.currentUser!));
+        if (!event.email.contains('@')) {
+          emit(AuthError(AppString.errorInvalidEmail));
+        } else if (event.password.isEmpty) {
+          emit(AuthError(AppString.errorInvalidPassword));
+        } else {
+          await _signInUseCase.call(event.email, event.password);
+          emit(AuthAuthenticated(_firebaseAuth.currentUser!));
+        }
       } catch (error) {
         emit(AuthError(AppString.errorSignIn));
       }
@@ -67,9 +72,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignUpRequested>((event, emit) async {
       emit(AuthLoading());
       try {
-        await _signUpUserUseCase.call(
-            email: event.email, password: event.password);
-        emit(AuthAuthenticated(_firebaseAuth.currentUser!));
+        if (!event.email.contains('@')) {
+          emit(AuthError(AppString.errorInvalidEmail));
+        } else if (event.password.isEmpty) {
+          emit(AuthError(AppString.errorInvalidPassword));
+        } else if (event.password.length < 8) {
+          emit(AuthError(AppString.errorPasswordLength));
+        } else {
+          await _signUpUserUseCase.call(
+              email: event.email, password: event.password);
+          emit(AuthAuthenticated(_firebaseAuth.currentUser!));
+        }
       } catch (error) {
         emit(AuthError(AppString.errorSignUp));
       }

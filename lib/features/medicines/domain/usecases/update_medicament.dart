@@ -7,6 +7,6 @@ class UpdateMedicament {
   UpdateMedicament(this.repository);
 
   Future<int> call(Medicament medicament) async {
-    return await repository.addMedicament(medicament);
+    return await repository.updateMedicament(medicament);
   }
 }

@@ -96,7 +96,6 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
             return;
           }
         } else {
-          routine.dosageTime = "";
           routine.customDays = [];
           if (routine.customTimes!.isEmpty) {
             emit(
@@ -280,7 +279,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
   List<DateTime> getRemainingDatesCurrentYearByDay(
       {required int day, required int hour, required int minute}) {
     List<DateTime> days = [];
-    DateTime currentDate = DateTime.now().copyWith(hour: hour, minute: minute);
+    DateTime currentDate = DateTime.now();
     int yearNow = currentDate.year;
 
     int currentWeekday = currentDate.weekday;
@@ -294,7 +293,7 @@ class RoutineBloc extends Bloc<RoutineEvent, RoutineState> {
     for (DateTime date = nextDay;
         date.isBefore(end);
         date = date.add(const Duration(days: 7))) {
-      days.add(date);
+      days.add(date.copyWith(hour: hour, minute: minute));
     }
 
     return days;

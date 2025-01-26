@@ -9,21 +9,16 @@ class AddEvent {
   AddEvent(this.repository);
 
   Future<void> call(EventEntity event) async {
-    DateTime now = DateTime.now();
-    DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-    DateTime endOfWeek = startOfWeek.add(const Duration(days: 6));
+    final notificationService = NotificationService();
     try {
-      if (event.dateScheduled.isAfter(startOfWeek) &&
-          event.dateScheduled.isBefore(endOfWeek)) {
-        String medicamentName = await event.medicationName();
-        await NotificationService().scheduleNotification(
-          id: event.eventId.hashCode,
-          title: AppString.scheduleNotificationTitle(medicamentName),
-          body: AppString.scheduleNotificationBody(event.dateScheduled),
-          dateTime: event.dateScheduled,
-          objectEntity: event,
-        );
-      }
+      String medicamentName = await event.medicationName();
+      await notificationService.scheduleNotification(
+        id: event.eventId.hashCode,
+        title: AppString.scheduleNotificationTitle(medicamentName),
+        body: AppString.scheduleNotificationBody(event.dateScheduled),
+        dateTime: event.dateScheduled,
+        objectEntity: event,
+      );
       event.registrationScheduledNotification = 1;
     } on Exception catch (_) {
       event.registrationScheduledNotification = 0;

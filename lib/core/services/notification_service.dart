@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
@@ -81,8 +80,7 @@ class NotificationService {
     } else {
       Map<String, dynamic> eventMap = jsonDecode(eventRecieved);
       EventEntity event = EventEntity.fromJson(eventMap);
-      GoRouter.of(ctx)
-          .pushReplacement(AppUrls.eventRegisterTakePath, extra: event);
+      AppRouter.navigateTo(AppUrls.eventRegisterTakePath, event);
     }
   }
 

@@ -35,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<ProfileBloc>().add(LoadProfileEvent());
     return Scaffold(
       appBar: AppBar(title: const Text(AppString.profile)),
       body: BlocConsumer<ProfileBloc, ProfileState>(

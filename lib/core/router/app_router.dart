@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/auth/presentation/pages/auth_wrapper.dart';
 import 'package:pasti_track/features/auth/presentation/pages/password_recovery_screen.dart';
-import 'package:pasti_track/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:pasti_track/features/auth/presentation/pages/sign_up_screen.dart';
 import 'package:pasti_track/features/auth/presentation/pages/sign_up_success_screen.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
@@ -143,4 +142,8 @@ class AppRouter {
       );
     },
   );
+
+  static void navigateTo(String route, dynamic extra) {
+    AppRouter.router.go(route, extra: extra);
+  }
 }

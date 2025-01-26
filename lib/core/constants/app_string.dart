@@ -167,6 +167,9 @@ class AppString {
   static String itsTimeToCheckYourMeds =
       '¡Es hora de revisar tus medicamentos!';
 
+  static String errorPasswordLength =
+      'La longitud de la contraseña no es valida, minimo 8 caracteres';
+
   /// ? Functions return a string
   static String userFromTime(v) => 'Usuario desde: $v';
   static String redirectAutomaticSeconds(s) =>

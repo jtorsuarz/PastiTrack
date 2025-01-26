@@ -2,7 +2,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  late final db;
+  late final Database db;
   // Inicializa FFI antes de cualquier test
   setUpAll(() async {
     sqfliteFfiInit();
