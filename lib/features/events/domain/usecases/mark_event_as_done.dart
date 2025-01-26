@@ -8,6 +8,7 @@ class MarkEventAsDone {
   MarkEventAsDone(this.repository);
 
   Future<void> call(String eventId) async {
+    AppLogger.p("MarkEventAsDone", eventId);
     await repository.updateStatusEvent(eventId);
     try {
       await NotificationService().cancelNotification(eventId.hashCode);

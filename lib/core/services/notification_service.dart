@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pasti_track/core/config.dart';
 import 'package:pasti_track/core/helper/app_logger.dart';
 import 'package:pasti_track/features/events/domain/entities/event_entity.dart';
+import 'package:pasti_track/features/events/presentation/bloc/events_bloc.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz_data;
 
@@ -25,26 +26,7 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> initializeGeneralNotifications() async {
-    tz_data.initializeTimeZones();
-
-    const AndroidInitializationSettings androidInitializationSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    const InitializationSettings initializationSettings =
-        InitializationSettings(
-      android: androidInitializationSettings,
-    );
-
-    _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestExactAlarmsPermission();
-
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
-
-  Future<void> initializeEventNotifications(ctx, useCase, bloc, event) async {
+  Future<void> initializeEventNotifications(ctx, EventsBloc bloc) async {
     tz_data.initializeTimeZones();
 
     const AndroidInitializationSettings androidInitializationSettings =
@@ -63,23 +45,25 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (response) =>
-          _onDidReceiveNotificationResponse(
-              response, ctx, useCase, bloc, event),
+          _onDidReceiveNotificationResponse(response, ctx, bloc),
     );
   }
 
   Future<void> _onDidReceiveNotificationResponse(
-      NotificationResponse response, ctx, useCase, bloc, event) async {
+      NotificationResponse response, ctx, EventsBloc bloc) async {
     var eventRecieved = response.payload!;
+    Map<String, dynamic> eventMap = jsonDecode(eventRecieved);
+    EventEntity event = EventEntity.fromJson(eventMap);
 
+    AppLogger.p("MarkEventAsDone response", response.toString());
     if (response.actionId != null) {
+      AppLogger.p("MarkEventAsDone actionId", response.actionId);
       if (response.actionId == 'ACCEPT') {
-        useCase.call(eventRecieved);
-        bloc.add(event);
+        AppLogger.p("MarkEventAsDone ", "ACCEPT");
+        bloc.markEventAsDone.call(event.eventId);
+        bloc.add(LoadingEventsEvent());
       }
     } else {
-      Map<String, dynamic> eventMap = jsonDecode(eventRecieved);
-      EventEntity event = EventEntity.fromJson(eventMap);
       AppRouter.navigateTo(AppUrls.eventRegisterTakePath, event);
     }
   }
