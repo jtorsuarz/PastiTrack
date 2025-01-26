@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {
           return MaterialApp.router(
+            debugShowCheckedModeBanner: AppDotEnv.isDebugModeApp,
             title: AppString.appTitle,
             theme: state.themeData,
             darkTheme: AppTheme(selectedColor: state.selectedColor)

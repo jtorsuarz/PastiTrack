@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:pasti_track/core/config.dart';
+import 'package:pasti_track/core/services/WorkManager_service.dart';
+import 'package:pasti_track/core/services/notification_service.dart';
 import 'package:pasti_track/features/auth/domain/usecases/password_recovery.dart';
 import 'package:pasti_track/features/auth/domain/usecases/sign_in_usecase.dart';
 import 'package:pasti_track/features/auth/domain/usecases/signup_user_usecase.dart';
@@ -53,6 +56,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         await _firebaseAuth.signOut();
+        await NotificationService().cancelAllNotifications();
+        WorkManagerService.cancelAllTasks();
         emit(AuthUnauthenticated());
       } catch (error) {
         emit(AuthError(AppString.errorSignOut));

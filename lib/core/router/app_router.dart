@@ -38,7 +38,8 @@ class AppRouter {
       ),
       GoRoute(
         path: AppUrls.signInPath,
-        builder: (BuildContext context, GoRouterState state) => SignInScreen(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const AuthWrapper(),
       ),
       GoRoute(
         path: AppUrls.signUpPath,
@@ -109,9 +110,7 @@ class AppRouter {
       AppLogger.p("GoRouter", state.matchedLocation);
 
       /// States in which you are loading or unauthenticated (including startup)
-      final isLoading = authState is AuthLoading ||
-          authState is AuthInitial ||
-          authState is AuthUnauthenticated;
+      final isLoading = authState is AuthLoading || authState is AuthInitial;
 
       /// Checks if it is loading, initialising or not authenticated.
       if (isLoading) {
@@ -124,7 +123,7 @@ class AppRouter {
 
       /// If you are not authenticated, redirects to login
       if (!isLoggedIn) {
-        return AppUrls.signInPath;
+        return state.matchedLocation;
       }
 
       /// If you are authenticated but are on the login screen, redirects you to the home page.

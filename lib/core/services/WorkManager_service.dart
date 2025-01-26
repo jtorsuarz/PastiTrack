@@ -60,4 +60,9 @@ class WorkManagerService {
       return Future.value(true);
     });
   }
+
+  // cancel all tasks
+  static void cancelAllTasks() {
+    Workmanager().cancelAll();
+  }
 }
