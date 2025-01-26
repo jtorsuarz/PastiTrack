@@ -20,64 +20,46 @@ class SignInScreen extends StatelessWidget {
         title: const Text(AppString.signIn),
         centerTitle: true,
       ),
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthLoading || state is AuthInitial) {
-            const Center(child: CircularProgressIndicator());
-          } else if (state is AuthAuthenticated) {
-            context.go(AppUrls.homePath);
-          } else if (state is AuthUnauthenticated) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text(AppString.unauthenticated)),
-            );
-          } else if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: AppString.email),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              CustomSizedBoxes.get20(),
-              TextField(
-                controller: passwordController,
-                decoration:
-                    const InputDecoration(labelText: AppString.password),
-                obscureText: true,
-              ),
-              CustomSizedBoxes.get20(),
-              ElevatedButton(
-                onPressed: () {
-                  final email = emailController.text;
-                  final password = passwordController.text;
-                  BlocProvider.of<AuthBloc>(context)
-                      .add(AuthLoggedIn(email: email, password: password));
-                },
-                child: const Text(AppString.signIn),
-              ),
-              CustomSizedBoxes.get20(),
-              ElevatedButton(
-                onPressed: () {
-                  context.push(AppUrls.signUpPath);
-                },
-                child: const Text(AppString.signUp),
-              ),
-              CustomSizedBoxes.get20(),
-              ElevatedButton(
-                onPressed: () {
-                  context.push(AppUrls.forgotPasswordPath);
-                },
-                child: const Text(AppString.forgotPassword),
-              ),
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(labelText: AppString.email),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            CustomSizedBoxes.get20(),
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(labelText: AppString.password),
+              obscureText: true,
+            ),
+            CustomSizedBoxes.get20(),
+            ElevatedButton(
+              onPressed: () {
+                final email = emailController.text;
+                final password = passwordController.text;
+                BlocProvider.of<AuthBloc>(context)
+                    .add(AuthLoggedIn(email: email, password: password));
+              },
+              child: const Text(AppString.signIn),
+            ),
+            CustomSizedBoxes.get20(),
+            ElevatedButton(
+              onPressed: () {
+                context.push(AppUrls.signUpPath);
+              },
+              child: const Text(AppString.signUp),
+            ),
+            CustomSizedBoxes.get20(),
+            ElevatedButton(
+              onPressed: () {
+                context.push(AppUrls.forgotPasswordPath);
+              },
+              child: const Text(AppString.forgotPassword),
+            ),
+          ],
         ),
       ),
     );
